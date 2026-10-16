@@ -1,0 +1,56 @@
+# Shared by every stack. Development adds compose.dev.yaml (build, ports, live reload).
+# The server adds compose.server.yaml (registry images, proxy, restart policies).
+
+x-app-environment: &app-environment
+  ENVIRONMENT: ${ENVIRONMENT:?set ENVIRONMENT in .env}
+  APP_VERSION: ${APP_VERSION:?set APP_VERSION in .env}
+  SITE_HOSTNAME: ${SITE_HOSTNAME:?set SITE_HOSTNAME in .env}
+  DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:?set DJANGO_SECRET_KEY in .env}
+  DJANGO_ALLOWED_HOSTS: ${DJANGO_ALLOWED_HOSTS:?set DJANGO_ALLOWED_HOSTS in .env}
+  POSTGRES_DB: ${POSTGRES_DB:?set POSTGRES_DB in .env}
+  POSTGRES_USER: ${POSTGRES_USER:?set POSTGRES_USER in .env}
+  POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+  FILE_ENCRYPTION_KEY: ${FILE_ENCRYPTION_KEY:?set FILE_ENCRYPTION_KEY in .env}
+  BACKUP_PASSPHRASE: ${BACKUP_PASSPHRASE:?set BACKUP_PASSPHRASE in .env}
+  ALLOWED_EMAIL_DOMAIN: ${ALLOWED_EMAIL_DOMAIN:?set ALLOWED_EMAIL_DOMAIN in .env}
+  TIME_ZONE: ${TIME_ZONE:?set TIME_ZONE in .env}
+  DEFAULT_LANGUAGE: ${DEFAULT_LANGUAGE:?set DEFAULT_LANGUAGE in .env}
+  LOG_LEVEL: ${LOG_LEVEL:?set LOG_LEVEL in .env}
+
+x-backend: &backend
+  environment: *app-environment
+  depends_on:
+    db:
+      condition: service_healthy
+  volumes:
+    - files_data:/data/files
+    - backup_data:/data/backups
+
+services:
+  db:
+    image: postgres:17.6-bookworm
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:?set POSTGRES_DB in .env}
+      POSTGRES_USER: ${POSTGRES_USER:?set POSTGRES_USER in .env}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      TZ: ${TIME_ZONE:?set TIME_ZONE in .env}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  app:
+    <<: *backend
+    command: ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3", "--timeout", "60"]
+
+  worker:
+    <<: *backend
+    command: ["python", "manage.py", "procrastinate", "worker"]
+
+volumes:
+  db_data:
+  files_data:
+  backup_data:

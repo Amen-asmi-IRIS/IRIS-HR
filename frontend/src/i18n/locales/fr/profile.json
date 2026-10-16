@@ -1,0 +1,93 @@
+{
+  "title": "Mon profil",
+  "loading": "Chargement…",
+  "propose": "Proposer une modification",
+  "blank": "(vide)",
+  "changeLine": "{{field}} : {{old}} → {{new}}",
+  "sections": {
+    "identity": "Identité",
+    "contact": "Coordonnées",
+    "emergency": "Personne à prévenir",
+    "work": "Rattachement"
+  },
+  "pending": {
+    "title": "Votre modification attend la décision des RH",
+    "sent": "Envoyée le {{date}}",
+    "withdraw": "Retirer la proposition",
+    "withdrawn": "Proposition retirée.",
+    "failed": "La proposition n'a pas pu être retirée. Rechargez la page et réessayez."
+  },
+  "blocks": {
+    "documents": "Documents partagés par les RH",
+    "proposals": "Mes propositions passées",
+    "signin": "Connexion précédente"
+  },
+  "signin": {
+    "previous": "Votre connexion précédente date du {{date}}.",
+    "first": "C'est votre première connexion."
+  },
+  "proposals": {
+    "empty": "Aucune proposition passée.",
+    "sent": "Envoyée le {{date}}",
+    "comment": "Commentaire des RH : {{comment}}"
+  },
+  "outcome": {
+    "pending": "En attente des RH",
+    "accepted": "Acceptée",
+    "rejected": "Refusée",
+    "withdrawn": "Retirée"
+  },
+  "change": {
+    "title": "Proposer une modification",
+    "rule": "La modification s'applique une fois acceptée par les RH.",
+    "note": "Message pour les RH (facultatif)",
+    "submit": "Envoyer aux RH",
+    "cancel": "Annuler",
+    "sent": "Proposition envoyée aux RH.",
+    "nothing": "Rien n'a changé. Modifiez au moins un champ.",
+    "required": "Ce champ est obligatoire."
+  },
+  "queue": {
+    "title": "Modifications de profil",
+    "tabs": {
+      "pending": "À traiter",
+      "decided": "Traitées"
+    },
+    "columns": {
+      "who": "Employé",
+      "fields": "Champs",
+      "when": "Reçue le",
+      "outcome": "Décision",
+      "decidedBy": "Par",
+      "action": "Action"
+    },
+    "open": "Ouvrir",
+    "openFor": "Ouvrir la proposition de {{name}}",
+    "empty": {
+      "pending": "Aucune modification à traiter.",
+      "decided": "Aucune modification traitée."
+    }
+  },
+  "sheet": {
+    "title": "Proposition de {{name}}",
+    "columns": {
+      "field": "Champ",
+      "current": "Actuel",
+      "proposed": "Proposé"
+    },
+    "note": "Message de l'employé : {{note}}",
+    "comment": "Commentaire (facultatif)",
+    "accept": "Accepter",
+    "refuse": "Refuser",
+    "close": "Fermer",
+    "accepted": "Modification acceptée. La fiche est à jour.",
+    "refused": "Modification refusée.",
+    "failed": "La décision n'a pas pu être enregistrée. Réessayez.",
+    "decidedBy": "{{outcome}} par {{name}} le {{date}}",
+    "hrComment": "Commentaire : {{comment}}"
+  },
+  "record": {
+    "title": "Propositions de modification",
+    "empty": "Aucune proposition."
+  }
+}

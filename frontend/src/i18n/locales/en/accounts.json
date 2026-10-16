@@ -1,0 +1,134 @@
+{
+  "status": {
+    "title": "Status",
+    "createAccount": "Create account",
+    "health": {
+      "title": "Health",
+      "ok": "Everything is working.",
+      "failing": "Not working: {{parts}}.",
+      "parts": {
+        "app": "the application",
+        "database": "the database",
+        "worker": "background jobs"
+      },
+      "version": "Version {{version}}, {{environment}} environment",
+      "environments": {
+        "development": "development",
+        "test": "test",
+        "production": "production"
+      }
+    },
+    "attention": {
+      "title": "Accounts needing attention",
+      "none": "No account needs attention.",
+      "locked": "Locked",
+      "awaiting": "Temporary password never used",
+      "expired": "Temporary password expired",
+      "withoutAccount": "Employees without an account"
+    },
+    "jobs": {
+      "title": "Scheduled work",
+      "none": "No scheduled work has run yet.",
+      "name": "Work",
+      "lastRun": "Last run",
+      "result": "Result",
+      "nextRun": "Next run",
+      "ok": "Done",
+      "failed": "Failed",
+      "failedWith": "Failed: {{detail}}",
+      "never": "Not run yet",
+      "names": {
+        "core": { "heartbeat": "Worker heartbeat" },
+        "accounts": { "cleanup": "Clean-up of sessions and temporary passwords" },
+        "organisation": { "delegation_transitions": "Start and end of delegations" },
+        "requests": {
+          "reminders_and_flags": "Reminders and alerts on waiting steps",
+          "certificate_deadlines": "Certificate deadlines"
+        },
+        "balances": { "month_end_credit": "Month-end leave credit" },
+        "ops": { "backup": "Backup" }
+      }
+    },
+    "backup": {
+      "title": "Backup",
+      "none": "No backup has been made yet.",
+      "last": "Last backup: {{when}}.",
+      "size": "Size: {{size}}.",
+      "storage": "Storage used by backups: {{size}}."
+    }
+  },
+  "states": {
+    "active": "Active",
+    "awaiting_first_sign_in": "Waiting for the first sign-in",
+    "locked": "Locked",
+    "disabled": "Disabled"
+  },
+  "list": {
+    "title": "Accounts",
+    "create": "Create account",
+    "name": "Name",
+    "email": "Email",
+    "state": "State",
+    "roles": "Roles",
+    "lastSignIn": "Last sign-in",
+    "search": "Name or email",
+    "allStates": "All states",
+    "allRoles": "All roles",
+    "noRole": "No role",
+    "empty": "No account matches these filters.",
+    "emptyHint": "Change the filters, or create an account."
+  },
+  "create": {
+    "title": "Create account",
+    "fullName": "Name",
+    "email": "Professional email",
+    "roles": "Roles",
+    "rolesHint": "Leave empty for an account without a special role.",
+    "rolesIncompatible": "HR and System Administrator cannot be combined on one account.",
+    "submit": "Create the account",
+    "created": "Account created for {{name}}"
+  },
+  "temporary": {
+    "title": "Temporary password",
+    "intro": "Hand this password over in person. It is shown only once.",
+    "expires": "It expires on {{when}}. The person chooses their own password at the first sign-in.",
+    "done": "Done"
+  },
+  "account": {
+    "email": "Email",
+    "state": "State",
+    "roles": "Roles",
+    "lastSignIn": "Last sign-in",
+    "reset": "Reset the password",
+    "resetTitle": "Reset this password?",
+    "resetConsequence": "The current password stops working at once. A temporary password is shown once, for you to hand over in person.",
+    "unlock": "Unlock",
+    "unlocked": "Account unlocked.",
+    "disable": "Disable",
+    "disableTitle": "Disable this account?",
+    "disableConsequence": "The person is signed out at once and can no longer sign in.",
+    "disableConfirm": "Disable the account",
+    "disabled": "Account disabled.",
+    "enable": "Enable",
+    "enabled": "Account enabled.",
+    "employeeLeft": "This person has left the company: the account cannot be enabled again.",
+    "manageRoles": "Change roles",
+    "rolesTitle": "Roles of {{name}}",
+    "rolesIntro": "Every change is recorded in the security log.",
+    "addRole": "Add: {{role}}",
+    "removeRole": "Remove: {{role}}",
+    "roleAdded": "Role added.",
+    "roleRemoved": "Role removed.",
+    "incompatible": "{{role}} cannot be added to an account that holds {{other}}.",
+    "details": "Details",
+    "assigned": "{{role}}: given by {{by}} on {{when}}",
+    "assignedBySystem": "the system",
+    "previousSignIn": "Previous sign-in",
+    "failedAttempts": "Failed attempts in a row",
+    "lockedUntil": "Locked until",
+    "created": "Created",
+    "createdBy": "{{when}} by {{by}}",
+    "events": "Recent security events",
+    "noEvents": "No event recorded."
+  }
+}

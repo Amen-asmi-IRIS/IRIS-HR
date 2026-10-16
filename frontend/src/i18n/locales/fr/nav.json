@@ -1,0 +1,60 @@
+{
+  "workspaces": {
+    "me": "Mon espace",
+    "team": "Mon équipe",
+    "hr": "Espace RH",
+    "overview": "Vue d'ensemble",
+    "admin": "Administration"
+  },
+  "me": {
+    "home": "Accueil",
+    "requests": "Demandes",
+    "calendar": "Calendrier",
+    "balance": "Solde",
+    "profile": "Profil"
+  },
+  "team": {
+    "decide": "À décider",
+    "people": "Personnes",
+    "requests": "Demandes",
+    "calendar": "Calendrier",
+    "delegations": "Délégations",
+    "reports": "Rapports"
+  },
+  "hr": {
+    "desk": "Bureau",
+    "requests": "Demandes",
+    "employees": "Employés",
+    "calendar": "Calendrier",
+    "reports": "Rapports",
+    "settings": "Configuration"
+  },
+  "overview": {
+    "home": "Vue d'ensemble",
+    "people": "Personnes",
+    "requests": "Demandes",
+    "calendar": "Calendrier",
+    "reports": "Rapports",
+    "oversight": "Supervision"
+  },
+  "admin": {
+    "status": "État",
+    "accounts": "Comptes",
+    "parameters": "Paramètres",
+    "securityLog": "Journal de sécurité"
+  },
+  "short": {
+    "team": {
+      "delegations": "Intérims"
+    },
+    "hr": {
+      "settings": "Réglages"
+    },
+    "overview": {
+      "home": "Accueil"
+    },
+    "admin": {
+      "securityLog": "Sécurité"
+    }
+  }
+}

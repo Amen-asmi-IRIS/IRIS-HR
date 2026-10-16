@@ -1,0 +1,89 @@
+{
+	admin off
+	# The container listens on the published ports themselves.
+	http_port {$HTTP_PORT:80}
+	https_port {$HTTPS_PORT:443}
+	# Caddy's own redirect from HTTP leaves the port out: it takes https_port for 443 as seen from outside.
+	# The test stack is reached on its own port, so the redirect is written out below.
+	auto_https disable_redirects
+}
+
+# What every answer of the site carries. Caddy names itself in Server, and in Via on what it forwards.
+(site_headers) {
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "DENY"
+		Referrer-Policy "same-origin"
+		-Server
+		-Via
+	}
+}
+
+http://{$SITE_HOSTNAME:localhost} {
+	header -Server
+	# One line, written by the entry point: it names HTTPS_PORT unless that is 443.
+	import /etc/caddy/redirect.caddy
+}
+
+{$SITE_HOSTNAME:localhost} {
+	import /etc/caddy/tls.caddy
+	encode zstd gzip
+	import site_headers
+
+	# The API. Caddy passes the Host header through and sets X-Forwarded-For and X-Forwarded-Proto
+	# itself; Django's origin check and the audit trail's network address rely on both.
+	handle /api/* {
+		# The application reads an upload before it can refuse it. The largest file it accepts is a
+		# setting, 50 MB at most; with the envelope of the form around it, nothing honest is larger
+		# than this. A body declared larger is refused at once; one that does not say its length
+		# is cut off when it passes the limit. Both answer 413.
+		@too_large expression `{http.request.header.Content-Length} != "" && int({http.request.header.Content-Length}) > 67108864`
+		error @too_large 413
+		request_body {
+			max_size 64MiB
+		}
+		reverse_proxy app:8000
+	}
+
+	# Fingerprinted files: cached for good, and a missing one is a 404, not the application.
+	handle /assets/* {
+		root * /srv/app
+		header Cache-Control "public, max-age=31536000, immutable"
+		file_server
+	}
+
+	# Everything else is the single-page application.
+	handle {
+		root * /srv/app
+		# No inline script, no other origin. Inline style attributes are allowed because the
+		# interface primitives position menus and sheets with them.
+		header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
+		header Permissions-Policy "camera=(), microphone=(), geolocation=()"
+		header Cache-Control "no-cache"
+		try_files {path} /index.html
+		file_server
+	}
+
+	handle_errors {
+		# An error answer does not pass through the directives above, so it is given the same headers here.
+		import site_headers
+
+		# The application container is restarting or being updated.
+		@away expression `{err.status_code} in [502, 503, 504]`
+		handle @away {
+			root * /srv/maintenance
+			rewrite * /maintenance.html
+			header Retry-After "15"
+			header Cache-Control "no-store"
+			file_server {
+				status 503
+			}
+		}
+		handle {
+			# A missing asset must not keep the "cached for good" of the files that exist.
+			header Cache-Control "no-store"
+			respond "{err.status_code} {err.status_text}" {err.status_code}
+		}
+	}
+}

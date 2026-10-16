@@ -1,0 +1,89 @@
+{
+  "appName": "IRIS HR",
+  "skipToContent": "Skip to content",
+  "saved": "Saved.",
+  "concurrent": "Someone else acted first. The page now shows the current state.",
+  "testEnvironment": "Test environment. This is not production.",
+  "dateTime": "{{date}} at {{time}}",
+  "dateRange": "{{start}} – {{end}}",
+  "actions": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "close": "Close",
+    "back": "Back",
+    "open": "Open",
+    "edit": "Edit",
+    "add": "Add",
+    "remove": "Remove",
+    "search": "Search",
+    "export": "Export to Excel",
+    "send": "Send",
+    "retry": "Try again",
+    "undo": "Undo",
+    "copy": "Copy",
+    "done": "Done"
+  },
+  "filters": {
+    "label": "Filters",
+    "more": "More filters",
+    "fewer": "Fewer filters",
+    "all": "All",
+    "from": "From",
+    "to": "To"
+  },
+  "list": {
+    "loading": "Loading…",
+    "pagination": "Pages",
+    "page": "Page {{page}} of {{pages}}",
+    "previous": "Previous page",
+    "next": "Next page",
+    "sort": {
+      "label": "Sort by",
+      "usual": "Usual order",
+      "ascending": "{{column}}, ascending",
+      "descending": "{{column}}, descending",
+      "hint": "Sort"
+    }
+  },
+  "state": {
+    "yes": "Yes",
+    "no": "No",
+    "none": "None",
+    "never": "Never"
+  },
+  "form": {
+    "required": "This field is required.",
+    "optional": "optional",
+    "summaryTitle": "This could not be done:",
+    "fileRemove": "Remove the file"
+  },
+  "units": {
+    "day": { "one": "day", "other": "days" },
+    "hour": { "one": "hour", "other": "hours" },
+    "kb": "KB",
+    "mb": "MB",
+    "gb": "GB"
+  },
+  "language": {
+    "label": "Language",
+    "fr": "Français",
+    "en": "English"
+  },
+  "roles": {
+    "employee": "Employee",
+    "manager": "Manager",
+    "hr": "HR",
+    "exec": "Executive Management",
+    "sysadmin": "System Administrator"
+  },
+  "weekdays": {
+    "1": "Monday",
+    "2": "Tuesday",
+    "3": "Wednesday",
+    "4": "Thursday",
+    "5": "Friday",
+    "6": "Saturday",
+    "7": "Sunday"
+  }
+}

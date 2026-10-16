@@ -1,0 +1,93 @@
+{
+  "title": "My profile",
+  "loading": "Loading…",
+  "propose": "Propose a change",
+  "blank": "(empty)",
+  "changeLine": "{{field}}: {{old}} → {{new}}",
+  "sections": {
+    "identity": "Identity",
+    "contact": "Contact details",
+    "emergency": "Emergency contact",
+    "work": "Organisation"
+  },
+  "pending": {
+    "title": "Your change is waiting for HR",
+    "sent": "Sent on {{date}}",
+    "withdraw": "Withdraw the proposal",
+    "withdrawn": "Proposal withdrawn.",
+    "failed": "The proposal could not be withdrawn. Reload the page and try again."
+  },
+  "blocks": {
+    "documents": "Documents shared by HR",
+    "proposals": "My past proposals",
+    "signin": "Previous sign-in"
+  },
+  "signin": {
+    "previous": "Your previous sign-in was on {{date}}.",
+    "first": "This is your first sign-in."
+  },
+  "proposals": {
+    "empty": "No past proposal.",
+    "sent": "Sent on {{date}}",
+    "comment": "HR comment: {{comment}}"
+  },
+  "outcome": {
+    "pending": "Waiting for HR",
+    "accepted": "Accepted",
+    "rejected": "Refused",
+    "withdrawn": "Withdrawn"
+  },
+  "change": {
+    "title": "Propose a change",
+    "rule": "The change applies once HR accepts it.",
+    "note": "Note to HR (optional)",
+    "submit": "Send to HR",
+    "cancel": "Cancel",
+    "sent": "Proposal sent to HR.",
+    "nothing": "Nothing has changed. Change at least one field.",
+    "required": "This field is required."
+  },
+  "queue": {
+    "title": "Profile changes",
+    "tabs": {
+      "pending": "To decide",
+      "decided": "Decided"
+    },
+    "columns": {
+      "who": "Employee",
+      "fields": "Fields",
+      "when": "Received",
+      "outcome": "Decision",
+      "decidedBy": "By",
+      "action": "Action"
+    },
+    "open": "Open",
+    "openFor": "Open the proposal from {{name}}",
+    "empty": {
+      "pending": "No change to decide.",
+      "decided": "No decided change."
+    }
+  },
+  "sheet": {
+    "title": "Proposal from {{name}}",
+    "columns": {
+      "field": "Field",
+      "current": "Current",
+      "proposed": "Proposed"
+    },
+    "note": "Note from the employee: {{note}}",
+    "comment": "Comment (optional)",
+    "accept": "Accept",
+    "refuse": "Refuse",
+    "close": "Close",
+    "accepted": "Change accepted. The record is up to date.",
+    "refused": "Change refused.",
+    "failed": "The decision could not be recorded. Try again.",
+    "decidedBy": "{{outcome}} by {{name}} on {{date}}",
+    "hrComment": "Comment: {{comment}}"
+  },
+  "record": {
+    "title": "Change proposals",
+    "empty": "No proposal."
+  }
+}

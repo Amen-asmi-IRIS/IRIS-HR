@@ -1,0 +1,87 @@
+{
+  "lines": {
+    "what": "{{type}}, {{dates}}",
+    "waiting": " · en attente"
+  },
+  "me": {
+    "title": "Mon espace",
+    "newRequest": "Nouvelle demande",
+    "balance": {
+      "title": "Solde",
+      "label": "de congé annuel disponible",
+      "pending": "Dans des demandes en attente",
+      "upcoming": "Approuvés et à venir",
+      "details": "Voir le détail"
+    },
+    "needsYou": {
+      "title": "À faire",
+      "returned": "Renvoyée : {{type}}, {{dates}}",
+      "edit": "Modifier et renvoyer",
+      "certificate": "Certificat médical à fournir avant le {{deadline}}",
+      "addCertificate": "Ajouter le certificat"
+    },
+    "inProgress": {
+      "title": "En cours",
+      "empty": "Aucune demande en cours."
+    },
+    "comingUp": {
+      "title": "À venir",
+      "empty": "Aucune absence prévue."
+    }
+  },
+  "team": {
+    "whoIsOut": {
+      "title": "Absents et télétravail",
+      "empty": "Toute l'équipe est présente ces sept prochains jours.",
+      "today": "aujourd'hui"
+    },
+    "delegation": {
+      "title": "Délégation",
+      "given": "{{person}} décide à votre place, {{dates}}.",
+      "received": "Vous décidez à la place de {{person}}, {{dates}}.",
+      "manage": "Gérer les délégations"
+    }
+  },
+  "people": {
+    "today": "Aujourd'hui",
+    "balance": "Solde annuel",
+    "presence": {
+      "in": "Présent(e)",
+      "absent": "Absent(e)",
+      "remote": "En télétravail"
+    }
+  },
+  "overview": {
+    "title": "Vue d'ensemble",
+    "outNow": {
+      "title": "Absents en ce moment",
+      "empty": "Tout le monde est présent cette semaine.",
+      "count_one": "{{count}} personne absente ou en télétravail aujourd'hui",
+      "count_other": "{{count}} personnes absentes ou en télétravail aujourd'hui",
+      "today": "Aujourd'hui : {{people}}",
+      "week": "D'ici dimanche : {{people}}",
+      "person": "{{name}} · {{label}}",
+      "personOn": "{{name}} · {{label}}, {{dates}}",
+      "separator": " ; "
+    },
+    "absence": {
+      "title": "Absences ce mois-ci",
+      "department": "Département",
+      "thisMonth": "Ce mois-ci",
+      "previousMonth": "Mois précédent"
+    },
+    "leaveOwed": {
+      "title": "Congés acquis",
+      "largest": "Soldes les plus élevés",
+      "empty": "Aucun solde positif.",
+      "person": "{{name}}, {{department}}"
+    },
+    "waiting": {
+      "title": "En attente",
+      "empty": "Aucune demande n'attend de décision.",
+      "what": "{{name}}, {{type}}",
+      "on": "en attente de {{who}}",
+      "since": "depuis le {{date}}"
+    }
+  }
+}

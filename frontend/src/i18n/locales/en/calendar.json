@@ -1,0 +1,48 @@
+{
+  "title": "Calendar",
+  "toolbar": {
+    "previous": "Previous period",
+    "next": "Next period",
+    "today": "Today",
+    "view": "View",
+    "month": "Month",
+    "week": "Week"
+  },
+  "label": {
+    "absent": "Absent",
+    "remote": "Remote",
+    "hidden": "Permission"
+  },
+  "part": {
+    "morning": "morning",
+    "afternoon": "afternoon"
+  },
+  "pending": "waiting",
+  "you": "You",
+  "holiday": "Public holiday: {{name}}",
+  "nobody": "nobody away",
+  "more": "+ {{count}} more",
+  "newRequestOn": "New request on {{date}}",
+  "newRequest": "New request",
+  "grid": "Calendar, {{period}}",
+  "agenda": "Absences, {{period}}",
+  "empty": "Nobody is away in this period.",
+  "loading": "Loading the calendar…",
+  "filter": {
+    "person": "Person",
+    "type": "Type",
+    "status": "Status",
+    "department": "Department",
+    "everyone": "Everyone",
+    "allTypes": "All types",
+    "allStatuses": "All statuses",
+    "allDepartments": "All departments",
+    "approved": "Approved",
+    "pendingOnly": "Waiting"
+  },
+  "hint": {
+    "department": "You see the approved absences of your department, without their reason.",
+    "team": "You see your team's requests, including those still waiting.",
+    "company": "You see the whole company's requests, including those still waiting."
+  }
+}

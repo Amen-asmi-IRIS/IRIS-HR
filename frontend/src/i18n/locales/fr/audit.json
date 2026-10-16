@@ -1,0 +1,159 @@
+{
+  "security": {
+    "title": "Journal de sécurité",
+    "empty": "Aucun événement de sécurité ne correspond à ces filtres."
+  },
+  "business": {
+    "title": "Journal d'activité",
+    "empty": "Aucune activité ne correspond à ces filtres."
+  },
+  "columns": {
+    "when": "Quand",
+    "who": "Qui",
+    "what": "Ce qui s'est passé",
+    "on": "Sur quoi",
+    "address": "Adresse réseau"
+  },
+  "filters": {
+    "period": "Période",
+    "actor": "Qui",
+    "anyActor": "Tout le monde",
+    "action": "Type d'événement",
+    "anyAction": "Tous les types",
+    "itemType": "Type d'élément",
+    "anyItemType": "Tous les types"
+  },
+  "notAnAddress": "(pas une adresse e-mail)",
+  "attachments": {
+    "medical": "Pièce médicale",
+    "proof": "Justificatif",
+    "scanned_form": "Formulaire numérisé",
+    "employee_document": "Document d'employé"
+  },
+  "system": "Le système",
+  "event": {
+    "title": "Événement",
+    "reference": "Référence",
+    "changes": "Ce qui a changé",
+    "field": "Champ",
+    "before": "Avant",
+    "after": "Après",
+    "changed": "modifié",
+    "empty": "vide",
+    "noChanges": "Aucune valeur n'a été enregistrée avec cet événement."
+  },
+  "actions": {
+    "auth": {
+      "login": "Connexion",
+      "login_failed": "Échec de connexion",
+      "locked": "Compte verrouillé après des échecs de connexion",
+      "logout": "Déconnexion",
+      "session_expired": "Session terminée après inactivité",
+      "password_changed": "Mot de passe modifié",
+      "password_reset": "Mot de passe réinitialisé par un administrateur"
+    },
+    "account": {
+      "created": "Compte créé",
+      "disabled": "Compte désactivé",
+      "enabled": "Compte activé",
+      "unlocked": "Compte déverrouillé"
+    },
+    "role": {
+      "assigned": "Rôle attribué",
+      "removed": "Rôle retiré"
+    },
+    "setting": {
+      "changed": "Paramètre modifié"
+    },
+    "audit": {
+      "exported": "Journal exporté"
+    },
+    "request": {
+      "created": "Demande créée",
+      "updated": "Demande modifiée",
+      "submitted": "Demande envoyée",
+      "withdrawn": "Demande retirée",
+      "discarded": "Brouillon supprimé",
+      "approved": "Demande approuvée",
+      "rejected": "Demande refusée",
+      "returned": "Demande renvoyée pour correction",
+      "corrected": "Demande corrigée par les RH",
+      "cancelled": "Demande annulée par les RH",
+      "reclassified": "Arrêt maladie compté en congé annuel",
+      "attachment_added": "Fichier ajouté à une demande"
+    },
+    "step": {
+      "decided": "Décision prise",
+      "recorded_on_behalf": "Décision enregistrée pour un approbateur",
+      "reassigned": "Étape confiée à quelqu'un d'autre"
+    },
+    "amendment": {
+      "opened": "Modification demandée",
+      "withdrawn": "Modification retirée",
+      "approved": "Modification approuvée",
+      "rejected": "Modification refusée"
+    },
+    "employee": {
+      "created": "Employé créé",
+      "updated": "Fiche employé modifiée",
+      "archived": "Départ enregistré"
+    },
+    "document": {
+      "added": "Document ajouté",
+      "visibility_changed": "Partage d'un document modifié"
+    },
+    "attachment": {
+      "uploaded": "Fichier déposé",
+      "downloaded": "Fichier consulté"
+    },
+    "profile_change": {
+      "proposed": "Modification de profil proposée",
+      "accepted": "Modification de profil acceptée",
+      "rejected": "Modification de profil refusée",
+      "withdrawn": "Modification de profil retirée"
+    },
+    "delegation": {
+      "created": "Délégation créée",
+      "ended": "Délégation terminée",
+      "cancelled": "Délégation annulée"
+    },
+    "ledger": {
+      "opening_posted": "Solde d'ouverture saisi",
+      "adjusted": "Solde ajusté",
+      "credits_posted": "Crédits mensuels versés"
+    },
+    "department": {
+      "created": "Département créé",
+      "updated": "Département modifié",
+      "activated": "Département réactivé",
+      "deactivated": "Département désactivé"
+    },
+    "position": {
+      "created": "Poste créé",
+      "updated": "Poste modifié",
+      "activated": "Poste réactivé",
+      "deactivated": "Poste désactivé"
+    },
+    "holiday": {
+      "created": "Jour férié ajouté",
+      "updated": "Jour férié modifié",
+      "deleted": "Jour férié supprimé",
+      "copied": "Jours fériés copiés vers une autre année"
+    },
+    "requesttype": {
+      "created": "Type de demande créé",
+      "updated": "Type de demande modifié",
+      "steps_replaced": "Étapes d'un type modifiées"
+    },
+    "exceptionalevent": {
+      "created": "Événement exceptionnel créé",
+      "updated": "Événement exceptionnel modifié"
+    },
+    "report": {
+      "exported": "Rapport exporté"
+    },
+    "export": {
+      "kpmg": "Export KPMG"
+    }
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "title": {
+    "system": "Paramètres",
+    "hr": "Paramètres"
+  },
+  "save": "Enregistrer les modifications",
+  "changedBy": "Dernière modification par {{by}} le {{when}}.",
+  "changedOn": "Dernière modification le {{when}}.",
+  "neverChanged": "Valeur par défaut, jamais modifiée.",
+  "none": "Aucune",
+  "range": "Entre {{min}} et {{max}}.",
+  "errors": {
+    "whole": "Saisissez un nombre entier.",
+    "number": "Saisissez un nombre.",
+    "range": "Saisissez une valeur entre {{min}} et {{max}}.",
+    "weekdays": "Choisissez au moins un jour.",
+    "list": "Choisissez-en au moins un.",
+    "date": "Saisissez une date valide."
+  },
+  "session_timeout_minutes": {
+    "label": "Limite d'inactivité (minutes)",
+    "hint": "Une session se termine après cette durée sans activité."
+  },
+  "lockout_threshold": {
+    "label": "Échecs avant verrouillage",
+    "hint": "Nombre de mots de passe erronés consécutifs avant le verrouillage d'un compte."
+  },
+  "lockout_minutes": {
+    "label": "Durée du verrouillage (minutes)",
+    "hint": "Durée pendant laquelle un compte verrouillé le reste."
+  },
+  "login_ip_max_attempts": {
+    "label": "Échecs par adresse réseau",
+    "hint": "Nombre d'échecs de connexion depuis une même adresse, pendant la durée du verrouillage, avant que cette adresse soit refusée."
+  },
+  "temp_password_hours": {
+    "label": "Durée de vie du mot de passe temporaire (heures)",
+    "hint": "Un mot de passe temporaire non utilisé dans ce délai expire."
+  },
+  "upload_max_mb": {
+    "label": "Taille maximale d'un fichier (Mo)",
+    "hint": "Le plus gros fichier qu'une personne peut joindre."
+  },
+  "upload_allowed_types": {
+    "label": "Types de fichiers acceptés",
+    "hint": "Un fichier d'un autre type est refusé."
+  },
+  "working_week": {
+    "label": "Jours travaillés de la semaine",
+    "hint": "Seuls ces jours sont comptés dans une demande. Un changement ne modifie pas les demandes déjà envoyées."
+  },
+  "certificate_deadline_hours": {
+    "label": "Délai pour fournir le certificat médical (heures)",
+    "hint": "Compté à partir de l'envoi de la déclaration de maladie. Un type de demande peut fixer son propre délai."
+  },
+  "certificate_warning_hours": {
+    "label": "Rappel avant l'échéance du certificat (heures)",
+    "hint": "L'employé est prévenu ce nombre d'heures avant l'échéance."
+  },
+  "monthly_credit_days": {
+    "label": "Crédit mensuel de congés (jours)",
+    "hint": "Crédité à chaque employé le dernier jour du mois, au prorata le mois d'arrivée et de départ."
+  },
+  "credit_start_date": {
+    "label": "Début des crédits mensuels",
+    "hint": "Aucun crédit n'est passé pour un mois qui se termine avant cette date, et aucun tant qu'elle est vide. Choisissez le premier jour d'un mois ; les soldes d'ouverture sont saisis à la veille de cette date."
+  },
+  "meal_tickets_per_month": {
+    "label": "Tickets restaurant par mois",
+    "hint": "Nombre de tickets avant déduction des jours d'absence."
+  },
+  "export_cutoff_day": {
+    "label": "Jour de clôture de la paie",
+    "hint": "Entre 1 et 28. Laissez vide pour que l'export KPMG propose le dernier mois terminé."
+  }
+}

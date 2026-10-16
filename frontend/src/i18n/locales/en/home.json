@@ -1,0 +1,87 @@
+{
+  "lines": {
+    "what": "{{type}}, {{dates}}",
+    "waiting": " · pending"
+  },
+  "me": {
+    "title": "My space",
+    "newRequest": "New request",
+    "balance": {
+      "title": "Balance",
+      "label": "of annual leave available",
+      "pending": "In requests still waiting",
+      "upcoming": "Approved and coming up",
+      "details": "See the detail"
+    },
+    "needsYou": {
+      "title": "Needs you",
+      "returned": "Sent back: {{type}}, {{dates}}",
+      "edit": "Edit and send again",
+      "certificate": "Medical certificate due by {{deadline}}",
+      "addCertificate": "Add the certificate"
+    },
+    "inProgress": {
+      "title": "In progress",
+      "empty": "No request in progress."
+    },
+    "comingUp": {
+      "title": "Coming up",
+      "empty": "No absence planned."
+    }
+  },
+  "team": {
+    "whoIsOut": {
+      "title": "Absent and remote",
+      "empty": "The whole team is in for the next seven days.",
+      "today": "today"
+    },
+    "delegation": {
+      "title": "Delegation",
+      "given": "{{person}} decides in your place, {{dates}}.",
+      "received": "You decide in place of {{person}}, {{dates}}.",
+      "manage": "Manage delegations"
+    }
+  },
+  "people": {
+    "today": "Today",
+    "balance": "Annual balance",
+    "presence": {
+      "in": "In",
+      "absent": "Absent",
+      "remote": "Remote"
+    }
+  },
+  "overview": {
+    "title": "Overview",
+    "outNow": {
+      "title": "Out now",
+      "empty": "Everybody is in this week.",
+      "count_one": "{{count}} person absent or remote today",
+      "count_other": "{{count}} people absent or remote today",
+      "today": "Today: {{people}}",
+      "week": "Before Sunday: {{people}}",
+      "person": "{{name}} · {{label}}",
+      "personOn": "{{name}} · {{label}}, {{dates}}",
+      "separator": "; "
+    },
+    "absence": {
+      "title": "Absence this month",
+      "department": "Department",
+      "thisMonth": "This month",
+      "previousMonth": "Previous month"
+    },
+    "leaveOwed": {
+      "title": "Leave owed",
+      "largest": "Largest balances",
+      "empty": "No positive balance.",
+      "person": "{{name}}, {{department}}"
+    },
+    "waiting": {
+      "title": "Waiting",
+      "empty": "No request is waiting for a decision.",
+      "what": "{{name}}, {{type}}",
+      "on": "waiting for {{who}}",
+      "since": "since {{date}}"
+    }
+  }
+}

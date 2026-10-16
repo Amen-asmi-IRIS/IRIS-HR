@@ -1,0 +1,134 @@
+{
+  "status": {
+    "title": "État",
+    "createAccount": "Créer un compte",
+    "health": {
+      "title": "Santé",
+      "ok": "Tout fonctionne.",
+      "failing": "Ne fonctionne pas : {{parts}}.",
+      "parts": {
+        "app": "l'application",
+        "database": "la base de données",
+        "worker": "les tâches de fond"
+      },
+      "version": "Version {{version}}, environnement de {{environment}}",
+      "environments": {
+        "development": "développement",
+        "test": "test",
+        "production": "production"
+      }
+    },
+    "attention": {
+      "title": "Comptes à traiter",
+      "none": "Aucun compte ne nécessite d'attention.",
+      "locked": "Verrouillés",
+      "awaiting": "Mot de passe temporaire jamais utilisé",
+      "expired": "Mot de passe temporaire expiré",
+      "withoutAccount": "Employés sans compte"
+    },
+    "jobs": {
+      "title": "Tâches planifiées",
+      "none": "Aucune tâche planifiée n'a encore été exécutée.",
+      "name": "Tâche",
+      "lastRun": "Dernière exécution",
+      "result": "Résultat",
+      "nextRun": "Prochaine exécution",
+      "ok": "Terminée",
+      "failed": "Échec",
+      "failedWith": "Échec : {{detail}}",
+      "never": "Pas encore exécutée",
+      "names": {
+        "core": { "heartbeat": "Signal de vie du service de tâches" },
+        "accounts": { "cleanup": "Nettoyage des sessions et des mots de passe temporaires" },
+        "organisation": { "delegation_transitions": "Début et fin des délégations" },
+        "requests": {
+          "reminders_and_flags": "Rappels et alertes sur les étapes en attente",
+          "certificate_deadlines": "Échéances des certificats"
+        },
+        "balances": { "month_end_credit": "Crédit de congés de fin de mois" },
+        "ops": { "backup": "Sauvegarde" }
+      }
+    },
+    "backup": {
+      "title": "Sauvegarde",
+      "none": "Aucune sauvegarde n'a encore été faite.",
+      "last": "Dernière sauvegarde : {{when}}.",
+      "size": "Taille : {{size}}.",
+      "storage": "Espace utilisé par les sauvegardes : {{size}}."
+    }
+  },
+  "states": {
+    "active": "Actif",
+    "awaiting_first_sign_in": "En attente de première connexion",
+    "locked": "Verrouillé",
+    "disabled": "Désactivé"
+  },
+  "list": {
+    "title": "Comptes",
+    "create": "Créer un compte",
+    "name": "Nom",
+    "email": "Adresse e-mail",
+    "state": "État",
+    "roles": "Rôles",
+    "lastSignIn": "Dernière connexion",
+    "search": "Nom ou adresse e-mail",
+    "allStates": "Tous les états",
+    "allRoles": "Tous les rôles",
+    "noRole": "Aucun rôle",
+    "empty": "Aucun compte ne correspond à ces filtres.",
+    "emptyHint": "Modifiez les filtres, ou créez un compte."
+  },
+  "create": {
+    "title": "Créer un compte",
+    "fullName": "Nom",
+    "email": "Adresse e-mail professionnelle",
+    "roles": "Rôles",
+    "rolesHint": "Laissez vide pour un compte sans rôle particulier.",
+    "rolesIncompatible": "RH et Administrateur système ne peuvent pas être réunis sur un même compte.",
+    "submit": "Créer le compte",
+    "created": "Compte créé pour {{name}}"
+  },
+  "temporary": {
+    "title": "Mot de passe temporaire",
+    "intro": "Remettez ce mot de passe en main propre. Il n'est affiché qu'une seule fois.",
+    "expires": "Il expire le {{when}}. La personne choisit son propre mot de passe à la première connexion.",
+    "done": "Terminé"
+  },
+  "account": {
+    "email": "Adresse e-mail",
+    "state": "État",
+    "roles": "Rôles",
+    "lastSignIn": "Dernière connexion",
+    "reset": "Réinitialiser le mot de passe",
+    "resetTitle": "Réinitialiser ce mot de passe ?",
+    "resetConsequence": "Le mot de passe actuel cesse de fonctionner immédiatement. Un mot de passe temporaire est affiché une seule fois, à remettre en main propre.",
+    "unlock": "Déverrouiller",
+    "unlocked": "Compte déverrouillé.",
+    "disable": "Désactiver",
+    "disableTitle": "Désactiver ce compte ?",
+    "disableConsequence": "La personne est déconnectée immédiatement et ne peut plus se connecter.",
+    "disableConfirm": "Désactiver le compte",
+    "disabled": "Compte désactivé.",
+    "enable": "Activer",
+    "enabled": "Compte activé.",
+    "employeeLeft": "Cette personne a quitté l'entreprise : le compte ne peut pas être réactivé.",
+    "manageRoles": "Modifier les rôles",
+    "rolesTitle": "Rôles de {{name}}",
+    "rolesIntro": "Chaque modification est inscrite au journal de sécurité.",
+    "addRole": "Ajouter : {{role}}",
+    "removeRole": "Retirer : {{role}}",
+    "roleAdded": "Rôle ajouté.",
+    "roleRemoved": "Rôle retiré.",
+    "incompatible": "{{role}} ne peut pas être ajouté à un compte qui détient {{other}}.",
+    "details": "Détails",
+    "assigned": "{{role}} : attribué par {{by}} le {{when}}",
+    "assignedBySystem": "le système",
+    "previousSignIn": "Connexion précédente",
+    "failedAttempts": "Échecs de connexion consécutifs",
+    "lockedUntil": "Verrouillé jusqu'au",
+    "created": "Création",
+    "createdBy": "{{when}} par {{by}}",
+    "events": "Événements de sécurité récents",
+    "noEvents": "Aucun événement enregistré."
+  }
+}

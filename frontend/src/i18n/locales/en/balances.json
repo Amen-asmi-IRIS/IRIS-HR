@@ -1,0 +1,64 @@
+{
+  "title": "Balance",
+  "current": "Annual leave balance",
+  "pending": "Waiting for a decision",
+  "approvedUpcoming": "Approved and upcoming",
+  "nextCredit": "Next monthly credit",
+  "nextCreditValue": "{{amount}} on {{date}}",
+  "onDate": {
+    "title": "Balance on a date",
+    "label": "Date",
+    "posted": "Balance on {{date}}: {{balance}}",
+    "projected": "Expected balance on {{date}}: {{balance}}",
+    "projectedHint": "Counts the monthly credits still to come, approved leave and requests waiting for a decision."
+  },
+  "ledger": {
+    "title": "History",
+    "date": "Date",
+    "what": "Entry",
+    "amount": "Days",
+    "after": "Balance after",
+    "why": "Request or reason",
+    "request": "See the request",
+    "empty": "No entry yet.",
+    "emptyHint": "The first monthly credit or the opening balance will appear here."
+  },
+  "kind": {
+    "opening": "Opening balance",
+    "credit": "Monthly credit",
+    "taken": "Leave taken",
+    "restored": "Days restored",
+    "adjustment": "Adjusted by HR"
+  },
+  "adjust": {
+    "titleAdjustment": "Adjust the balance: {{name}}",
+    "titleOpening": "Opening balance: {{name}}",
+    "current": "Current balance: {{balance}}",
+    "direction": "Action",
+    "add": "Add days",
+    "remove": "Remove days",
+    "amount": "Number of days",
+    "openingAmount": "Opening balance (days)",
+    "openingHint": "State the balance as of the day before monthly credits start.",
+    "openingNoStartDate": "Monthly credits have no start date yet, so today's date is proposed.",
+    "date": "Effective date",
+    "reason": "Reason",
+    "reasonHint": "The reason is kept in the history and shown to the employee.",
+    "after": "Balance after: {{balance}}",
+    "save": "Save",
+    "cancel": "Cancel",
+    "done": "Balance updated.",
+    "amountInvalid": "Enter a number of days, for example 1.5.",
+    "amountPositive": "Enter a number greater than zero.",
+    "dateRequired": "Choose the effective date.",
+    "reasonRequired": "Give the reason. It is kept in the history."
+  },
+  "block": {
+    "title": "Balance",
+    "adjust": "Adjust",
+    "opening": "Record the opening balance"
+  },
+  "fact": {
+    "label": "Annual balance"
+  }
+}

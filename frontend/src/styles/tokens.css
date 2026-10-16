@@ -1,0 +1,194 @@
+/*
+ * IRIS HR — Clean Light tokens for Tailwind CSS v4 + shadcn/ui.
+ * Import once in the app entry (after `@import "tailwindcss";`).
+ * Values mirror iris-hr-design-tokens.json. Hex values are used on purpose:
+ * every pair below was checked for WCAG AA contrast.
+ */
+
+/* Plus Jakarta Sans: self-host the 400/500/600/700 woff2 files (the server is office-only). */
+
+:root {
+  --radius: 0.5rem; /* 8px controls; cards use --radius-xl (12px) */
+
+  /* shadcn/ui semantic slots */
+  --background: #F3F5F8;          /* page canvas */
+  --foreground: #101828;
+  --card: #FFFFFF;
+  --card-foreground: #101828;
+  --popover: #FFFFFF;
+  --popover-foreground: #101828;
+  --primary: #0070B0;             /* IRIS blue, 5.3:1 with white */
+  --primary-foreground: #FFFFFF;
+  --secondary: #FFFFFF;           /* secondary button = white + input border */
+  --secondary-foreground: #344054;
+  --muted: #F7F8FA;               /* table head, hover */
+  --muted-foreground: #667085;    /* lightest text colour allowed */
+  --accent: #F0F2F5;              /* active nav, segmented track */
+  --accent-foreground: #101828;
+  --destructive: #B42318;
+  --destructive-foreground: #FFFFFF;
+  --border: #E4E7EC;
+  --input: #D0D5DD;
+  --ring: #B9DFF2;                /* used as a 3px spread ring */
+
+  --sidebar: #FFFFFF;
+  --sidebar-foreground: #344054;
+  --sidebar-primary: #0070B0;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #F0F2F5;
+  --sidebar-accent-foreground: #101828;
+  --sidebar-border: #EEF0F3;
+  --sidebar-ring: #B9DFF2;
+
+  /* IRIS extras */
+  --surface: #FFFFFF;
+  --divider: #EEF0F3;
+  --text-secondary: #344054;
+  --primary-hover: #005C91;
+  --primary-soft: #EAF5FB;
+  --primary-soft-border: #B9DFF2;
+  --logo-cyan: #0AA2D0;           /* graphics only */
+  --scrim: rgb(16 24 40 / 0.45);
+  --toast: #101828;
+
+  /* status: text / background / dot / border */
+  --waiting: #8A5300;   --waiting-bg: #FFF6E5;   --waiting-dot: #DC8A00;   --waiting-border: #F5D8A8;
+  --approved: #1E7B45;  --approved-bg: #EAF7EF;  --approved-dot: #1E7B45;  --approved-border: #A6D9B8;
+  --refused: #B42318;   --refused-bg: #FDECEC;   --refused-dot: #B42318;   --refused-border: #FDA29B;
+  --info: #00639A;      --info-bg: #EAF5FB;      --info-dot: #0070B0;      --info-border: #B9DFF2;
+  --neutral: #344054;   --neutral-bg: #F2F4F7;   --neutral-dot: #667085;   --neutral-border: #E4E7EC;
+  --error-input: #F04438; --error-ring: #FEE4E2;
+
+  /* request-type tags: text / background / border */
+  --type-annual: #00639A;      --type-annual-bg: #EAF5FB;      --type-annual-border: #B9DFF2;
+  --type-sick: #5B3CC4;        --type-sick-bg: #F2EFFC;        --type-sick-border: #D9D0F7;
+  --type-exceptional: #0E6E6A; --type-exceptional-bg: #E7F6F5; --type-exceptional-border: #BFE6E3;
+  --type-remote: #344054;      --type-remote-bg: #F2F4F7;      --type-remote-border: #E4E7EC;
+  --type-permission: #344054;  --type-permission-bg: #FFFFFF;  --type-permission-border: #D0D5DD;
+
+  --env-test-bg: #FFF6E5; --env-test: #8A5300;
+}
+
+.dark {
+  --background: #0C111D;
+  --foreground: #F5F5F6;
+  --card: #161B26;
+  --card-foreground: #F5F5F6;
+  --popover: #161B26;
+  --popover-foreground: #F5F5F6;
+  --primary: #4FB3EA;
+  --primary-foreground: #0C111D;
+  --secondary: #161B26;
+  --secondary-foreground: #CECFD2;
+  --muted: #1F242F;
+  --muted-foreground: #94969C;
+  --accent: #252B37;
+  --accent-foreground: #F5F5F6;
+  --destructive: #F97066;
+  --destructive-foreground: #0C111D;
+  --border: #333741;
+  --input: #475467;
+  --ring: #1F5F86;
+
+  --sidebar: #161B26;
+  --sidebar-foreground: #CECFD2;
+  --sidebar-primary: #4FB3EA;
+  --sidebar-primary-foreground: #0C111D;
+  --sidebar-accent: #252B37;
+  --sidebar-accent-foreground: #F5F5F6;
+  --sidebar-border: #252B37;
+  --sidebar-ring: #1F5F86;
+
+  --surface: #161B26;
+  --divider: #252B37;
+  --text-secondary: #CECFD2;
+  --primary-hover: #7CC6F0;
+  --primary-soft: #0F2E44;
+  --primary-soft-border: #1F5F86;
+  --scrim: rgb(0 0 0 / 0.6);
+  --toast: #F5F5F6;
+
+  --waiting: #FDB022;   --waiting-bg: #3A2A0B;   --waiting-dot: #FDB022;   --waiting-border: #5C430F;
+  --approved: #47CD89;  --approved-bg: #0E2E1C;  --approved-dot: #47CD89;  --approved-border: #1C5A37;
+  --refused: #F97066;   --refused-bg: #3A1512;   --refused-dot: #F97066;   --refused-border: #6B2420;
+  --info: #7CC6F0;      --info-bg: #0F2E44;      --info-dot: #4FB3EA;      --info-border: #1F5F86;
+  --neutral: #CECFD2;   --neutral-bg: #252B37;   --neutral-dot: #94969C;   --neutral-border: #333741;
+}
+
+@theme inline {
+  --font-sans: "Plus Jakarta Sans", "Helvetica Neue", Arial, sans-serif;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-soft: var(--primary-soft);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-divider: var(--divider);
+  --color-surface: var(--surface);
+  --color-text-secondary: var(--text-secondary);
+
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --color-waiting: var(--waiting);   --color-waiting-bg: var(--waiting-bg);   --color-waiting-dot: var(--waiting-dot);
+  --color-approved: var(--approved); --color-approved-bg: var(--approved-bg); --color-approved-dot: var(--approved-dot);
+  --color-refused: var(--refused);   --color-refused-bg: var(--refused-bg);   --color-refused-dot: var(--refused-dot);
+  --color-info: var(--info);         --color-info-bg: var(--info-bg);         --color-info-dot: var(--info-dot);
+  --color-neutral: var(--neutral);   --color-neutral-bg: var(--neutral-bg);   --color-neutral-dot: var(--neutral-dot);
+
+  --color-type-annual: var(--type-annual);           --color-type-annual-bg: var(--type-annual-bg);
+  --color-type-sick: var(--type-sick);               --color-type-sick-bg: var(--type-sick-bg);
+  --color-type-exceptional: var(--type-exceptional); --color-type-exceptional-bg: var(--type-exceptional-bg);
+  --color-type-remote: var(--type-remote);           --color-type-remote-bg: var(--type-remote-bg);
+  --color-type-permission: var(--type-permission);   --color-type-permission-bg: var(--type-permission-bg);
+
+  --radius-sm: 6px;   /* tags */
+  --radius-md: 8px;   /* controls */
+  --radius-lg: 10px;  /* workspace switcher, menus, toasts */
+  --radius-xl: 12px;  /* cards, tables, sheets on phone */
+
+  --text-figure: 48px;      --text-figure--line-height: 48px;
+  --text-title: 24px;       --text-title--line-height: 32px;
+  --text-dialog: 18px;      --text-dialog--line-height: 28px;
+  --text-section: 16px;     --text-section--line-height: 24px;
+  --text-body: 14px;        --text-body--line-height: 20px;
+  --text-caption: 12px;     --text-caption--line-height: 18px;
+
+  --shadow-popover: 0 8px 24px rgb(16 24 40 / 0.08);
+  --shadow-focus: 0 0 0 3px var(--ring);
+  --shadow-focus-error: 0 0 0 3px var(--error-ring);
+
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+}
+
+@layer base {
+  html { font-family: var(--font-sans); color: var(--foreground); background: var(--background); }
+  .tabular, table, [data-figure] { font-variant-numeric: tabular-nums; }
+  :focus-visible { outline: none; box-shadow: var(--shadow-focus); }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+  }
+}

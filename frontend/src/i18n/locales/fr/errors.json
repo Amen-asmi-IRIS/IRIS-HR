@@ -1,0 +1,21 @@
+{
+  "unexpected": "Une erreur est survenue. Veuillez réessayer.",
+  "network": "L'application est injoignable. Vérifiez votre connexion et réessayez.",
+  "unavailable": "L'application est en cours de mise à jour. Elle sera de retour dans un instant.",
+  "tooLarge": "Ce fichier est trop volumineux pour être envoyé.",
+  "notAvailable": {
+    "title": "Non disponible",
+    "body": "Cette page n'existe pas ou ne vous est pas accessible.",
+    "back": "Retour à l'accueil"
+  },
+  "wentWrong": {
+    "title": "Une erreur est survenue",
+    "body": "La page n'a pas pu être affichée. Si cela se reproduit, communiquez cette référence à l'administrateur système.",
+    "reference": "Référence : {{id}}",
+    "back": "Retour à l'accueil"
+  },
+  "beingUpdated": {
+    "title": "Mise à jour en cours",
+    "body": "L'application est en cours de mise à jour et sera de retour dans un instant. Cette page vérifie d'elle-même."
+  }
+}

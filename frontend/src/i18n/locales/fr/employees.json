@@ -1,0 +1,255 @@
+{
+  "directory": {
+    "title": "Employés",
+    "titleOverview": "Personnes",
+    "new": "Nouvel employé",
+    "search": "Rechercher",
+    "department": "Département",
+    "allDepartments": "Tous les départements",
+    "status": "Statut",
+    "statusCurrent": "Présents dans l'entreprise",
+    "columns": {
+      "name": "Nom",
+      "number": "Matricule",
+      "department": "Département",
+      "position": "Poste",
+      "manager": "Responsable",
+      "status": "Statut"
+    },
+    "noManager": "Aucun",
+    "empty": {
+      "title": "Aucun employé ne correspond",
+      "hint": "Modifiez la recherche ou les filtres."
+    }
+  },
+  "status": {
+    "active": "En poste",
+    "suspended": "Suspendu",
+    "archived": "A quitté l'entreprise"
+  },
+  "form": {
+    "titleNew": "Nouvel employé",
+    "titleEdit": "Modifier {{name}}",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "required": "Ce champ est obligatoire.",
+    "saved": "Fiche enregistrée.",
+    "choose": "Choisir…",
+    "emailHint": "Adresse de l'entreprise : elle sert d'identifiant de connexion.",
+    "noManager": "Aucun responsable",
+    "sections": {
+      "identity": "Identité",
+      "contact": "Coordonnées",
+      "contract": "Contrat",
+      "organisation": "Rattachement",
+      "emergency": "Personne à prévenir"
+    }
+  },
+  "fields": {
+    "employee_number": "Matricule",
+    "first_name": "Prénom",
+    "last_name": "Nom",
+    "date_of_birth": "Date de naissance",
+    "gender": "Genre",
+    "professional_email": "E-mail professionnel",
+    "personal_email": "E-mail personnel",
+    "phone": "Téléphone",
+    "address": "Adresse",
+    "hire_date": "Date d'embauche",
+    "contract_type": "Type de contrat",
+    "contract_start_date": "Début du contrat",
+    "contract_end_date": "Fin du contrat",
+    "status": "Statut",
+    "department": "Département",
+    "position": "Poste",
+    "manager": "Responsable",
+    "emergency_contact_name": "Personne à prévenir",
+    "emergency_contact_phone": "Téléphone de la personne à prévenir",
+    "archived_at": "Date de départ",
+    "archive_reason": "Motif du départ",
+    "document": "Document",
+    "visible_to_employee": "Partagé avec l'employé"
+  },
+  "gender": {
+    "female": "Femme",
+    "male": "Homme",
+    "unspecified": "Non précisé"
+  },
+  "contract": {
+    "permanent": "CDI",
+    "fixed_term": "CDD",
+    "temporary": "Intérim",
+    "consultant": "Consultant"
+  },
+  "record": {
+    "edit": "Modifier",
+    "loading": "Chargement…"
+  },
+  "facts": {
+    "number": "Matricule",
+    "department": "Département",
+    "position": "Poste",
+    "manager": "Responsable",
+    "contract": "Contrat",
+    "status": "Statut",
+    "account": "Compte",
+    "departure": "Départ",
+    "email": "E-mail",
+    "phone": "Téléphone",
+    "noManager": "Aucun responsable",
+    "contractSince": "{{type}}, depuis le {{date}}",
+    "contractUntil": "{{type}}, du {{start}} au {{end}}",
+    "departureValue": "{{date}}. Motif : {{reason}}"
+  },
+  "account": {
+    "exists": "Compte créé",
+    "missing": "Pas encore de compte"
+  },
+  "blocks": {
+    "personal": "Informations personnelles",
+    "team": "Équipe",
+    "documents": "Documents",
+    "history": "Historique"
+  },
+  "personal": {
+    "none": "Non renseigné"
+  },
+  "team": {
+    "reports": "Personnes rattachées",
+    "noReports": "Personne ne lui est rattaché.",
+    "delegation": "Délégation",
+    "delegationLine": "{{name}}, du {{start}} au {{end}}",
+    "noDelegation": "Aucune délégation en cours ou à venir.",
+    "changeManager": "Changer de responsable",
+    "nameDelegate": "Nommer un délégué"
+  },
+  "documents": {
+    "empty": "Aucun document.",
+    "add": "Ajouter un document",
+    "addedBy": "ajouté par {{name}} le {{date}}",
+    "download": "Télécharger {{name}}",
+    "share": "Partager {{label}} avec l'employé",
+    "shareShort": "Partagé",
+    "shared": "Partagé avec l'employé",
+    "notShared": "Réservé aux RH",
+    "sheet": {
+      "title": "Ajouter un document",
+      "file": "Fichier",
+      "fileHint": "Formats acceptés : PDF, JPG, PNG.",
+      "label": "Intitulé",
+      "shared": "Partager avec l'employé",
+      "submit": "Ajouter",
+      "done": "Document ajouté."
+    }
+  },
+  "history": {
+    "empty": "Aucun changement enregistré.",
+    "by": "{{actor}}, le {{date}}",
+    "system": "Système",
+    "change": "{{field}} : {{before}} → {{after}}",
+    "blank": "(vide)",
+    "yes": "Oui",
+    "no": "Non",
+    "actions": {
+      "employee": {
+        "created": "Fiche créée",
+        "updated": "Fiche modifiée",
+        "archived": "Départ enregistré"
+      },
+      "document": {
+        "added": "Document ajouté",
+        "visibility_changed": "Partage d'un document modifié"
+      }
+    }
+  },
+  "departure": {
+    "action": "Enregistrer un départ",
+    "title": "Enregistrer le départ de {{name}}",
+    "date": "Date de départ",
+    "reason": "Motif",
+    "consequences": "Ce qui se passera",
+    "account": "Son compte sera désactivé immédiatement : cette personne ne pourra plus se connecter.",
+    "credit": "Plus aucun crédit mensuel de congés ne sera ajouté après la date de départ.",
+    "creditPosted": "La date de départ tombe dans un mois déjà terminé : les crédits mensuels de congés déjà versés pour ce mois et les suivants ne sont pas repris. Vérifiez l'historique de son solde et ajustez-le si besoin.",
+    "kept": "La fiche est conservée et reste consultable par les RH.",
+    "reports": "Ces personnes lui sont rattachées et auront besoin d'un nouveau responsable :",
+    "sections": {
+      "delegations": "Ces délégations seront terminées :",
+      "open_requests": "Ces demandes resteront ouvertes :",
+      "open_steps": "Ces décisions attendent cette personne :"
+    },
+    "confirm": "Enregistrer le départ",
+    "done": "Départ enregistré."
+  },
+  "settingsIndex": {
+    "title": "Configuration",
+    "departments": {
+      "title": "Départements et postes",
+      "description": "Les unités de l'entreprise et les intitulés de poste proposés dans les fiches."
+    }
+  },
+  "structure": {
+    "title": "Départements et postes",
+    "tabs": {
+      "departments": "Départements",
+      "positions": "Postes"
+    },
+    "addDepartment": "Ajouter un département",
+    "addPosition": "Ajouter un poste",
+    "columns": {
+      "code": "Code",
+      "name": "Nom",
+      "title": "Intitulé",
+      "grade": "Grade",
+      "employees": "Employés",
+      "state": "État",
+      "action": "Action"
+    },
+    "edit": "Modifier",
+    "editItem": "Modifier {{code}}",
+    "active": "Actif",
+    "inactive": "Inactif",
+    "inUse": "Un élément utilisé peut être désactivé, pas supprimé. Il reste sur les fiches existantes et n'est plus proposé pour les nouvelles.",
+    "saved": "Enregistré.",
+    "sheet": {
+      "newDepartment": "Nouveau département",
+      "editDepartment": "Modifier le département {{code}}",
+      "newPosition": "Nouveau poste",
+      "editPosition": "Modifier le poste {{code}}"
+    },
+    "fields": {
+      "code": "Code",
+      "name_fr": "Nom en français",
+      "name_en": "Nom en anglais",
+      "title_fr": "Intitulé en français",
+      "title_en": "Intitulé en anglais",
+      "grade": "Grade",
+      "is_active": "Actif"
+    },
+    "empty": {
+      "departments": "Aucun département. Ajoutez le premier.",
+      "positions": "Aucun poste. Ajoutez le premier."
+    }
+  },
+  "picker": {
+    "choose": "Choisir une personne…",
+    "none": "Personne",
+    "inactive": "{{name}} · n'est plus actif"
+  },
+  "people": {
+    "title": "Personnes",
+    "columns": {
+      "name": "Nom",
+      "position": "Poste"
+    },
+    "empty": {
+      "title": "Personne ne vous est rattaché",
+      "hint": "Les personnes dont vous êtes responsable, ou qui vous sont confiées par délégation, apparaissent ici."
+    }
+  },
+  "accountFor": {
+    "employee": "Employé",
+    "none": "Aucun : compte sans fiche d'employé",
+    "hint": "Le compte utilisera le nom de la fiche et l'adresse {{email}}."
+  }
+}

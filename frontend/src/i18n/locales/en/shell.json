@@ -1,0 +1,19 @@
+{
+  "navigation": "Navigation",
+  "more": "More",
+  "workspace": {
+    "switch": "Change workspace",
+    "current": "Workspace: {{name}}",
+    "currentWaiting": "Workspace: {{name}}. {{total}} waiting in your other workspaces",
+    "waiting": "{{name}}, {{total}} waiting"
+  },
+  "userMenu": {
+    "label": "Menu of {{name}}",
+    "changePassword": "Change password",
+    "signOut": "Sign out"
+  },
+  "noWorkspace": {
+    "title": "Nothing here yet",
+    "body": "Your account gives access to no workspace yet. Contact the System Administrator."
+  }
+}

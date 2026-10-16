@@ -1,0 +1,60 @@
+{
+  "workspaces": {
+    "me": "My space",
+    "team": "My team",
+    "hr": "HR desk",
+    "overview": "Overview",
+    "admin": "Administration"
+  },
+  "me": {
+    "home": "Home",
+    "requests": "Requests",
+    "calendar": "Calendar",
+    "balance": "Balance",
+    "profile": "Profile"
+  },
+  "team": {
+    "decide": "To decide",
+    "people": "People",
+    "requests": "Requests",
+    "calendar": "Calendar",
+    "delegations": "Delegations",
+    "reports": "Reports"
+  },
+  "hr": {
+    "desk": "Desk",
+    "requests": "Requests",
+    "employees": "Employees",
+    "calendar": "Calendar",
+    "reports": "Reports",
+    "settings": "Settings"
+  },
+  "overview": {
+    "home": "Overview",
+    "people": "People",
+    "requests": "Requests",
+    "calendar": "Calendar",
+    "reports": "Reports",
+    "oversight": "Oversight"
+  },
+  "admin": {
+    "status": "Status",
+    "accounts": "Accounts",
+    "parameters": "Parameters",
+    "securityLog": "Security log"
+  },
+  "short": {
+    "team": {
+      "delegations": "Cover"
+    },
+    "hr": {
+      "settings": "Settings"
+    },
+    "overview": {
+      "home": "Home"
+    },
+    "admin": {
+      "securityLog": "Security"
+    }
+  }
+}

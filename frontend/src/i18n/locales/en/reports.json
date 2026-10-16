@@ -1,0 +1,127 @@
+{
+  "title": "Reports",
+  "team_note": "These reports cover your team.",
+  "names": {
+    "absences": "Absences taken",
+    "balances": "Balances at a date",
+    "waiting": "Requests waiting",
+    "permission-hours": "Permission hours by month",
+    "remote-days": "Remote days by month",
+    "certificates": "Certificates outstanding"
+  },
+  "descriptions": {
+    "absences": "Who was away, when and for how long.",
+    "balances": "Everyone's leave balance on the date you choose.",
+    "waiting": "Requests nobody has decided yet, and since when.",
+    "permission-hours": "Everyone's permission hours, month by month.",
+    "remote-days": "Everyone's remote days, month by month.",
+    "certificates": "Sick leaves still missing their certificate."
+  },
+  "filters": {
+    "period": "Period",
+    "on": "On",
+    "year": "Year",
+    "department": "Department",
+    "employee": "Employee",
+    "type": "Type",
+    "step": "Step"
+  },
+  "fields": {
+    "from": "Start date",
+    "to": "End date",
+    "on": "Date",
+    "year": "Year",
+    "department": "Department",
+    "employee": "Employee",
+    "type": "Type",
+    "step": "Step"
+  },
+  "problem": "{{field}}: {{message}}",
+  "empty": {
+    "title": "Nothing to show for this selection.",
+    "hint": "Widen the period or remove a filter."
+  },
+  "table_label": "Result: {{name}}",
+  "totals": {
+    "by_employee": "Totals per employee",
+    "by_type": "Totals per type"
+  },
+  "kpmg": {
+    "title": "KPMG export",
+    "intro": "Choose the period, then export the file to send to KPMG.",
+    "period_month": "Proposed period: the last month that is over.",
+    "period_cutoff": "Proposed period: from the day after the last cut-off to the cut-off day (the {{day}}).",
+    "not_over": "The period is not over: the annual balance will count the month-end credits due by its end, even those not posted yet.",
+    "columns_title": "Columns of the file",
+    "columns": {
+      "employee_number": "Employee number",
+      "name": "Name",
+      "department": "Department",
+      "annual_days": "Annual leave (days)",
+      "sick_days": "Sick leave (days)",
+      "exceptional_days": "Exceptional leave (days)",
+      "permission_hours": "Permissions (hours)",
+      "remote_days": "Remote work (days)",
+      "balance_end": "Annual balance at period end",
+      "meal_tickets": "Meal tickets"
+    },
+    "rules_title": "Rules applied",
+    "rules": {
+      "approved": "Only approved requests are counted.",
+      "period": "Days outside the period are excluded.",
+      "tickets": "Meal tickets: the monthly number set in the parameters, minus one for each full working day absent; a single half-day and remote work do not reduce tickets."
+    },
+    "exported": "The file has been downloaded.",
+    "nothing_title": "Nothing to export for this selection."
+  },
+  "activity": {
+    "title": "Activity log",
+    "description": "Who did what, on what, and when.",
+    "kpmgLabel": "KPMG export: {{period}}",
+    "items": {
+      "request": "Request",
+      "employee": "Employee",
+      "ledgerentry": "Balance line",
+      "delegation": "Delegation",
+      "profilechange": "Profile change",
+      "department": "Department",
+      "position": "Position",
+      "publicholiday": "Public holiday",
+      "requesttype": "Request type",
+      "exceptionalevent": "Exceptional event",
+      "setting": "Parameter",
+      "attachment": "File",
+      "report": "Report",
+      "export": "Export",
+      "audit_log": "Log"
+    }
+  },
+  "oversight": {
+    "title": "Oversight",
+    "read_only": "Everything below is read-only.",
+    "back": "Back to Oversight",
+    "entries": {
+      "activity": {
+        "title": "Activity log",
+        "description": "Actions on HR data."
+      },
+      "security": {
+        "title": "Security log",
+        "description": "Sign-ins, passwords, accounts and roles."
+      },
+      "hr-settings": {
+        "title": "HR settings",
+        "description": "Request types, steps, events, public holidays, parameters."
+      },
+      "system": {
+        "title": "Accounts and system",
+        "description": "Accounts, technical parameters and system status."
+      }
+    },
+    "system": {
+      "status": "System status",
+      "accounts": "Accounts",
+      "parameters": "System parameters"
+    }
+  }
+}

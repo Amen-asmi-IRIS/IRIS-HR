@@ -1,0 +1,48 @@
+{
+  "title": "Calendrier",
+  "toolbar": {
+    "previous": "Période précédente",
+    "next": "Période suivante",
+    "today": "Aujourd'hui",
+    "view": "Affichage",
+    "month": "Mois",
+    "week": "Semaine"
+  },
+  "label": {
+    "absent": "Absent(e)",
+    "remote": "Télétravail",
+    "hidden": "Autorisation"
+  },
+  "part": {
+    "morning": "matin",
+    "afternoon": "après-midi"
+  },
+  "pending": "en attente",
+  "you": "Vous",
+  "holiday": "Jour férié : {{name}}",
+  "nobody": "personne d'absent",
+  "more": "+ {{count}} de plus",
+  "newRequestOn": "Nouvelle demande le {{date}}",
+  "newRequest": "Nouvelle demande",
+  "grid": "Calendrier, {{period}}",
+  "agenda": "Absences, {{period}}",
+  "empty": "Personne n'est absent sur cette période.",
+  "loading": "Chargement du calendrier…",
+  "filter": {
+    "person": "Personne",
+    "type": "Type",
+    "status": "Statut",
+    "department": "Département",
+    "everyone": "Tout le monde",
+    "allTypes": "Tous les types",
+    "allStatuses": "Tous les statuts",
+    "allDepartments": "Tous les départements",
+    "approved": "Approuvées",
+    "pendingOnly": "En attente"
+  },
+  "hint": {
+    "department": "Vous voyez les absences approuvées de votre département, sans leur motif.",
+    "team": "Vous voyez les demandes de votre équipe, y compris celles en attente.",
+    "company": "Vous voyez les demandes de toute l'entreprise, y compris celles en attente."
+  }
+}

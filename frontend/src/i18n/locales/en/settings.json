@@ -1,0 +1,76 @@
+{
+  "title": {
+    "system": "Parameters",
+    "hr": "Parameters"
+  },
+  "save": "Save the changes",
+  "changedBy": "Last changed by {{by}} on {{when}}.",
+  "changedOn": "Last changed on {{when}}.",
+  "neverChanged": "Default value, never changed.",
+  "none": "None",
+  "range": "Between {{min}} and {{max}}.",
+  "errors": {
+    "whole": "Enter a whole number.",
+    "number": "Enter a number.",
+    "range": "Enter a value between {{min}} and {{max}}.",
+    "weekdays": "Choose at least one day.",
+    "list": "Choose at least one.",
+    "date": "Enter a valid date."
+  },
+  "session_timeout_minutes": {
+    "label": "Inactivity limit (minutes)",
+    "hint": "A session ends after this long without activity."
+  },
+  "lockout_threshold": {
+    "label": "Failed attempts before lock-out",
+    "hint": "Wrong passwords in a row before an account is locked."
+  },
+  "lockout_minutes": {
+    "label": "Lock-out duration (minutes)",
+    "hint": "How long a locked account stays locked."
+  },
+  "login_ip_max_attempts": {
+    "label": "Failed attempts per network address",
+    "hint": "Failed sign-ins from one address, within the lock-out duration, before that address is refused."
+  },
+  "temp_password_hours": {
+    "label": "Temporary-password lifetime (hours)",
+    "hint": "A temporary password that is not used within this time expires."
+  },
+  "upload_max_mb": {
+    "label": "Maximum upload size (MB)",
+    "hint": "The largest file a person can attach."
+  },
+  "upload_allowed_types": {
+    "label": "Accepted file types",
+    "hint": "A file of another type is refused."
+  },
+  "working_week": {
+    "label": "Working days of the week",
+    "hint": "Only these days are counted in a request. A change does not alter requests already sent."
+  },
+  "certificate_deadline_hours": {
+    "label": "Time allowed to provide the medical certificate (hours)",
+    "hint": "Counted from the moment the sick leave is reported. A request type can set its own."
+  },
+  "certificate_warning_hours": {
+    "label": "Reminder before the certificate is due (hours)",
+    "hint": "The employee is warned this many hours before the deadline."
+  },
+  "monthly_credit_days": {
+    "label": "Monthly leave credit (days)",
+    "hint": "Credited to every employee on the last day of the month, pro-rated in the month of joining and of leaving."
+  },
+  "credit_start_date": {
+    "label": "Start of monthly credits",
+    "hint": "No credit is posted for a month that ends before this date, and none while it is empty. Choose the first day of a month; opening balances are stated as of the day before."
+  },
+  "meal_tickets_per_month": {
+    "label": "Meal tickets per month",
+    "hint": "Number of tickets before absence days are deducted."
+  },
+  "export_cutoff_day": {
+    "label": "Payroll cut-off day",
+    "hint": "Between 1 and 28. Leave empty for the KPMG export to propose the last month that is over."
+  }
+}

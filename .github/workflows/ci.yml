@@ -1,0 +1,157 @@
+name: CI
+
+# Run by hand ("gh workflow run CI --ref main"), once at the end of each plan, on pull
+# requests, and when the release workflow calls it. Not on every push: the owner's decision
+# of 2026-10-13 (master D51), to stay inside the account's free Actions minutes. PRD 12.4
+# asked for every push.
+on:
+  workflow_dispatch:
+  pull_request:
+  workflow_call:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  backend:
+    name: Backend (Ruff, tests against PostgreSQL, OpenAPI)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - name: Create a throwaway .env
+        run: bash .github/scripts/make-env.sh
+      - name: Build the development image
+        run: docker compose build app
+      - name: Ruff, lint and format
+        run: |
+          docker compose run --rm app ruff check .
+          docker compose run --rm app ruff format --check .
+      - name: Tests (they include the check that backend/openapi.yaml is current)
+        run: docker compose run --rm app pytest -q
+
+  frontend:
+    name: Frontend (API types, ESLint, tsc, tests, build)
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci
+      - name: The generated API types are current
+        run: |
+          npm run api:types
+          git diff --exit-code -- src/api/schema.d.ts
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+
+  scripts:
+    name: Server scripts (ShellCheck, tests, line endings)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - name: ShellCheck
+        run: shellcheck --severity=warning scripts/*.sh scripts/server/*.sh scripts/server/tests/*.sh proxy/entrypoint.sh proxy/tests/smoke.sh .github/scripts/*.sh
+      - run: bash scripts/server/tests/check-env.test.sh
+      - run: bash scripts/server/tests/update.test.sh
+      - run: bash scripts/server/tests/restore.test.sh
+      - run: bash scripts/server/tests/harden-check.test.sh
+      - run: bash scripts/tests/docs.test.sh
+      - run: bash .github/scripts/make-env.test.sh
+      - name: Every script is stored with LF line endings
+        run: |
+          if git ls-files --eol scripts proxy .github | grep -E '^i/(crlf|mixed)'; then
+            echo "The files above are stored with Windows line endings. Run: git add --renormalize ."
+            exit 1
+          fi
+
+  audit:
+    name: Dependency vulnerabilities
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.2.0
+      - name: Python dependencies (pip-audit over the locked versions)
+        run: |
+          uv export --project backend --frozen --no-dev --no-emit-project --format requirements-txt --output-file /tmp/requirements.txt
+          uvx pip-audit --requirement /tmp/requirements.txt --disable-pip
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+      - name: JavaScript dependencies (npm audit over the lock file)
+        working-directory: frontend
+        run: npm audit --audit-level=high
+
+  images:
+    name: Images (backend build, proxy build and smoke test)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - name: Backend image, production stage
+        run: docker build --tag iris-hr-backend:ci backend
+      - name: Proxy image and its smoke test
+        run: bash proxy/tests/smoke.sh
+
+  e2e:
+    name: Browser journeys (${{ matrix.browser }})
+    runs-on: ubuntu-24.04
+    needs: [backend, frontend]
+    # NFR-07: each engine runs the suite on its own stack (the journeys share one database).
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, edge]
+    steps:
+      - uses: actions/checkout@v7
+      - name: Create a throwaway .env
+        run: bash .github/scripts/make-env.sh
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      # Before the stack starts: the web container mounts a volume on frontend/node_modules, and Docker
+      # would create that folder as root, which npm on the runner could then not write to.
+      - name: Install Playwright and its browser
+        working-directory: frontend
+        run: |
+          npm ci
+          npx playwright install --with-deps ${{ matrix.browser == 'edge' && 'msedge' || matrix.browser }}
+      - name: Start the development stack
+        run: |
+          docker compose build
+          docker compose run --rm app python manage.py migrate --noinput
+          docker compose up -d
+      - name: Wait for the application
+        run: |
+          for _ in $(seq 1 120); do
+            if curl --fail --silent --output /dev/null http://localhost:5173/login; then exit 0; fi
+            sleep 2
+          done
+          docker compose logs web app
+          exit 1
+      - name: Journeys
+        working-directory: frontend
+        env:
+          E2E_BROWSER: ${{ matrix.browser }}
+        run: npx playwright test
+      - name: Keep the report and the logs of a failed run
+        if: failure()
+        run: docker compose logs > frontend/playwright-report/stack.log 2>&1 || true
+      - uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: playwright-report-${{ matrix.browser }}
+          path: frontend/playwright-report
+          retention-days: 7

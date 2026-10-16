@@ -1,0 +1,255 @@
+{
+  "directory": {
+    "title": "Employees",
+    "titleOverview": "People",
+    "new": "New employee",
+    "search": "Search",
+    "department": "Department",
+    "allDepartments": "All departments",
+    "status": "Status",
+    "statusCurrent": "Currently employed",
+    "columns": {
+      "name": "Name",
+      "number": "Number",
+      "department": "Department",
+      "position": "Position",
+      "manager": "Manager",
+      "status": "Status"
+    },
+    "noManager": "None",
+    "empty": {
+      "title": "No employee matches",
+      "hint": "Change the search or the filters."
+    }
+  },
+  "status": {
+    "active": "Employed",
+    "suspended": "Suspended",
+    "archived": "Left the company"
+  },
+  "form": {
+    "titleNew": "New employee",
+    "titleEdit": "Edit {{name}}",
+    "save": "Save",
+    "cancel": "Cancel",
+    "required": "This field is required.",
+    "saved": "Record saved.",
+    "choose": "Choose…",
+    "emailHint": "A company address: it is the sign-in identifier.",
+    "noManager": "No manager",
+    "sections": {
+      "identity": "Identity",
+      "contact": "Contact details",
+      "contract": "Contract",
+      "organisation": "Organisation",
+      "emergency": "Emergency contact"
+    }
+  },
+  "fields": {
+    "employee_number": "Employee number",
+    "first_name": "First name",
+    "last_name": "Last name",
+    "date_of_birth": "Date of birth",
+    "gender": "Gender",
+    "professional_email": "Professional email",
+    "personal_email": "Personal email",
+    "phone": "Phone",
+    "address": "Address",
+    "hire_date": "Hire date",
+    "contract_type": "Contract type",
+    "contract_start_date": "Contract start",
+    "contract_end_date": "Contract end",
+    "status": "Status",
+    "department": "Department",
+    "position": "Position",
+    "manager": "Manager",
+    "emergency_contact_name": "Emergency contact",
+    "emergency_contact_phone": "Emergency contact's phone",
+    "archived_at": "Leaving date",
+    "archive_reason": "Reason for leaving",
+    "document": "Document",
+    "visible_to_employee": "Shared with the employee"
+  },
+  "gender": {
+    "female": "Female",
+    "male": "Male",
+    "unspecified": "Not specified"
+  },
+  "contract": {
+    "permanent": "Permanent",
+    "fixed_term": "Fixed term",
+    "temporary": "Temporary",
+    "consultant": "Consultant"
+  },
+  "record": {
+    "edit": "Edit",
+    "loading": "Loading…"
+  },
+  "facts": {
+    "number": "Number",
+    "department": "Department",
+    "position": "Position",
+    "manager": "Manager",
+    "contract": "Contract",
+    "status": "Status",
+    "account": "Account",
+    "departure": "Departure",
+    "email": "Email",
+    "phone": "Phone",
+    "noManager": "No manager",
+    "contractSince": "{{type}}, since {{date}}",
+    "contractUntil": "{{type}}, from {{start}} to {{end}}",
+    "departureValue": "{{date}}. Reason: {{reason}}"
+  },
+  "account": {
+    "exists": "Account exists",
+    "missing": "No account yet"
+  },
+  "blocks": {
+    "personal": "Personal details",
+    "team": "Team",
+    "documents": "Documents",
+    "history": "History"
+  },
+  "personal": {
+    "none": "Not provided"
+  },
+  "team": {
+    "reports": "Direct reports",
+    "noReports": "Nobody reports to this person.",
+    "delegation": "Delegation",
+    "delegationLine": "{{name}}, from {{start}} to {{end}}",
+    "noDelegation": "No current or upcoming delegation.",
+    "changeManager": "Change manager",
+    "nameDelegate": "Name a delegate"
+  },
+  "documents": {
+    "empty": "No document.",
+    "add": "Add a document",
+    "addedBy": "added by {{name}} on {{date}}",
+    "download": "Download {{name}}",
+    "share": "Share {{label}} with the employee",
+    "shareShort": "Shared",
+    "shared": "Shared with the employee",
+    "notShared": "HR only",
+    "sheet": {
+      "title": "Add a document",
+      "file": "File",
+      "fileHint": "Accepted formats: PDF, JPG, PNG.",
+      "label": "Label",
+      "shared": "Share with the employee",
+      "submit": "Add",
+      "done": "Document added."
+    }
+  },
+  "history": {
+    "empty": "No change recorded.",
+    "by": "{{actor}}, on {{date}}",
+    "system": "System",
+    "change": "{{field}}: {{before}} → {{after}}",
+    "blank": "(empty)",
+    "yes": "Yes",
+    "no": "No",
+    "actions": {
+      "employee": {
+        "created": "Record created",
+        "updated": "Record changed",
+        "archived": "Departure recorded"
+      },
+      "document": {
+        "added": "Document added",
+        "visibility_changed": "Document sharing changed"
+      }
+    }
+  },
+  "departure": {
+    "action": "Record a departure",
+    "title": "Record the departure of {{name}}",
+    "date": "Leaving date",
+    "reason": "Reason",
+    "consequences": "What will happen",
+    "account": "The account is disabled at once: this person can no longer sign in.",
+    "credit": "No monthly leave credit is added after the leaving date.",
+    "creditPosted": "The leaving date is in a month that is already over: monthly leave credits already posted for that month and the ones after are not taken back. Check the history of their balance and adjust it if needed.",
+    "kept": "The record is kept and HR can still find it.",
+    "reports": "These people report to this employee and will need a new manager:",
+    "sections": {
+      "delegations": "These delegations will end:",
+      "open_requests": "These requests stay open:",
+      "open_steps": "These decisions are waiting for this person:"
+    },
+    "confirm": "Record the departure",
+    "done": "Departure recorded."
+  },
+  "settingsIndex": {
+    "title": "Settings",
+    "departments": {
+      "title": "Departments and positions",
+      "description": "The company's units and the job titles offered on employee records."
+    }
+  },
+  "structure": {
+    "title": "Departments and positions",
+    "tabs": {
+      "departments": "Departments",
+      "positions": "Positions"
+    },
+    "addDepartment": "Add a department",
+    "addPosition": "Add a position",
+    "columns": {
+      "code": "Code",
+      "name": "Name",
+      "title": "Title",
+      "grade": "Grade",
+      "employees": "Employees",
+      "state": "State",
+      "action": "Action"
+    },
+    "edit": "Edit",
+    "editItem": "Edit {{code}}",
+    "active": "Active",
+    "inactive": "Inactive",
+    "inUse": "An item in use can be deactivated, not removed. It stays on existing records and is no longer offered for new ones.",
+    "saved": "Saved.",
+    "sheet": {
+      "newDepartment": "New department",
+      "editDepartment": "Edit department {{code}}",
+      "newPosition": "New position",
+      "editPosition": "Edit position {{code}}"
+    },
+    "fields": {
+      "code": "Code",
+      "name_fr": "Name in French",
+      "name_en": "Name in English",
+      "title_fr": "Title in French",
+      "title_en": "Title in English",
+      "grade": "Grade",
+      "is_active": "Active"
+    },
+    "empty": {
+      "departments": "No department. Add the first one.",
+      "positions": "No position. Add the first one."
+    }
+  },
+  "picker": {
+    "choose": "Choose a person…",
+    "none": "Nobody",
+    "inactive": "{{name}} · no longer active"
+  },
+  "people": {
+    "title": "People",
+    "columns": {
+      "name": "Name",
+      "position": "Position"
+    },
+    "empty": {
+      "title": "Nobody reports to you",
+      "hint": "The people you manage, or who are entrusted to you by delegation, appear here."
+    }
+  },
+  "accountFor": {
+    "employee": "Employee",
+    "none": "None: an account without an employee record",
+    "hint": "The account will use the name on the record and the address {{email}}."
+  }
+}

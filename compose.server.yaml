@@ -1,0 +1,37 @@
+# Server overrides, for the test stack and for the production stack:
+# images from the registry, the proxy, restart policies.
+# Only the proxy publishes ports. The application and the database are reachable from inside the stack only.
+
+services:
+  db:
+    restart: unless-stopped
+
+  app:
+    image: ${IMAGE_PREFIX:?set IMAGE_PREFIX in .env}-backend:${APP_VERSION:?set APP_VERSION in .env}
+    restart: unless-stopped
+
+  worker:
+    image: ${IMAGE_PREFIX:?set IMAGE_PREFIX in .env}-backend:${APP_VERSION:?set APP_VERSION in .env}
+    restart: unless-stopped
+
+  proxy:
+    image: ${IMAGE_PREFIX:?set IMAGE_PREFIX in .env}-proxy:${APP_VERSION:?set APP_VERSION in .env}
+    restart: unless-stopped
+    depends_on:
+      - app
+    environment:
+      SITE_HOSTNAME: ${SITE_HOSTNAME:?set SITE_HOSTNAME in .env}
+      HTTPS_PORT: ${HTTPS_PORT:-443}
+      HTTP_PORT: ${HTTP_PORT:-80}
+    ports:
+      - "${HTTPS_PORT:-443}:${HTTPS_PORT:-443}"
+      - "${HTTP_PORT:-80}:${HTTP_PORT:-80}"
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+      # Put site.crt and site.key here to use the company's certificate instead of Caddy's own authority.
+      - ./proxy/certs:/certs:ro
+
+volumes:
+  caddy_data:
+  caddy_config:

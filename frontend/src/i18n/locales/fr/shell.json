@@ -1,0 +1,19 @@
+{
+  "navigation": "Navigation",
+  "more": "Plus",
+  "workspace": {
+    "switch": "Changer d'espace",
+    "current": "Espace : {{name}}",
+    "currentWaiting": "Espace : {{name}}. {{total}} en attente dans vos autres espaces",
+    "waiting": "{{name}}, {{total}} en attente"
+  },
+  "userMenu": {
+    "label": "Menu de {{name}}",
+    "changePassword": "Changer le mot de passe",
+    "signOut": "Se déconnecter"
+  },
+  "noWorkspace": {
+    "title": "Rien ici pour l'instant",
+    "body": "Votre compte ne donne accès à aucun espace pour l'instant. Contactez l'administrateur système."
+  }
+}

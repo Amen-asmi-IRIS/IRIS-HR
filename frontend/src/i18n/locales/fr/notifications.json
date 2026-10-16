@@ -1,0 +1,18 @@
+{
+  "title": "Notifications",
+  "bell": {
+    "none": "Notifications",
+    "unreadOne": "Notifications, 1 non lue",
+    "unread": "Notifications, {{total}} non lues"
+  },
+  "latest": "Dernières notifications",
+  "seeAll": "Voir toutes les notifications",
+  "empty": "Vous n'avez aucune notification.",
+  "emptyUnread": "Vous avez tout lu.",
+  "unreadOnly": "Non lues uniquement",
+  "unread": "Non lue",
+  "markRead": "Marquer comme lue",
+  "markReadOf": "Marquer comme lue : {{title}}",
+  "markAllRead": "Tout marquer comme lu",
+  "openOf": "Ouvrir : {{title}}"
+}

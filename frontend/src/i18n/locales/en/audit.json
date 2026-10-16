@@ -1,0 +1,159 @@
+{
+  "security": {
+    "title": "Security log",
+    "empty": "No security event matches these filters."
+  },
+  "business": {
+    "title": "Activity log",
+    "empty": "No activity matches these filters."
+  },
+  "columns": {
+    "when": "When",
+    "who": "Who",
+    "what": "What happened",
+    "on": "On what",
+    "address": "Network address"
+  },
+  "filters": {
+    "period": "Period",
+    "actor": "Who",
+    "anyActor": "Anyone",
+    "action": "Kind of event",
+    "anyAction": "Any kind",
+    "itemType": "Kind of item",
+    "anyItemType": "Any kind"
+  },
+  "notAnAddress": "(not an email address)",
+  "attachments": {
+    "medical": "Medical document",
+    "proof": "Proof",
+    "scanned_form": "Scanned form",
+    "employee_document": "Employee document"
+  },
+  "system": "The system",
+  "event": {
+    "title": "Event",
+    "reference": "Reference",
+    "changes": "What changed",
+    "field": "Field",
+    "before": "Before",
+    "after": "After",
+    "changed": "changed",
+    "empty": "empty",
+    "noChanges": "No value was recorded with this event."
+  },
+  "actions": {
+    "auth": {
+      "login": "Signed in",
+      "login_failed": "Failed sign-in",
+      "locked": "Account locked after failed sign-ins",
+      "logout": "Signed out",
+      "session_expired": "Session ended after inactivity",
+      "password_changed": "Password changed",
+      "password_reset": "Password reset by an administrator"
+    },
+    "account": {
+      "created": "Account created",
+      "disabled": "Account disabled",
+      "enabled": "Account enabled",
+      "unlocked": "Account unlocked"
+    },
+    "role": {
+      "assigned": "Role given",
+      "removed": "Role removed"
+    },
+    "setting": {
+      "changed": "Parameter changed"
+    },
+    "audit": {
+      "exported": "Log exported"
+    },
+    "request": {
+      "created": "Request created",
+      "updated": "Request changed",
+      "submitted": "Request sent",
+      "withdrawn": "Request withdrawn",
+      "discarded": "Draft discarded",
+      "approved": "Request approved",
+      "rejected": "Request refused",
+      "returned": "Request sent back for correction",
+      "corrected": "Request corrected by HR",
+      "cancelled": "Request cancelled by HR",
+      "reclassified": "Sick leave counted as annual leave",
+      "attachment_added": "File added to a request"
+    },
+    "step": {
+      "decided": "Decision taken",
+      "recorded_on_behalf": "Decision recorded for an approver",
+      "reassigned": "Step given to someone else"
+    },
+    "amendment": {
+      "opened": "Change asked for",
+      "withdrawn": "Change withdrawn",
+      "approved": "Change approved",
+      "rejected": "Change refused"
+    },
+    "employee": {
+      "created": "Employee created",
+      "updated": "Employee record changed",
+      "archived": "Departure recorded"
+    },
+    "document": {
+      "added": "Document added",
+      "visibility_changed": "Sharing of a document changed"
+    },
+    "attachment": {
+      "uploaded": "File uploaded",
+      "downloaded": "File opened"
+    },
+    "profile_change": {
+      "proposed": "Profile change proposed",
+      "accepted": "Profile change accepted",
+      "rejected": "Profile change refused",
+      "withdrawn": "Profile change withdrawn"
+    },
+    "delegation": {
+      "created": "Delegation created",
+      "ended": "Delegation ended",
+      "cancelled": "Delegation cancelled"
+    },
+    "ledger": {
+      "opening_posted": "Opening balance entered",
+      "adjusted": "Balance adjusted",
+      "credits_posted": "Monthly credits posted"
+    },
+    "department": {
+      "created": "Department created",
+      "updated": "Department changed",
+      "activated": "Department reactivated",
+      "deactivated": "Department deactivated"
+    },
+    "position": {
+      "created": "Position created",
+      "updated": "Position changed",
+      "activated": "Position reactivated",
+      "deactivated": "Position deactivated"
+    },
+    "holiday": {
+      "created": "Public holiday added",
+      "updated": "Public holiday changed",
+      "deleted": "Public holiday removed",
+      "copied": "Public holidays copied to another year"
+    },
+    "requesttype": {
+      "created": "Request type created",
+      "updated": "Request type changed",
+      "steps_replaced": "Steps of a type changed"
+    },
+    "exceptionalevent": {
+      "created": "Exceptional event created",
+      "updated": "Exceptional event changed"
+    },
+    "report": {
+      "exported": "Report exported"
+    },
+    "export": {
+      "kpmg": "KPMG export"
+    }
+  }
+}

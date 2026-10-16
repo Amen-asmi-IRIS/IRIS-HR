@@ -1,0 +1,127 @@
+{
+  "title": "Rapports",
+  "team_note": "Ces rapports portent sur votre équipe.",
+  "names": {
+    "absences": "Absences prises",
+    "balances": "Soldes à une date",
+    "waiting": "Demandes en attente",
+    "permission-hours": "Heures de permission par mois",
+    "remote-days": "Jours de télétravail par mois",
+    "certificates": "Certificats en attente"
+  },
+  "descriptions": {
+    "absences": "Qui a été absent, quand et combien de temps.",
+    "balances": "Le solde de congés de chacun à la date de votre choix.",
+    "waiting": "Les demandes que personne n'a encore décidées, et depuis quand.",
+    "permission-hours": "Les heures de permission de chacun, mois par mois.",
+    "remote-days": "Les jours de télétravail de chacun, mois par mois.",
+    "certificates": "Les arrêts maladie dont le certificat manque encore."
+  },
+  "filters": {
+    "period": "Période",
+    "on": "À la date du",
+    "year": "Année",
+    "department": "Département",
+    "employee": "Salarié",
+    "type": "Type",
+    "step": "Étape"
+  },
+  "fields": {
+    "from": "Date de début",
+    "to": "Date de fin",
+    "on": "Date",
+    "year": "Année",
+    "department": "Département",
+    "employee": "Salarié",
+    "type": "Type",
+    "step": "Étape"
+  },
+  "problem": "{{field}} : {{message}}",
+  "empty": {
+    "title": "Rien à afficher pour cette sélection.",
+    "hint": "Élargissez la période ou retirez un filtre."
+  },
+  "table_label": "Résultat : {{name}}",
+  "totals": {
+    "by_employee": "Totaux par salarié",
+    "by_type": "Totaux par type"
+  },
+  "kpmg": {
+    "title": "Export KPMG",
+    "intro": "Choisissez la période, puis exportez le fichier à transmettre à KPMG.",
+    "period_month": "Période proposée : le dernier mois terminé.",
+    "period_cutoff": "Période proposée : du lendemain de la dernière clôture jusqu'au jour de clôture (le {{day}}).",
+    "not_over": "La période n'est pas terminée : le solde annuel comptera les crédits de fin de mois dus d'ici sa fin, même s'ils ne sont pas encore enregistrés.",
+    "columns_title": "Colonnes du fichier",
+    "columns": {
+      "employee_number": "Matricule",
+      "name": "Nom",
+      "department": "Département",
+      "annual_days": "Congé annuel (jours)",
+      "sick_days": "Congé maladie (jours)",
+      "exceptional_days": "Congé exceptionnel (jours)",
+      "permission_hours": "Permissions (heures)",
+      "remote_days": "Télétravail (jours)",
+      "balance_end": "Solde annuel en fin de période",
+      "meal_tickets": "Tickets restaurant"
+    },
+    "rules_title": "Règles appliquées",
+    "rules": {
+      "approved": "Seules les demandes approuvées sont comptées.",
+      "period": "Les jours situés hors de la période sont exclus.",
+      "tickets": "Tickets restaurant : le nombre mensuel fixé dans les paramètres, moins un par jour ouvré entier d'absence ; une demi-journée isolée et le télétravail ne réduisent pas les tickets."
+    },
+    "exported": "Le fichier a été téléchargé.",
+    "nothing_title": "Rien à exporter pour cette sélection."
+  },
+  "activity": {
+    "title": "Journal d'activité",
+    "description": "Qui a fait quoi, sur quoi, et quand.",
+    "kpmgLabel": "Export KPMG : {{period}}",
+    "items": {
+      "request": "Demande",
+      "employee": "Employé",
+      "ledgerentry": "Ligne de solde",
+      "delegation": "Délégation",
+      "profilechange": "Modification de profil",
+      "department": "Département",
+      "position": "Poste",
+      "publicholiday": "Jour férié",
+      "requesttype": "Type de demande",
+      "exceptionalevent": "Événement exceptionnel",
+      "setting": "Paramètre",
+      "attachment": "Fichier",
+      "report": "Rapport",
+      "export": "Export",
+      "audit_log": "Journal"
+    }
+  },
+  "oversight": {
+    "title": "Supervision",
+    "read_only": "Tout ce qui suit est en consultation seule.",
+    "back": "Retour à la supervision",
+    "entries": {
+      "activity": {
+        "title": "Journal d'activité",
+        "description": "Les actions sur les données RH."
+      },
+      "security": {
+        "title": "Journal de sécurité",
+        "description": "Connexions, mots de passe, comptes et rôles."
+      },
+      "hr-settings": {
+        "title": "Réglages RH",
+        "description": "Types de demande, étapes, événements, jours fériés, paramètres."
+      },
+      "system": {
+        "title": "Comptes et système",
+        "description": "Comptes, paramètres techniques et état du système."
+      }
+    },
+    "system": {
+      "status": "État du système",
+      "accounts": "Comptes",
+      "parameters": "Paramètres système"
+    }
+  }
+}

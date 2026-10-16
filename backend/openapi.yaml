@@ -1,0 +1,7047 @@
+openapi: 3.0.3
+info:
+  title: IRIS HR API
+  version: '1'
+  description: Internal API of the IRIS HR platform. Errors are problem details (application/problem+json).
+paths:
+  /api/v1/accounts:
+    get:
+      operationId: accounts_list
+      parameters:
+      - in: query
+        name: ordering
+        schema:
+          type: string
+          enum:
+          - -email
+          - -last_login_at
+          - -name
+          - email
+          - last_login_at
+          - name
+        description: Sort order; `email` when absent. A leading minus sign means descending.
+      - in: query
+        name: page
+        schema:
+          type: integer
+        description: Page number, starting at 1.
+      - in: query
+        name: page_size
+        schema:
+          type: integer
+        description: 'Items per page: 25 by default, 100 at most.'
+      - in: query
+        name: role
+        schema:
+          enum:
+          - hr
+          - exec
+          - sysadmin
+          type: string
+          minLength: 1
+        description: |-
+          * `hr` - hr
+          * `exec` - exec
+          * `sysadmin` - sysadmin
+      - in: query
+        name: search
+        schema:
+          type: string
+      - in: query
+        name: state
+        schema:
+          enum:
+          - active
+          - awaiting_first_sign_in
+          - locked
+          - disabled
+          type: string
+          minLength: 1
+        description: |-
+          * `active` - active
+          * `awaiting_first_sign_in` - awaiting_first_sign_in
+          * `locked` - locked
+          * `disabled` - disabled
+      tags:
+      - accounts
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAccountOut'
+          description: ''
+    post:
+      operationId: accounts_create
+      tags:
+      - accounts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountCreateInRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AccountCreateInRequest'
+      security:
+      - sessionCookie: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountCreatedOut'
+          description: ''
+  /api/v1/accounts/{public_id}:
+    get:
+      operationId: accounts_detail
+      parameters:
+      - in: path
+        name: public_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - accounts
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountDetailOut'
+          description: ''
+  /api/v1/accounts/{public_id}/disable:
+    post:
+      operationId: accounts_disable
+      parameters:
+      - in: path
+        name: public_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - accounts
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountDetailOut'
+          description: ''
+  /api/v1/accounts/{public_id}/enable:
+    post:
+      operationId: accounts_enable
+      parameters:
+      - in: path
+        name: public_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - accounts
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountDetailOut'
+          description: ''
+  /api/v1/accounts/{public_id}/reset-password:
+    post:
+      operationId: accounts_reset_password
+      parameters:
+      - in: path
+        name: public_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - accounts
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporaryPasswordOut'
+          description: ''
+  /api/v1/accounts/{public_id}/roles:
+    post:
+      operationId: accounts_role_add
+      parameters:
+      - in: path
+        name: public_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - accounts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoleInRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RoleInRequest'
+        required: true
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountDetailOut'
+          description: ''
+  /api/v1/accounts/{public_id}/roles/{role}:
+    delete:
+      operationId: accounts_role_remove
+      parameters:
+      - in: path
+        name: public_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: role
+        schema:
+          type: string
+        required: true
+      tags:
+      - accounts
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountDetailOut'
+          description: ''
+  /api/v1/accounts/{public_id}/unlock:
+    post:
+      operationId: accounts_unlock
+      parameters:
+      - in: path
+        name: public_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - accounts
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountDetailOut'
+          description: ''
+  /api/v1/accounts/candidates:
+    get:
+      operationId: accounts_candidates
+      description: Employees who have no account yet (empty until plan 02 provides
+        the employee directory).
+      tags:
+      - accounts
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CandidateOut'
+          description: ''
+  /api/v1/admin/status:
+    get:
+      operationId: admin_status
+      tags:
+      - admin
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusOut'
+          description: ''
+  /api/v1/amendments/{public_id}/withdraw:
+    post:
+      operationId: amendments_withdraw
+      parameters:
+      - in: path
+        name: public_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - amendments
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestDetailOut'
+          description: ''
+  /api/v1/approvals:
+    get:
+      operationId: approvals_list
+      parameters:
+      - in: query
+        name: department
+        schema:
+          type: integer
+      - in: query
+        name: ordering
+        schema:
+          type: string
+          enum:
+          - -start_date
+          - -waiting_since
+          - start_date
+          - waiting_since
+        description: Sort order; the list's own order when absent. A leading minus
+          sign means descending.
+      - in: query
+        name: page
+        schema:
+          type: integer
+        description: Page number, starting at 1.
+      - in: query
+        name: page_size
+        schema:
+          type: integer
+        description: 'Items per page: 25 by default, 100 at most.'
+      - in: query
+        name: queue
+        schema:
+          type: string
+          enum:
+          - certificates
+          - hr
+          - mine
+          - stuck
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Comma-separated type codes
+      tags:
+      - approvals
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedApprovalItemOut'
+          description: ''
+  /api/v1/attachments/{public_id}/download:
+    get:
+      operationId: attachments_download
+      parameters:
+      - in: path
+        name: public_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - attachments
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+          description: ''
+  /api/v1/audit/business:
+    get:
+      operationId: audit_business_list
+      parameters:
+      - in: query
+        name: action
+        schema:
+          type: string
+          minLength: 1
+      - in: query
+        name: actor
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: from
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: object_id
+        schema:
+          type: string
+          minLength: 1
+      - in: query
+        name: object_type
+        schema:
+          type: string
+          minLength: 1
+      - in: query
+        name: ordering
+        schema:
+          type: string
+          enum:
+          - -action
+          - -at
+          - action
+          - at
+        description: Sort order; `-at` when absent. A leading minus sign means descending.
+      - in: query
+        name: page
+        schema:
+          type: integer
+        description: Page number, starting at 1.
+      - in: query
+        name: page_size
+        schema:
+          type: integer
+        description: 'Items per page: 25 by default, 100 at most.'
+      - in: query
+        name: to
+        schema:
+          type: string
+          format: date
+      tags:
+      - audit
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAuditEventOut'
+          description: ''
+  /api/v1/audit/business/export:
+    get:
+      operationId: audit_business_export
+      parameters:
+      - in: query
+        name: action
+        schema:
+          type: string
+          minLength: 1
+      - in: query
+        name: actor
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: from
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: object_id
+        schema:
+          type: string
+          minLength: 1
+      - in: query
+        name: object_type
+        schema:
+          type: string
+          minLength: 1
+      - in: query
+        name: ordering
+        schema:
+          type: string
+          enum:
+          - -action
+          - -at
+          - action
+          - at
+        description: Sort order; `-at` when absent. A leading minus sign means descending.
+      - in: query
+        name: to
+        schema:
+          type: string
+          format: date
+      tags:
+      - audit
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                type: string
+                format: binary
+          description: ''
+  /api/v1/audit/security:
+    get:
+      operationId: audit_security_list
+      parameters:
+      - in: query
+        name: action
+        schema:
+          type: string
+          minLength: 1
+      - in: query
+        name: actor
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: from
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: object_id
+        schema:
+          type: string
+          minLength: 1
+      - in: query
+        name: object_type
+        schema:
+          type: string
+          minLength: 1
+      - in: query
+        name: ordering
+        schema:
+          type: string
+          enum:
+          - -action
+          - -at
+          - action
+          - at
+        description: Sort order; `-at` when absent. A leading minus sign means descending.
+      - in: query
+        name: page
+        schema:
+          type: integer
+        description: Page number, starting at 1.
+      - in: query
+        name: page_size
+        schema:
+          type: integer
+        description: 'Items per page: 25 by default, 100 at most.'
+      - in: query
+        name: to
+        schema:
+          type: string
+          format: date
+      tags:
+      - audit
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAuditEventOut'
+          description: ''
+  /api/v1/audit/security/export:
+    get:
+      operationId: audit_security_export
+      parameters:
+      - in: query
+        name: action
+        schema:
+          type: string
+          minLength: 1
+      - in: query
+        name: actor
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: from
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: object_id
+        schema:
+          type: string
+          minLength: 1
+      - in: query
+        name: object_type
+        schema:
+          type: string
+          minLength: 1
+      - in: query
+        name: ordering
+        schema:
+          type: string
+          enum:
+          - -action
+          - -at
+          - action
+          - at
+        description: Sort order; `-at` when absent. A leading minus sign means descending.
+      - in: query
+        name: to
+        schema:
+          type: string
+          format: date
+      tags:
+      - audit
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                type: string
+                format: binary
+          description: ''
+  /api/v1/auth/csrf:
+    get:
+      operationId: auth_csrf
+      description: 'Called once when the web app starts: sets the csrftoken cookie
+        that unsafe calls must echo.'
+      tags:
+      - auth
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CsrfOut'
+          description: ''
+  /api/v1/auth/login:
+    post:
+      operationId: auth_login
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginInRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/LoginInRequest'
+        required: true
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeOut'
+          description: ''
+  /api/v1/auth/logout:
+    post:
+      operationId: auth_logout
+      tags:
+      - auth
+      security:
+      - sessionCookie: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/auth/me:
+    get:
+      operationId: auth_me
+      tags:
+      - auth
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeOut'
+          description: ''
+    patch:
+      operationId: auth_me_update
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedMePatchInRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedMePatchInRequest'
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeOut'
+          description: ''
+  /api/v1/auth/password:
+    post:
+      operationId: auth_password
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordInRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PasswordInRequest'
+        required: true
+      security:
+      - sessionCookie: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/balances/{employee_public_id}:
+    get:
+      operationId: balances_figures
+      parameters:
+      - in: path
+        name: employee_public_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: query
+        name: 'on'
+        schema:
+          type: string
+          format: date
+      tags:
+      - balances
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BalanceOut'
+          description: ''
+  /api/v1/balances/{employee_public_id}/adjustments:
+    post:
+      operationId: balances_adjust
+      parameters:
+      - in: path
+        name: employee_public_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - balances
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdjustmentInRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AdjustmentInRequest'
+        required: true
+      security:
+      - sessionCookie: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LedgerLineOut'
+          description: ''
+  /api/v1/balances/{employee_public_id}/ledger:
+    get:
+      operationId: balances_ledger
+      parameters:
+      - in: path
+        name: employee_public_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: query
+        name: ordering
+        schema:
+          type: string
+          enum:
+          - -date
+          - date
+        description: Sort order; `-date` when absent. A leading minus sign means descending.
+      - in: query
+        name: page
+        schema:
+          type: integer
+        description: Page number, starting at 1.
+      - in: query
+        name: page_size
+        schema:
+          type: integer
+        description: 'Items per page: 25 by default, 100 at most.'
+      tags:
+      - balances
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedLedgerLineOut'
+          description: ''
+  /api/v1/calendar:
+    get:
+      operationId: calendar_feed
+      parameters:
+      - in: query
+        name: department
+        schema:
+          type: integer
+      - in: query
+        name: employee
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: from
+        schema:
+          type: string
+          format: date
+        required: true
+      - in: query
+        name: scope
+        schema:
+          enum:
+          - department
+          - team
+          - company
+          type: string
+          minLength: 1
+        description: |-
+          * `department` - department
+          * `team` - team
+          * `company` - company
+        required: true
+      - in: query
+        name: status
+        schema:
+          enum:
+          - pending
+          - approved
+          type: string
+          minLength: 1
+        description: |-
+          * `pending` - pending
+          * `approved` - approved
+      - in: query
+        name: to
+        schema:
+          type: string
+          format: date
+        required: true
+      - in: query
+        name: type
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 50
+      tags:
+      - calendar
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalendarOut'
+          description: ''
+  /api/v1/delegations:
+    get:
+      operationId: delegations_list
+      parameters:
+      - in: query
+        name: manager
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: ordering
+        schema:
+          type: string
+          enum:
+          - -end_date
+          - -start_date
+          - end_date
+          - start_date
+        description: Sort order; `-start_date` when absent. A leading minus sign means
+          descending.
+      - in: query
+        name: page
+        schema:
+          type: integer
+        description: Page number, starting at 1.
+      - in: query
+        name: page_size
+        schema:
+          type: integer
+        description: 'Items per page: 25 by default, 100 at most.'
+      - in: query
+        name: scope
+        schema:
+          enum:
+          - mine
+          - all
+          type: string
+          minLength: 1
+        description: |-
+          * `mine` - mine
+          * `all` - all
+      tags:
+      - delegations
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedDelegationOut'
+          description: ''
+    post:
+      operationId: delegations_create
+      tags:
+      - delegations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DelegationInRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DelegationInRequest'
+        required: true
+      security:
+      - sessionCookie: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DelegationOut'
+          description: ''
+  /api/v1/delegations/{public_id}/end:
+    post:
+      operationId: delegations_end
+      parameters:
+      - in: path
+        name: public_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - delegations
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DelegationOut'
+          description: ''
+  /api/v1/departments:
+    get:
+      operationId: departments_list
+      tags:
+      - departments
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DepartmentOut'
+          description: ''
+    post:
+      operationId: departments_create
+      tags:
+      - departments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DepartmentInRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DepartmentInRequest'
+        required: true
+      security:
+      - sessionCookie: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartmentOut'
+          description: ''
+  /api/v1/departments/{id}:
+    patch:
+      operationId: departments_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - departments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedDepartmentPatchInRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedDepartmentPatchInRequest'
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartmentOut'
+          description: ''
+  /api/v1/employees:
+    get:
+      operationId: employees_list
+      parameters:
+      - in: query
+        name: department
+        schema:
+          type: integer
+      - in: query
+        name: manager
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: ordering
+        schema:
+          enum:
+          - name
+          - -name
+          - employee_number
+          - -employee_number
+          - hire_date
+          - -hire_date
+          type: string
+          minLength: 1
+        description: |-
+          * `name` - name
+          * `-name` - -name
+          * `employee_number` - employee_number
+          * `-employee_number` - -employee_number
+          * `hire_date` - hire_date
+          * `-hire_date` - -hire_date
+      - in: query
+        name: page
+        schema:
+          type: integer
+        description: Page number, starting at 1.
+      - in: query
+        name: page_size
+        schema:
+          type: integer
+        description: 'Items per page: 25 by default, 100 at most.'
+      - in: query
+        name: scope
+        schema:
+          enum:
+          - team
+          - all
+          type: string
+          minLength: 1
+        description: |-
+          * `team` - team
+          * `all` - all
+      - in: query
+        name: search
+        schema:
+          type: string
+      - in: query
+        name: status
+        schema:
+          enum:
+          - active
+          - suspended
+          - archived
+          - all
+          type: string
+          minLength: 1
+        description: |-
+          * `active` - active
+          * `suspended` - suspended
+          * `archived` - archived
+          * `all` - all
+      tags:
+      - employees
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedEmployeeListOut'
+          description: ''
+    post:
+      operationId: employees_create
+      tags:
+      - employees
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmployeeInRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EmployeeInRequest'
+        required: true
+      security:
+      - sessionCookie: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeOut'
+          description: ''
+  /api/v1/employees/{public_id}:
+    get:
+      operationId: employees_detail
+      parameters:
+      - in: path
+        name: public_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - employees
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeDetail'
+          description: ''
+    patch:
+      operationId: employees_update
+      parameters:
+      - in: path
+        name: public_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - employees
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedEmployeeInRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedEmployeeInRequest'
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeOut'
+          description: ''
+  /api/v1/employees/{public_id}/archive:
+    post:
+      operationId: employees_archive
+      parameters:
+      - in: path
+        name: public_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - employees
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ArchiveInRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ArchiveInRequest'
+        required: true
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeOut'
+          description: ''
+  /api/v1/employees/{public_id}/archive-preview:
+    get:
+      operationId: employees_archive_preview
+      parameters:
+      - in: path
+        name: public_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - employees
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArchivePreviewOut'
+          description: ''
+  /api/v1/employees/{public_id}/documents:
+    get:
+      operationId: employee_documents_list
+      parameters:
+      - in: path
+        name: public_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - employees
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DocumentOut'
+          description: ''
+    post:
+      operationId: employee_documents_add
+      parameters:
+      - in: path
+        name: public_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - employees
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DocumentInRequest'
+        required: true
+      security:
+      - sessionCookie: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentOut'
+          description: ''
+  /api/v1/employees/{public_id}/documents/{id}:
+    patch:
+      operationId: employee_documents_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: public_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - employees
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedDocumentPatchInRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedDocumentPatchInRequest'
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentOut'
+          description: ''
+  /api/v1/employees/{public_id}/history:
+    get:
+      operationId: employees_history
+      parameters:
+      - in: query
+        name: ordering
+        schema:
+          type: string
+          enum:
+          - -at
+          - at
+        description: Sort order; `-at` when absent. A leading minus sign means descending.
+      - in: query
+        name: page
+        schema:
+          type: integer
+        description: Page number, starting at 1.
+      - in: query
+        name: page_size
+        schema:
+          type: integer
+        description: 'Items per page: 25 by default, 100 at most.'
+      - in: path
+        name: public_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - employees
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAuditEventOut'
+          description: ''
+  /api/v1/employees/directory:
+    get:
+      operationId: employees_directory
+      tags:
+      - employees
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EmployeeDirectoryOut'
+          description: ''
+  /api/v1/employees/me:
+    get:
+      operationId: employees_me
+      tags:
+      - employees
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeOut'
+          description: ''
+  /api/v1/exceptional-events:
+    get:
+      operationId: exceptional_events_list
+      parameters:
+      - in: query
+        name: active
+        schema:
+          type: string
+      tags:
+      - exceptional-events
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ExceptionalEventOut'
+          description: ''
+    post:
+      operationId: exceptional_events_create
+      tags:
+      - exceptional-events
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExceptionalEventInRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ExceptionalEventInRequest'
+        required: true
+      security:
+      - sessionCookie: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionalEventOut'
+          description: ''
+  /api/v1/exceptional-events/{id}:
+    patch:
+      operationId: exceptional_events_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - exceptional-events
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedExceptionalEventInRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedExceptionalEventInRequest'
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionalEventOut'
+          description: ''
+  /api/v1/exports/kpmg:
+    get:
+      operationId: kpmg_export
+      parameters:
+      - in: query
+        name: department
+        schema:
+          type: string
+        description: Department id
+      - in: query
+        name: employee
+        schema:
+          type: string
+        description: Employee public id
+      - in: query
+        name: from
+        schema:
+          type: string
+        description: First day of the period, ISO date
+      - in: query
+        name: to
+        schema:
+          type: string
+        description: Last day of the period, ISO date
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Request type code
+      tags:
+      - exports
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                type: string
+                format: binary
+          description: ''
+  /api/v1/exports/kpmg/default-period:
+    get:
+      operationId: kpmg_default_period
+      tags:
+      - exports
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KpmgDefaultPeriodOut'
+          description: ''
+  /api/v1/health:
+    get:
+      operationId: health
+      description: Called by the update command and by monitoring. 200 when everything
+        works, 503 otherwise.
+      tags:
+      - health
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthOut'
+          description: ''
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthOut'
+          description: ''
+  /api/v1/holidays:
+    get:
+      operationId: holidays_list
+      parameters:
+      - in: query
+        name: year
+        schema:
+          type: integer
+      tags:
+      - holidays
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/HolidayOut'
+          description: ''
+    post:
+      operationId: holidays_create
+      tags:
+      - holidays
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HolidayInRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/HolidayInRequest'
+        required: true
+      security:
+      - sessionCookie: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HolidayOut'
+          description: ''
+  /api/v1/holidays/{id}:
+    patch:
+      operationId: holidays_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - holidays
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedHolidayPatchInRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedHolidayPatchInRequest'
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HolidayOut'
+          description: ''
+    delete:
+      operationId: holidays_delete
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - holidays
+      security:
+      - sessionCookie: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/holidays/copy:
+    post:
+      operationId: holidays_copy
+      tags:
+      - holidays
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HolidayCopyInRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/HolidayCopyInRequest'
+        required: true
+      security:
+      - sessionCookie: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/HolidayOut'
+          description: ''
+  /api/v1/holidays/impact:
+    get:
+      operationId: holidays_impact
+      parameters:
+      - in: query
+        name: date
+        schema:
+          type: string
+        description: ISO date
+        required: true
+      tags:
+      - holidays
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/HolidayImpactOut'
+          description: ''
+  /api/v1/home/me:
+    get:
+      operationId: home_me
+      tags:
+      - home
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeHomeOut'
+          description: ''
+  /api/v1/home/overview:
+    get:
+      operationId: home_overview
+      tags:
+      - home
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OverviewHomeOut'
+          description: ''
+  /api/v1/home/team:
+    get:
+      operationId: home_team
+      tags:
+      - home
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamHomeOut'
+          description: ''
+  /api/v1/notifications:
+    get:
+      operationId: notifications_list
+      parameters:
+      - in: query
+        name: ordering
+        schema:
+          type: string
+          enum:
+          - -created_at
+          - created_at
+        description: Sort order; `-created_at` when absent. A leading minus sign means
+          descending.
+      - in: query
+        name: page
+        schema:
+          type: integer
+        description: Page number, starting at 1.
+      - in: query
+        name: page_size
+        schema:
+          type: integer
+        description: 'Items per page: 25 by default, 100 at most.'
+      - in: query
+        name: unread
+        schema:
+          type: boolean
+        description: Send 1 to list unread notifications only.
+      tags:
+      - notifications
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedNotificationOut'
+          description: ''
+  /api/v1/notifications/{id}/read:
+    post:
+      operationId: notifications_read
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - notifications
+      security:
+      - sessionCookie: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/notifications/read-all:
+    post:
+      operationId: notifications_read_all
+      tags:
+      - notifications
+      security:
+      - sessionCookie: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/notifications/unread-count:
+    get:
+      operationId: notifications_unread_count
+      tags:
+      - notifications
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnreadCountOut'
+          description: ''
+  /api/v1/positions:
+    get:
+      operationId: positions_list
+      tags:
+      - positions
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PositionOut'
+          description: ''
+    post:
+      operationId: positions_create
+      tags:
+      - positions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PositionInRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PositionInRequest'
+        required: true
+      security:
+      - sessionCookie: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PositionOut'
+          description: ''
+  /api/v1/positions/{id}:
+    patch:
+      operationId: positions_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - positions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedPositionPatchInRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedPositionPatchInRequest'
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PositionOut'
+          description: ''
+  /api/v1/profile-changes:
+    get:
+      operationId: profile_changes_list
+      parameters:
+      - in: query
+        name: employee
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: ordering
+        schema:
+          type: string
+          enum:
+          - -created_at
+          - created_at
+        description: Sort order; the list's own order when absent. A leading minus
+          sign means descending.
+      - in: query
+        name: page
+        schema:
+          type: integer
+        description: Page number, starting at 1.
+      - in: query
+        name: page_size
+        schema:
+          type: integer
+        description: 'Items per page: 25 by default, 100 at most.'
+      - in: query
+        name: scope
+        schema:
+          enum:
+          - mine
+          - all
+          type: string
+          minLength: 1
+        description: |-
+          * `mine` - mine
+          * `all` - all
+      - in: query
+        name: status
+        schema:
+          enum:
+          - pending
+          - decided
+          - accepted
+          - rejected
+          - withdrawn
+          type: string
+          minLength: 1
+        description: |-
+          * `pending` - pending
+          * `decided` - decided
+          * `accepted` - accepted
+          * `rejected` - rejected
+          * `withdrawn` - withdrawn
+      tags:
+      - profile-changes
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedProfileChangeOut'
+          description: ''
+    post:
+      operationId: profile_changes_create
+      tags:
+      - profile-changes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProfileChangeInRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ProfileChangeInRequest'
+        required: true
+      security:
+      - sessionCookie: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileChangeOut'
+          description: ''
+  /api/v1/profile-changes/{public_id}:
+    get:
+      operationId: profile_changes_detail
+      parameters:
+      - in: path
+        name: public_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - profile-changes
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileChangeOut'
+          description: ''
+  /api/v1/profile-changes/{public_id}/decide:
+    post:
+      operationId: profile_changes_decide
+      parameters:
+      - in: path
+        name: public_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - profile-changes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProfileChangeDecisionInRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ProfileChangeDecisionInRequest'
+        required: true
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileChangeOut'
+          description: ''
+  /api/v1/profile-changes/{public_id}/withdraw:
+    post:
+      operationId: profile_changes_withdraw
+      parameters:
+      - in: path
+        name: public_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - profile-changes
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileChangeOut'
+          description: ''
+  /api/v1/report-filters:
+    get:
+      operationId: reports_filters
+      parameters:
+      - in: query
+        name: scope
+        schema:
+          type: string
+          enum:
+          - all
+          - team
+        description: team (the caller's team) or all (the company); defaults to the
+          widest the caller holds
+      tags:
+      - report-filters
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportFiltersOut'
+          description: ''
+  /api/v1/reports/{name}:
+    get:
+      operationId: reports_run
+      parameters:
+      - in: query
+        name: department
+        schema:
+          type: string
+        description: Department id
+      - in: query
+        name: employee
+        schema:
+          type: string
+        description: Employee public id
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - xlsx
+        description: xlsx to download the same content as a workbook
+      - in: query
+        name: from
+        schema:
+          type: string
+        description: First day of the period, ISO date
+      - in: path
+        name: name
+        schema:
+          type: string
+          enum:
+          - absences
+          - balances
+          - certificates
+          - permission-hours
+          - remote-days
+          - waiting
+        required: true
+      - in: query
+        name: 'on'
+        schema:
+          type: string
+        description: Date of the balances report, ISO date; defaults to today
+      - in: query
+        name: scope
+        schema:
+          type: string
+          enum:
+          - all
+          - team
+        description: team (the caller's team) or all (the company); defaults to the
+          widest the caller holds
+      - in: query
+        name: step
+        schema:
+          type: string
+          enum:
+          - hr_role
+          - line_manager
+          - named_person
+        description: Step the request waits on
+      - in: query
+        name: to
+        schema:
+          type: string
+        description: Last day of the period, ISO date
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Request type code
+      - in: query
+        name: year
+        schema:
+          type: string
+        description: Year of the monthly reports; defaults to the current year
+      tags:
+      - reports
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportOut'
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                type: string
+                format: binary
+          description: ''
+  /api/v1/request-types:
+    get:
+      operationId: request_types_list
+      parameters:
+      - in: query
+        name: active
+        schema:
+          type: string
+      tags:
+      - request-types
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RequestTypeOut'
+          description: ''
+    post:
+      operationId: request_types_create
+      tags:
+      - request-types
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestTypeInRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RequestTypeInRequest'
+        required: true
+      security:
+      - sessionCookie: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestTypeOut'
+          description: ''
+  /api/v1/request-types/{id}:
+    get:
+      operationId: request_types_detail
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - request-types
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestTypeOut'
+          description: ''
+    patch:
+      operationId: request_types_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - request-types
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedRequestTypeInRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedRequestTypeInRequest'
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestTypeOut'
+          description: ''
+  /api/v1/request-types/{id}/chain-preview:
+    get:
+      operationId: request_types_chain_preview
+      parameters:
+      - in: query
+        name: employee
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - request-types
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChainRowOut'
+          description: ''
+  /api/v1/request-types/{id}/steps:
+    get:
+      operationId: request_types_steps
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - request-types
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChainStepOut'
+          description: ''
+    put:
+      operationId: request_types_steps_replace
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - request-types
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChainStepsInRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ChainStepsInRequest'
+        required: true
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChainStepOut'
+          description: ''
+  /api/v1/requests:
+    get:
+      operationId: requests_list
+      parameters:
+      - in: query
+        name: department
+        schema:
+          type: integer
+      - in: query
+        name: employee
+        schema:
+          type: string
+        description: Employee public id
+      - in: query
+        name: from
+        schema:
+          type: string
+        description: ISO date
+      - in: query
+        name: has_override
+        schema:
+          type: string
+          enum:
+          - '0'
+          - '1'
+      - in: query
+        name: on_behalf
+        schema:
+          type: string
+          enum:
+          - '0'
+          - '1'
+      - in: query
+        name: ordering
+        schema:
+          type: string
+          enum:
+          - -created_at
+          - -start_date
+          - created_at
+          - start_date
+      - in: query
+        name: page
+        schema:
+          type: integer
+        description: Page number, starting at 1.
+      - in: query
+        name: page_size
+        schema:
+          type: integer
+        description: 'Items per page: 25 by default, 100 at most.'
+      - in: query
+        name: scope
+        schema:
+          type: string
+          enum:
+          - all
+          - decided
+          - mine
+          - team
+      - in: query
+        name: status
+        schema:
+          type: string
+        description: Comma-separated statuses
+      - in: query
+        name: to
+        schema:
+          type: string
+        description: ISO date
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Comma-separated type codes
+      - in: query
+        name: year
+        schema:
+          type: integer
+      tags:
+      - requests
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRequestOut'
+          description: ''
+    post:
+      operationId: requests_create
+      tags:
+      - requests
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestInRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RequestInRequest'
+        required: true
+      security:
+      - sessionCookie: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestDetailOut'
+          description: ''
+  /api/v1/requests/{public_id}:
+    get:
+      operationId: requests_detail
+      parameters:
+      - in: path
+        name: public_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - requests
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestDetailOut'
+          description: ''
+    patch:
+      operationId: requests_update
+      parameters:
+      - in: path
+        name: public_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - requests
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedRequestPatchInRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedRequestPatchInRequest'
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestDetailOut'
+          description: ''
+    delete:
+      operationId: requests_discard
+      parameters:
+      - in: path
+        name: public_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - requests
+      security:
+      - sessionCookie: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/requests/{public_id}/amendments:
+    get:
+      operationId: requests_amendments
+      parameters:
+      - in: path
+        name: public_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - requests
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RequestAmendmentOut'
+          description: ''
+    post:
+      operationId: requests_amend
+      parameters:
+      - in: path
+        name: public_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - requests
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AmendmentInRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AmendmentInRequest'
+        required: true
+      security:
+      - sessionCookie: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestDetailOut'
+          description: ''
+  /api/v1/requests/{public_id}/attachments:
+    get:
+      operationId: requests_attachments
+      parameters:
+      - in: path
+        name: public_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - requests
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RequestAttachmentOut'
+          description: ''
+    post:
+      operationId: requests_attach
+      parameters:
+      - in: path
+        name: public_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - requests
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/FileInRequest'
+        required: true
+      security:
+      - sessionCookie: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestAttachmentOut'
+          description: ''
+  /api/v1/requests/{public_id}/cancel:
+    post:
+      operationId: requests_cancel
+      parameters:
+      - in: path
+        name: public_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - requests
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReasonInRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ReasonInRequest'
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestDetailOut'
+          description: ''
+  /api/v1/requests/{public_id}/correct:
+    post:
+      operationId: requests_correct
+      parameters:
+      - in: path
+        name: public_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - requests
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CorrectInRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CorrectInRequest'
+        required: true
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestDetailOut'
+          description: ''
+  /api/v1/requests/{public_id}/history:
+    get:
+      operationId: requests_history
+      parameters:
+      - in: path
+        name: public_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - requests
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/HistoryItemOut'
+          description: ''
+  /api/v1/requests/{public_id}/reclassify:
+    post:
+      operationId: requests_reclassify
+      parameters:
+      - in: path
+        name: public_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - requests
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReclassifyInRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ReclassifyInRequest'
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestDetailOut'
+          description: ''
+  /api/v1/requests/{public_id}/submit:
+    post:
+      operationId: requests_submit
+      parameters:
+      - in: path
+        name: public_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - requests
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VersionInRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/VersionInRequest'
+        required: true
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestDetailOut'
+          description: ''
+  /api/v1/requests/{public_id}/withdraw:
+    post:
+      operationId: requests_withdraw
+      parameters:
+      - in: path
+        name: public_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - requests
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestDetailOut'
+          description: ''
+  /api/v1/requests/preview:
+    post:
+      operationId: requests_preview
+      tags:
+      - requests
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PreviewInRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PreviewInRequest'
+        required: true
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PreviewOut'
+          description: ''
+  /api/v1/settings/hr:
+    get:
+      operationId: settings_hr_list
+      tags:
+      - settings
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SettingOut'
+          description: ''
+  /api/v1/settings/hr/{key}:
+    put:
+      operationId: settings_hr_update
+      parameters:
+      - in: path
+        name: key
+        schema:
+          type: string
+        required: true
+      tags:
+      - settings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettingValueInRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SettingValueInRequest'
+        required: true
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingOut'
+          description: ''
+  /api/v1/settings/system:
+    get:
+      operationId: settings_system_list
+      tags:
+      - settings
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SettingOut'
+          description: ''
+  /api/v1/settings/system/{key}:
+    put:
+      operationId: settings_system_update
+      parameters:
+      - in: path
+        name: key
+        schema:
+          type: string
+        required: true
+      tags:
+      - settings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettingValueInRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SettingValueInRequest'
+        required: true
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingOut'
+          description: ''
+  /api/v1/steps/{id}/decide:
+    post:
+      operationId: steps_decide
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - steps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DecideInRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DecideInRequest'
+        required: true
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestDetailOut'
+          description: ''
+  /api/v1/steps/{id}/reassign:
+    post:
+      operationId: steps_reassign
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - steps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReassignInRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ReassignInRequest'
+        required: true
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestDetailOut'
+          description: ''
+  /api/v1/steps/{id}/record-on-behalf:
+    post:
+      operationId: steps_record_on_behalf
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - steps
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RecordOnBehalfInRequest'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecordOnBehalfInRequest'
+        required: true
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestDetailOut'
+          description: ''
+  /api/v1/workspaces/summary:
+    get:
+      operationId: workspaces_summary
+      tags:
+      - workspaces
+      security:
+      - sessionCookie: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkspaceSummaryOut'
+          description: ''
+components:
+  schemas:
+    AbsenceMonthOut:
+      type: object
+      properties:
+        department:
+          type: string
+        days:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,5}(?:\.\d{0,2})?$
+        previous_days:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,5}(?:\.\d{0,2})?$
+      required:
+      - days
+      - department
+      - previous_days
+    AccountBriefOut:
+      type: object
+      properties:
+        public_id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+      required:
+      - email
+      - name
+      - public_id
+    AccountCreateInRequest:
+      type: object
+      description: Either `employee` (the public id of an employee without account),
+        or `email` and `full_name`.
+      properties:
+        email:
+          type: string
+          maxLength: 254
+        full_name:
+          type: string
+          maxLength: 150
+        employee:
+          type: string
+          format: uuid
+          nullable: true
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/AssignableRoleEnum'
+    AccountCreatedOut:
+      type: object
+      properties:
+        account:
+          $ref: '#/components/schemas/AccountOut'
+        temporary_password:
+          type: string
+        expires_at:
+          type: string
+          format: date-time
+      required:
+      - account
+      - expires_at
+      - temporary_password
+    AccountDetailOut:
+      type: object
+      description: The Account page (UI 9.4).
+      properties:
+        public_id:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+        name:
+          type: string
+          readOnly: true
+        state:
+          allOf:
+          - $ref: '#/components/schemas/AccountStateEnum'
+          readOnly: true
+        roles:
+          type: array
+          items:
+            type: string
+          readOnly: true
+        last_login_at:
+          type: string
+          format: date-time
+          nullable: true
+        has_employee:
+          type: boolean
+          readOnly: true
+        role_assignments:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoleAssignmentOut'
+        previous_login_at:
+          type: string
+          format: date-time
+          nullable: true
+        failed_attempts:
+          type: integer
+        locked_until:
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        created_by:
+          type: string
+          nullable: true
+          readOnly: true
+        recent_events:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuditEventOut'
+          readOnly: true
+        can_enable:
+          type: boolean
+          readOnly: true
+      required:
+      - can_enable
+      - created_at
+      - created_by
+      - email
+      - failed_attempts
+      - has_employee
+      - last_login_at
+      - locked_until
+      - name
+      - previous_login_at
+      - public_id
+      - recent_events
+      - role_assignments
+      - roles
+      - state
+    AccountOut:
+      type: object
+      description: One row of the Accounts page (UI 9.2). Takes a User instance.
+      properties:
+        public_id:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+        name:
+          type: string
+          readOnly: true
+        state:
+          allOf:
+          - $ref: '#/components/schemas/AccountStateEnum'
+          readOnly: true
+        roles:
+          type: array
+          items:
+            type: string
+          readOnly: true
+        last_login_at:
+          type: string
+          format: date-time
+          nullable: true
+        has_employee:
+          type: boolean
+          readOnly: true
+      required:
+      - email
+      - has_employee
+      - last_login_at
+      - name
+      - public_id
+      - roles
+      - state
+    AccountStateEnum:
+      enum:
+      - active
+      - awaiting_first_sign_in
+      - locked
+      - disabled
+      type: string
+      description: |-
+        * `active` - active
+        * `awaiting_first_sign_in` - awaiting_first_sign_in
+        * `locked` - locked
+        * `disabled` - disabled
+    AccountsAttentionOut:
+      type: object
+      properties:
+        locked:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountBriefOut'
+        awaiting_first_sign_in:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountBriefOut'
+        temp_expired:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountBriefOut'
+        employees_without_account:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountBriefOut'
+      required:
+      - awaiting_first_sign_in
+      - employees_without_account
+      - locked
+      - temp_expired
+    AdjustmentInRequest:
+      type: object
+      properties:
+        kind:
+          type: string
+          minLength: 1
+          description: opening or adjustment
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,5}(?:\.\d{0,2})?$
+        effective_date:
+          type: string
+          format: date
+        reason:
+          type: string
+          maxLength: 500
+      required:
+      - amount
+      - effective_date
+      - kind
+      - reason
+    AmendmentInRequest:
+      type: object
+      properties:
+        kind:
+          $ref: '#/components/schemas/AmendmentKindEnum'
+        start_date:
+          type: string
+          format: date
+          nullable: true
+        end_date:
+          type: string
+          format: date
+          nullable: true
+        starts_at_midday:
+          type: boolean
+          default: false
+        ends_at_midday:
+          type: boolean
+          default: false
+        start_time:
+          type: string
+          format: time
+          nullable: true
+        end_time:
+          type: string
+          format: time
+          nullable: true
+        reason:
+          type: string
+          default: ''
+          maxLength: 2000
+      required:
+      - kind
+    AmendmentKindEnum:
+      enum:
+      - cancel
+      - change
+      type: string
+      description: |-
+        * `cancel` - Cancel
+        * `change` - Change
+    AmendmentStatusEnum:
+      enum:
+      - pending
+      - approved
+      - rejected
+      - withdrawn
+      type: string
+      description: |-
+        * `pending` - Pending
+        * `approved` - Approved
+        * `rejected` - Rejected
+        * `withdrawn` - Withdrawn
+    ApprovalItemOut:
+      type: object
+      properties:
+        step_id:
+          type: integer
+        request:
+          $ref: '#/components/schemas/RequestOut'
+        waiting_since:
+          type: string
+          format: date-time
+          nullable: true
+        via_delegation_from:
+          type: string
+          nullable: true
+        decision_context:
+          $ref: '#/components/schemas/DecisionContextOut'
+      required:
+      - decision_context
+      - request
+      - step_id
+      - via_delegation_from
+      - waiting_since
+    ApproverRuleEnum:
+      enum:
+      - line_manager
+      - hr_role
+      - named_person
+      type: string
+      description: |-
+        * `line_manager` - Line manager
+        * `hr_role` - HR role
+        * `named_person` - Named person
+    ArchiveInRequest:
+      type: object
+      properties:
+        leaving_date:
+          type: string
+          format: date
+        reason:
+          type: string
+          minLength: 1
+          maxLength: 500
+      required:
+      - leaving_date
+      - reason
+    ArchiveItemOut:
+      type: object
+      properties:
+        label:
+          type: string
+        link:
+          type: string
+      required:
+      - label
+      - link
+    ArchivePreviewOut:
+      type: object
+      properties:
+        has_account:
+          type: boolean
+        reports:
+          type: array
+          items:
+            $ref: '#/components/schemas/ArchiveItemOut'
+        sections:
+          type: array
+          items:
+            $ref: '#/components/schemas/ArchiveSectionOut'
+      required:
+      - has_account
+      - reports
+      - sections
+    ArchiveSectionOut:
+      type: object
+      properties:
+        key:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ArchiveItemOut'
+      required:
+      - items
+      - key
+    AssignableRoleEnum:
+      enum:
+      - hr
+      - exec
+      - sysadmin
+      type: string
+      description: |-
+        * `hr` - hr
+        * `exec` - exec
+        * `sysadmin` - sysadmin
+    AuditCategoryEnum:
+      enum:
+      - business
+      - security
+      type: string
+      description: |-
+        * `business` - Business
+        * `security` - Security
+    AuditEventOut:
+      type: object
+      properties:
+        id:
+          type: integer
+        at:
+          type: string
+          format: date-time
+        actor:
+          type: string
+          nullable: true
+          readOnly: true
+        category:
+          $ref: '#/components/schemas/AuditCategoryEnum'
+        action:
+          type: string
+        object_type:
+          type: string
+        object_id:
+          type: string
+        object_label:
+          type: string
+        changes: {}
+        ip_address:
+          type: string
+          nullable: true
+        request_id:
+          type: string
+      required:
+      - action
+      - actor
+      - at
+      - category
+      - changes
+      - id
+      - ip_address
+      - object_id
+      - object_label
+      - object_type
+      - request_id
+    BackupOut:
+      type: object
+      properties:
+        last_at:
+          type: string
+          format: date-time
+        size_bytes:
+          type: integer
+          nullable: true
+        storage_used_bytes:
+          type: integer
+          nullable: true
+      required:
+      - last_at
+      - size_bytes
+      - storage_used_bytes
+    BalanceAsOfOut:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        balance:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,5}(?:\.\d{0,2})?$
+        projected:
+          type: boolean
+      required:
+      - balance
+      - date
+      - projected
+    BalanceEffectEnum:
+      enum:
+      - deducts_annual
+      - none
+      type: string
+      description: |-
+        * `deducts_annual` - Deducts from the annual balance
+        * `none` - None
+    BalanceEmployeeOut:
+      type: object
+      properties:
+        public_id:
+          type: string
+          format: uuid
+        name:
+          type: string
+      required:
+      - name
+      - public_id
+    BalanceNowAfterOut:
+      type: object
+      properties:
+        now:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,7}(?:\.\d{0,2})?$
+        after:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,7}(?:\.\d{0,2})?$
+      required:
+      - after
+      - now
+    BalanceOut:
+      type: object
+      properties:
+        employee:
+          $ref: '#/components/schemas/BalanceEmployeeOut'
+        current:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,5}(?:\.\d{0,2})?$
+        pending:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,5}(?:\.\d{0,2})?$
+        approved_upcoming:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,5}(?:\.\d{0,2})?$
+        next_credit_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,5}(?:\.\d{0,2})?$
+          nullable: true
+        next_credit_date:
+          type: string
+          format: date
+          nullable: true
+        has_opening:
+          type: boolean
+        opening_date:
+          type: string
+          format: date
+          nullable: true
+        can_enter_opening:
+          type: boolean
+        as_of:
+          allOf:
+          - $ref: '#/components/schemas/BalanceAsOfOut'
+          nullable: true
+      required:
+      - approved_upcoming
+      - as_of
+      - can_enter_opening
+      - current
+      - employee
+      - has_opening
+      - next_credit_amount
+      - next_credit_date
+      - opening_date
+      - pending
+    BalancePreviewOut:
+      type: object
+      properties:
+        now:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,7}(?:\.\d{0,2})?$
+        on_start:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,7}(?:\.\d{0,2})?$
+        after:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,7}(?:\.\d{0,2})?$
+      required:
+      - after
+      - now
+      - on_start
+    BlankEnum:
+      enum:
+      - ''
+    CalendarEmployeeOut:
+      type: object
+      properties:
+        public_id:
+          type: string
+        name:
+          type: string
+      required:
+      - name
+      - public_id
+    CalendarEntryOut:
+      type: object
+      properties:
+        employee:
+          $ref: '#/components/schemas/CalendarEmployeeOut'
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        starts_at_midday:
+          type: boolean
+        ends_at_midday:
+          type: boolean
+        label:
+          $ref: '#/components/schemas/CalendarLabelEnum'
+        type_code:
+          type: string
+          nullable: true
+        type_name:
+          type: string
+          nullable: true
+        status:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/CalendarEntryStatusEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        request_public_id:
+          type: string
+          nullable: true
+        mine:
+          type: boolean
+      required:
+      - employee
+      - end_date
+      - ends_at_midday
+      - label
+      - mine
+      - request_public_id
+      - start_date
+      - starts_at_midday
+      - status
+      - type_code
+      - type_name
+    CalendarEntryStatusEnum:
+      enum:
+      - pending
+      - approved
+      type: string
+      description: |-
+        * `pending` - pending
+        * `approved` - approved
+    CalendarHolidayOut:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        name:
+          type: string
+      required:
+      - date
+      - name
+    CalendarLabelEnum:
+      enum:
+      - absent
+      - remote
+      - hidden
+      type: string
+      description: |-
+        * `absent` - Absent
+        * `remote` - Remote
+        * `hidden` - Hidden
+    CalendarOut:
+      type: object
+      properties:
+        holidays:
+          type: array
+          items:
+            $ref: '#/components/schemas/CalendarHolidayOut'
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/CalendarEntryOut'
+        working_week:
+          type: array
+          items:
+            type: integer
+            maximum: 7
+            minimum: 1
+      required:
+      - entries
+      - holidays
+      - working_week
+    CandidateOut:
+      type: object
+      properties:
+        public_id:
+          type: string
+        full_name:
+          type: string
+        email:
+          type: string
+      required:
+      - email
+      - full_name
+      - public_id
+    CapPeriodEnum:
+      enum:
+      - none
+      - week
+      - month
+      type: string
+      description: |-
+        * `none` - None
+        * `week` - Week
+        * `month` - Month
+    CapUsageOut:
+      type: object
+      properties:
+        used:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,7}(?:\.\d{0,2})?$
+        limit:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,7}(?:\.\d{0,2})?$
+        period:
+          $ref: '#/components/schemas/CapPeriodEnum'
+      required:
+      - limit
+      - period
+      - used
+    CapUsedOut:
+      type: object
+      properties:
+        used:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,7}(?:\.\d{0,2})?$
+        limit:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,7}(?:\.\d{0,2})?$
+      required:
+      - limit
+      - used
+    CertificateStatusEnum:
+      enum:
+      - not_needed
+      - attached
+      - due
+      - overdue
+      - missing
+      type: string
+      description: |-
+        * `not_needed` - not_needed
+        * `attached` - attached
+        * `due` - due
+        * `overdue` - overdue
+        * `missing` - missing
+    ChainRowOut:
+      type: object
+      properties:
+        position:
+          type: integer
+        rule:
+          $ref: '#/components/schemas/ApproverRuleEnum'
+        mode:
+          $ref: '#/components/schemas/StepModeEnum'
+        approvers:
+          type: array
+          items:
+            type: string
+      required:
+      - approvers
+      - mode
+      - position
+      - rule
+    ChainStepInRequest:
+      type: object
+      properties:
+        approver_rule:
+          $ref: '#/components/schemas/ApproverRuleEnum'
+        named_person:
+          type: string
+          format: uuid
+          nullable: true
+        mode:
+          $ref: '#/components/schemas/StepModeEnum'
+        reminder_after_days:
+          type: integer
+          maximum: 60
+          minimum: 1
+          default: 2
+        flag_after_days:
+          type: integer
+          maximum: 60
+          minimum: 1
+          nullable: true
+      required:
+      - approver_rule
+      - mode
+    ChainStepOut:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        position:
+          type: integer
+          maximum: 32767
+          minimum: 0
+        approver_rule:
+          $ref: '#/components/schemas/ApproverRuleEnum'
+        named_person:
+          allOf:
+          - $ref: '#/components/schemas/NamedPersonOut'
+          nullable: true
+          readOnly: true
+        mode:
+          $ref: '#/components/schemas/StepModeEnum'
+        reminder_after_days:
+          type: integer
+          maximum: 32767
+          minimum: 0
+        flag_after_days:
+          type: integer
+          maximum: 32767
+          minimum: 0
+          nullable: true
+      required:
+      - approver_rule
+      - id
+      - named_person
+      - position
+    ChainStepsInRequest:
+      type: object
+      properties:
+        steps:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChainStepInRequest'
+      required:
+      - steps
+    CodeOptionOut:
+      type: object
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+      required:
+      - code
+      - name
+    ContractTypeEnum:
+      enum:
+      - permanent
+      - fixed_term
+      - temporary
+      - consultant
+      type: string
+      description: |-
+        * `permanent` - Permanent
+        * `fixed_term` - Fixed Term
+        * `temporary` - Temporary
+        * `consultant` - Consultant
+    CorrectInRequest:
+      type: object
+      properties:
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        starts_at_midday:
+          type: boolean
+          default: false
+        ends_at_midday:
+          type: boolean
+          default: false
+        start_time:
+          type: string
+          format: time
+          nullable: true
+        end_time:
+          type: string
+          format: time
+          nullable: true
+        reason:
+          type: string
+          default: ''
+          maxLength: 2000
+      required:
+      - end_date
+      - start_date
+    CsrfOut:
+      type: object
+      properties:
+        csrf_token:
+          type: string
+      required:
+      - csrf_token
+    DecideInRequest:
+      type: object
+      properties:
+        decision:
+          $ref: '#/components/schemas/DecisionEnum'
+        comment:
+          type: string
+          default: ''
+          maxLength: 2000
+        version:
+          type: integer
+          minimum: 1
+      required:
+      - decision
+      - version
+    DecisionChannelEnum:
+      enum:
+      - in_app
+      - verbal
+      - paper
+      type: string
+      description: |-
+        * `in_app` - In the application
+        * `verbal` - Verbal
+        * `paper` - Paper
+    DecisionContextOut:
+      type: object
+      properties:
+        balance:
+          allOf:
+          - $ref: '#/components/schemas/BalanceNowAfterOut'
+          nullable: true
+        teammates_away:
+          type: array
+          items:
+            $ref: '#/components/schemas/TeammateAwayOut'
+        cap:
+          allOf:
+          - $ref: '#/components/schemas/CapUsedOut'
+          nullable: true
+      required:
+      - balance
+      - cap
+      - teammates_away
+    DecisionEnum:
+      enum:
+      - approve
+      - reject
+      - return
+      type: string
+      description: |-
+        * `approve` - Approve
+        * `reject` - Reject
+        * `return` - Return
+    DelegationDirectionEnum:
+      enum:
+      - given
+      - received
+      type: string
+      description: |-
+        * `given` - given
+        * `received` - received
+    DelegationInRequest:
+      type: object
+      properties:
+        manager:
+          type: string
+          format: uuid
+        delegate:
+          type: string
+          format: uuid
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+      required:
+      - delegate
+      - end_date
+      - start_date
+    DelegationLineOut:
+      type: object
+      properties:
+        direction:
+          $ref: '#/components/schemas/DelegationDirectionEnum'
+        person:
+          type: string
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+      required:
+      - direction
+      - end_date
+      - person
+      - start_date
+    DelegationOut:
+      type: object
+      properties:
+        public_id:
+          type: string
+          format: uuid
+        manager:
+          $ref: '#/components/schemas/EmployeeRefOut'
+        delegate:
+          $ref: '#/components/schemas/EmployeeRefOut'
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        state:
+          type: string
+          readOnly: true
+        direction:
+          type: string
+          nullable: true
+          readOnly: true
+        can_end:
+          type: boolean
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+      required:
+      - can_end
+      - created_at
+      - delegate
+      - direction
+      - end_date
+      - manager
+      - public_id
+      - start_date
+      - state
+    DepartmentBalanceOut:
+      type: object
+      properties:
+        department:
+          type: string
+        total:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,7}(?:\.\d{0,2})?$
+      required:
+      - department
+      - total
+    DepartmentInRequest:
+      type: object
+      properties:
+        code:
+          type: string
+          minLength: 1
+          maxLength: 20
+        name_fr:
+          type: string
+          minLength: 1
+          maxLength: 120
+        name_en:
+          type: string
+          minLength: 1
+          maxLength: 120
+      required:
+      - code
+      - name_en
+      - name_fr
+    DepartmentOptionOut:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+      required:
+      - id
+      - name
+    DepartmentOut:
+      type: object
+      properties:
+        id:
+          type: integer
+        code:
+          type: string
+        name_fr:
+          type: string
+        name_en:
+          type: string
+        name:
+          type: string
+          readOnly: true
+        is_active:
+          type: boolean
+        employee_count:
+          type: integer
+      required:
+      - code
+      - employee_count
+      - id
+      - is_active
+      - name
+      - name_en
+      - name_fr
+    DepartmentRefOut:
+      type: object
+      properties:
+        id:
+          type: integer
+        code:
+          type: string
+        name:
+          type: string
+          readOnly: true
+      required:
+      - code
+      - id
+      - name
+    DocumentFileOut:
+      type: object
+      properties:
+        public_id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        size:
+          type: integer
+        content_type:
+          type: string
+      required:
+      - content_type
+      - name
+      - public_id
+      - size
+    DocumentInRequest:
+      type: object
+      properties:
+        file:
+          type: string
+          format: binary
+        label:
+          type: string
+          minLength: 1
+          maxLength: 120
+        visible_to_employee:
+          type: boolean
+          default: false
+      required:
+      - file
+      - label
+    DocumentOut:
+      type: object
+      properties:
+        id:
+          type: integer
+        label:
+          type: string
+        visible_to_employee:
+          type: boolean
+        attachment:
+          $ref: '#/components/schemas/DocumentFileOut'
+        added_by:
+          type: string
+          nullable: true
+          readOnly: true
+        added_at:
+          type: string
+          format: date-time
+      required:
+      - added_at
+      - added_by
+      - attachment
+      - id
+      - label
+      - visible_to_employee
+    DocumentRuleEnum:
+      enum:
+      - none
+      - required_within_deadline
+      type: string
+      description: |-
+        * `none` - None
+        * `required_within_deadline` - Required within a deadline
+    EmployeeBriefOut:
+      type: object
+      properties:
+        public_id:
+          type: string
+        name:
+          type: string
+      required:
+      - name
+      - public_id
+    EmployeeDetail:
+      oneOf:
+      - $ref: '#/components/schemas/EmployeeOut'
+      - $ref: '#/components/schemas/EmployeeTeamOut'
+    EmployeeDirectoryOut:
+      type: object
+      properties:
+        public_id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          readOnly: true
+        department:
+          type: string
+          readOnly: true
+      required:
+      - department
+      - name
+      - public_id
+    EmployeeInRequest:
+      type: object
+      properties:
+        employee_number:
+          type: string
+          minLength: 1
+          maxLength: 20
+        first_name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        last_name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        date_of_birth:
+          type: string
+          format: date
+          nullable: true
+        gender:
+          oneOf:
+          - $ref: '#/components/schemas/GenderEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        professional_email:
+          type: string
+          format: email
+          minLength: 1
+        personal_email:
+          type: string
+          format: email
+        phone:
+          type: string
+          maxLength: 40
+        address:
+          type: string
+          maxLength: 500
+        hire_date:
+          type: string
+          format: date
+        contract_start_date:
+          type: string
+          format: date
+          nullable: true
+        contract_end_date:
+          type: string
+          format: date
+          nullable: true
+        contract_type:
+          $ref: '#/components/schemas/ContractTypeEnum'
+        status:
+          type: string
+          minLength: 1
+        department:
+          type: integer
+        position:
+          type: integer
+        manager:
+          type: string
+          format: uuid
+          nullable: true
+        emergency_contact_name:
+          type: string
+          maxLength: 120
+        emergency_contact_phone:
+          type: string
+          maxLength: 40
+      required:
+      - contract_type
+      - department
+      - employee_number
+      - first_name
+      - hire_date
+      - last_name
+      - position
+      - professional_email
+    EmployeeListOut:
+      type: object
+      description: One row of a list. The last three fields are null for a viewer
+        who is neither HR nor an executive.
+      properties:
+        public_id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          readOnly: true
+        department:
+          $ref: '#/components/schemas/DepartmentRefOut'
+        position:
+          $ref: '#/components/schemas/PositionRefOut'
+        professional_email:
+          type: string
+          format: email
+        phone:
+          type: string
+        employee_number:
+          type: string
+          nullable: true
+          readOnly: true
+        manager:
+          allOf:
+          - $ref: '#/components/schemas/EmployeeRefOut'
+          nullable: true
+          readOnly: true
+        status:
+          type: string
+          nullable: true
+          readOnly: true
+      required:
+      - department
+      - employee_number
+      - manager
+      - name
+      - phone
+      - position
+      - professional_email
+      - public_id
+      - status
+    EmployeeOptionOut:
+      type: object
+      properties:
+        public_id:
+          type: string
+        name:
+          type: string
+      required:
+      - name
+      - public_id
+    EmployeeOut:
+      type: object
+      description: 'The whole record: for its owner, HR and executives.'
+      properties:
+        public_id:
+          type: string
+          format: uuid
+        first_name:
+          type: string
+        last_name:
+          type: string
+        name:
+          type: string
+          readOnly: true
+        department:
+          $ref: '#/components/schemas/DepartmentRefOut'
+        position:
+          $ref: '#/components/schemas/PositionRefOut'
+        professional_email:
+          type: string
+          format: email
+        phone:
+          type: string
+        employee_number:
+          type: string
+        date_of_birth:
+          type: string
+          format: date
+          nullable: true
+        gender:
+          type: string
+        personal_email:
+          type: string
+        address:
+          type: string
+        hire_date:
+          type: string
+          format: date
+        contract_start_date:
+          type: string
+          format: date
+          nullable: true
+        contract_end_date:
+          type: string
+          format: date
+          nullable: true
+        contract_type:
+          type: string
+        status:
+          type: string
+        manager:
+          allOf:
+          - $ref: '#/components/schemas/EmployeeRefOut'
+          nullable: true
+        emergency_contact_name:
+          type: string
+        emergency_contact_phone:
+          type: string
+        archived_at:
+          type: string
+          format: date
+          nullable: true
+        archive_reason:
+          type: string
+        has_account:
+          type: boolean
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+      - address
+      - archive_reason
+      - archived_at
+      - contract_end_date
+      - contract_start_date
+      - contract_type
+      - created_at
+      - date_of_birth
+      - department
+      - emergency_contact_name
+      - emergency_contact_phone
+      - employee_number
+      - first_name
+      - gender
+      - has_account
+      - hire_date
+      - last_name
+      - manager
+      - name
+      - personal_email
+      - phone
+      - position
+      - professional_email
+      - public_id
+      - status
+      - updated_at
+    EmployeeRefOut:
+      type: object
+      properties:
+        public_id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          readOnly: true
+      required:
+      - name
+      - public_id
+    EmployeeTeamOut:
+      type: object
+      description: 'What a manager reads about a member of the team: name, department,
+        position, contact.'
+      properties:
+        public_id:
+          type: string
+          format: uuid
+        first_name:
+          type: string
+        last_name:
+          type: string
+        name:
+          type: string
+          readOnly: true
+        department:
+          $ref: '#/components/schemas/DepartmentRefOut'
+        position:
+          $ref: '#/components/schemas/PositionRefOut'
+        professional_email:
+          type: string
+          format: email
+        phone:
+          type: string
+      required:
+      - department
+      - first_name
+      - last_name
+      - name
+      - phone
+      - position
+      - professional_email
+      - public_id
+    ExceptionalEventInRequest:
+      type: object
+      properties:
+        name_fr:
+          type: string
+          minLength: 1
+          maxLength: 120
+        name_en:
+          type: string
+          minLength: 1
+          maxLength: 120
+        days_allowed:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,5}(?:\.\d{0,2})?$
+        proof_required:
+          type: boolean
+          default: false
+        is_active:
+          type: boolean
+          default: true
+      required:
+      - days_allowed
+      - name_en
+      - name_fr
+    ExceptionalEventOut:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name_fr:
+          type: string
+          maxLength: 120
+        name_en:
+          type: string
+          maxLength: 120
+        name:
+          type: string
+          readOnly: true
+        days_allowed:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,5}(?:\.\d{0,2})?$
+        proof_required:
+          type: boolean
+        is_active:
+          type: boolean
+      required:
+      - days_allowed
+      - id
+      - name
+      - name_en
+      - name_fr
+    FileInRequest:
+      type: object
+      properties:
+        file:
+          type: string
+          format: binary
+      required:
+      - file
+    GenderEnum:
+      enum:
+      - female
+      - male
+      type: string
+      description: |-
+        * `female` - Female
+        * `male` - Male
+    HealthOut:
+      type: object
+      properties:
+        status:
+          type: string
+        app:
+          type: string
+        database:
+          type: string
+        worker:
+          type: string
+        version:
+          type: string
+        environment:
+          type: string
+      required:
+      - app
+      - database
+      - environment
+      - status
+      - version
+      - worker
+    HistoryItemOut:
+      type: object
+      properties:
+        at:
+          type: string
+          format: date-time
+        actor:
+          type: string
+          nullable: true
+        action:
+          type: string
+        summary:
+          type: string
+        changes: {}
+      required:
+      - action
+      - actor
+      - at
+      - changes
+      - summary
+    HolidayCopyInRequest:
+      type: object
+      properties:
+        from_year:
+          type: integer
+          maximum: 2200
+          minimum: 1900
+        to_year:
+          type: integer
+          maximum: 2200
+          minimum: 1900
+      required:
+      - from_year
+      - to_year
+    HolidayImpactOut:
+      type: object
+      description: An approved request that covers the date of a holiday being added,
+        moved or removed.
+      properties:
+        public_id:
+          type: string
+          format: uuid
+        employee:
+          type: string
+        type:
+          type: string
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,7}(?:\.\d{0,2})?$
+      required:
+      - employee
+      - end_date
+      - public_id
+      - quantity
+      - start_date
+      - type
+    HolidayInRequest:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        name_fr:
+          type: string
+          minLength: 1
+          maxLength: 120
+        name_en:
+          type: string
+          minLength: 1
+          maxLength: 120
+        recurs_yearly:
+          type: boolean
+          default: false
+      required:
+      - date
+      - name_en
+      - name_fr
+    HolidayOut:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        date:
+          type: string
+          format: date
+        name_fr:
+          type: string
+          maxLength: 120
+        name_en:
+          type: string
+          maxLength: 120
+        name:
+          type: string
+          readOnly: true
+        recurs_yearly:
+          type: boolean
+      required:
+      - date
+      - id
+      - name
+      - name_en
+      - name_fr
+    HomeBalanceOut:
+      type: object
+      properties:
+        current:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,5}(?:\.\d{0,2})?$
+        pending:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,5}(?:\.\d{0,2})?$
+        approved_upcoming:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,5}(?:\.\d{0,2})?$
+        next_credit_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,5}(?:\.\d{0,2})?$
+          nullable: true
+        next_credit_date:
+          type: string
+          format: date
+          nullable: true
+      required:
+      - approved_upcoming
+      - current
+      - next_credit_amount
+      - next_credit_date
+      - pending
+    HomePersonOut:
+      type: object
+      properties:
+        public_id:
+          type: string
+        name:
+          type: string
+      required:
+      - name
+      - public_id
+    JobOut:
+      type: object
+      properties:
+        name:
+          type: string
+        schedule:
+          type: string
+        last_started_at:
+          type: string
+          format: date-time
+          nullable: true
+        last_finished_at:
+          type: string
+          format: date-time
+          nullable: true
+        last_ok:
+          type: boolean
+          nullable: true
+        last_detail:
+          type: string
+        next_run_at:
+          type: string
+          format: date-time
+          nullable: true
+      required:
+      - last_detail
+      - last_finished_at
+      - last_ok
+      - last_started_at
+      - name
+      - next_run_at
+      - schedule
+    KpmgDefaultPeriodOut:
+      type: object
+      properties:
+        start:
+          type: string
+          format: date
+        end:
+          type: string
+          format: date
+        cutoff_day:
+          type: integer
+          nullable: true
+      required:
+      - cutoff_day
+      - end
+      - start
+    LanguageEnum:
+      enum:
+      - fr
+      - en
+      type: string
+      description: |-
+        * `fr` - Français
+        * `en` - English
+    LeaveOwedOut:
+      type: object
+      properties:
+        departments:
+          type: array
+          items:
+            $ref: '#/components/schemas/DepartmentBalanceOut'
+        largest:
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonBalanceOut'
+      required:
+      - departments
+      - largest
+    LedgerLineOut:
+      type: object
+      properties:
+        id:
+          type: integer
+        kind:
+          type: string
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,5}(?:\.\d{0,2})?$
+        effective_date:
+          type: string
+          format: date
+        period:
+          type: string
+        reason:
+          type: string
+        request_public_id:
+          type: string
+          nullable: true
+        created_by:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        balance_after:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,5}(?:\.\d{0,2})?$
+      required:
+      - amount
+      - balance_after
+      - created_at
+      - created_by
+      - effective_date
+      - id
+      - kind
+      - period
+      - reason
+      - request_public_id
+    LoginInRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          minLength: 1
+          maxLength: 254
+        password:
+          type: string
+          minLength: 1
+          maxLength: 128
+      required:
+      - email
+      - password
+    MeHomeOut:
+      type: object
+      properties:
+        balance:
+          $ref: '#/components/schemas/HomeBalanceOut'
+        needs_you:
+          type: array
+          items:
+            $ref: '#/components/schemas/NeedsYouOut'
+        in_progress:
+          type: array
+          items:
+            $ref: '#/components/schemas/RequestOut'
+        coming_up:
+          type: array
+          items:
+            $ref: '#/components/schemas/RequestOut'
+      required:
+      - balance
+      - coming_up
+      - in_progress
+      - needs_you
+    MeOut:
+      type: object
+      properties:
+        public_id:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+        name:
+          type: string
+        language:
+          $ref: '#/components/schemas/LanguageEnum'
+        roles:
+          type: array
+          items:
+            type: string
+        workspaces:
+          type: array
+          items:
+            type: string
+        last_workspace:
+          type: string
+        must_change_password:
+          type: boolean
+        previous_login_at:
+          type: string
+          format: date-time
+          nullable: true
+        password_reset:
+          allOf:
+          - $ref: '#/components/schemas/PasswordResetNoticeOut'
+          nullable: true
+        employee:
+          allOf:
+          - $ref: '#/components/schemas/EmployeeBriefOut'
+          nullable: true
+        environment:
+          type: string
+        version:
+          type: string
+      required:
+      - email
+      - employee
+      - environment
+      - language
+      - last_workspace
+      - must_change_password
+      - name
+      - password_reset
+      - previous_login_at
+      - public_id
+      - roles
+      - version
+      - workspaces
+    NamedPersonOut:
+      type: object
+      properties:
+        public_id:
+          type: string
+          format: uuid
+        name:
+          type: string
+      required:
+      - name
+      - public_id
+    NeedsYouKindEnum:
+      enum:
+      - returned
+      - certificate_due
+      type: string
+      description: |-
+        * `returned` - returned
+        * `certificate_due` - certificate_due
+    NeedsYouOut:
+      type: object
+      properties:
+        kind:
+          $ref: '#/components/schemas/NeedsYouKindEnum'
+        request:
+          $ref: '#/components/schemas/RequestOut'
+        due_at:
+          type: string
+          format: date-time
+          nullable: true
+      required:
+      - due_at
+      - kind
+      - request
+    NotificationOut:
+      type: object
+      properties:
+        id:
+          type: integer
+        event:
+          type: string
+        title:
+          type: string
+        body:
+          type: string
+        link:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        read_at:
+          type: string
+          format: date-time
+          nullable: true
+      required:
+      - body
+      - created_at
+      - event
+      - id
+      - link
+      - read_at
+      - title
+    NullEnum:
+      enum:
+      - null
+    OutDepartmentOut:
+      type: object
+      properties:
+        department:
+          type: string
+        today:
+          type: array
+          items:
+            $ref: '#/components/schemas/OutNameOut'
+        week:
+          type: array
+          items:
+            $ref: '#/components/schemas/OutNameOut'
+      required:
+      - department
+      - today
+      - week
+    OutNameOut:
+      type: object
+      properties:
+        name:
+          type: string
+        label:
+          $ref: '#/components/schemas/CalendarLabelEnum'
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        waiting:
+          type: boolean
+      required:
+      - end_date
+      - label
+      - name
+      - start_date
+      - waiting
+    OutPersonOut:
+      type: object
+      properties:
+        employee:
+          $ref: '#/components/schemas/HomePersonOut'
+        label:
+          $ref: '#/components/schemas/CalendarLabelEnum'
+        type_name:
+          type: string
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        starts_at_midday:
+          type: boolean
+        ends_at_midday:
+          type: boolean
+        today:
+          type: boolean
+        waiting:
+          type: boolean
+      required:
+      - employee
+      - end_date
+      - ends_at_midday
+      - label
+      - start_date
+      - starts_at_midday
+      - today
+      - type_name
+      - waiting
+    OverviewHomeOut:
+      type: object
+      properties:
+        out_now:
+          type: array
+          items:
+            $ref: '#/components/schemas/OutDepartmentOut'
+        absence_this_month:
+          type: array
+          items:
+            $ref: '#/components/schemas/AbsenceMonthOut'
+        leave_owed:
+          $ref: '#/components/schemas/LeaveOwedOut'
+        waiting:
+          type: array
+          items:
+            $ref: '#/components/schemas/WaitingLineOut'
+      required:
+      - absence_this_month
+      - leave_owed
+      - out_now
+      - waiting
+    PaginatedAccountOut:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type: string
+          format: uri
+          nullable: true
+        previous:
+          type: string
+          format: uri
+          nullable: true
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountOut'
+      required:
+      - count
+      - next
+      - previous
+      - results
+    PaginatedApprovalItemOut:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type: string
+          format: uri
+          nullable: true
+        previous:
+          type: string
+          format: uri
+          nullable: true
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApprovalItemOut'
+      required:
+      - count
+      - next
+      - previous
+      - results
+    PaginatedAuditEventOut:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type: string
+          format: uri
+          nullable: true
+        previous:
+          type: string
+          format: uri
+          nullable: true
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuditEventOut'
+      required:
+      - count
+      - next
+      - previous
+      - results
+    PaginatedDelegationOut:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type: string
+          format: uri
+          nullable: true
+        previous:
+          type: string
+          format: uri
+          nullable: true
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/DelegationOut'
+      required:
+      - count
+      - next
+      - previous
+      - results
+    PaginatedEmployeeListOut:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type: string
+          format: uri
+          nullable: true
+        previous:
+          type: string
+          format: uri
+          nullable: true
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmployeeListOut'
+      required:
+      - count
+      - next
+      - previous
+      - results
+    PaginatedLedgerLineOut:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type: string
+          format: uri
+          nullable: true
+        previous:
+          type: string
+          format: uri
+          nullable: true
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/LedgerLineOut'
+      required:
+      - count
+      - next
+      - previous
+      - results
+    PaginatedNotificationOut:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type: string
+          format: uri
+          nullable: true
+        previous:
+          type: string
+          format: uri
+          nullable: true
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationOut'
+      required:
+      - count
+      - next
+      - previous
+      - results
+    PaginatedProfileChangeOut:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type: string
+          format: uri
+          nullable: true
+        previous:
+          type: string
+          format: uri
+          nullable: true
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProfileChangeOut'
+      required:
+      - count
+      - next
+      - previous
+      - results
+    PaginatedRequestOut:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type: string
+          format: uri
+          nullable: true
+        previous:
+          type: string
+          format: uri
+          nullable: true
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RequestOut'
+      required:
+      - count
+      - next
+      - previous
+      - results
+    PasswordInRequest:
+      type: object
+      properties:
+        current_password:
+          type: string
+          minLength: 1
+          maxLength: 128
+        new_password:
+          type: string
+          minLength: 1
+          maxLength: 128
+      required:
+      - current_password
+      - new_password
+    PasswordResetNoticeOut:
+      type: object
+      properties:
+        by:
+          type: string
+          nullable: true
+        at:
+          type: string
+          format: date-time
+      required:
+      - at
+      - by
+    PatchedDepartmentPatchInRequest:
+      type: object
+      properties:
+        code:
+          type: string
+          minLength: 1
+          maxLength: 20
+        name_fr:
+          type: string
+          minLength: 1
+          maxLength: 120
+        name_en:
+          type: string
+          minLength: 1
+          maxLength: 120
+        is_active:
+          type: boolean
+    PatchedDocumentPatchInRequest:
+      type: object
+      properties:
+        visible_to_employee:
+          type: boolean
+    PatchedEmployeeInRequest:
+      type: object
+      properties:
+        employee_number:
+          type: string
+          minLength: 1
+          maxLength: 20
+        first_name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        last_name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        date_of_birth:
+          type: string
+          format: date
+          nullable: true
+        gender:
+          oneOf:
+          - $ref: '#/components/schemas/GenderEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        professional_email:
+          type: string
+          format: email
+          minLength: 1
+        personal_email:
+          type: string
+          format: email
+        phone:
+          type: string
+          maxLength: 40
+        address:
+          type: string
+          maxLength: 500
+        hire_date:
+          type: string
+          format: date
+        contract_start_date:
+          type: string
+          format: date
+          nullable: true
+        contract_end_date:
+          type: string
+          format: date
+          nullable: true
+        contract_type:
+          $ref: '#/components/schemas/ContractTypeEnum'
+        status:
+          type: string
+          minLength: 1
+        department:
+          type: integer
+        position:
+          type: integer
+        manager:
+          type: string
+          format: uuid
+          nullable: true
+        emergency_contact_name:
+          type: string
+          maxLength: 120
+        emergency_contact_phone:
+          type: string
+          maxLength: 40
+    PatchedExceptionalEventInRequest:
+      type: object
+      properties:
+        name_fr:
+          type: string
+          minLength: 1
+          maxLength: 120
+        name_en:
+          type: string
+          minLength: 1
+          maxLength: 120
+        days_allowed:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,5}(?:\.\d{0,2})?$
+        proof_required:
+          type: boolean
+          default: false
+        is_active:
+          type: boolean
+          default: true
+    PatchedHolidayPatchInRequest:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        name_fr:
+          type: string
+          minLength: 1
+          maxLength: 120
+        name_en:
+          type: string
+          minLength: 1
+          maxLength: 120
+        recurs_yearly:
+          type: boolean
+    PatchedMePatchInRequest:
+      type: object
+      properties:
+        language:
+          $ref: '#/components/schemas/LanguageEnum'
+        last_workspace:
+          $ref: '#/components/schemas/WorkspaceEnum'
+    PatchedPositionPatchInRequest:
+      type: object
+      properties:
+        code:
+          type: string
+          minLength: 1
+          maxLength: 20
+        title_fr:
+          type: string
+          minLength: 1
+          maxLength: 120
+        title_en:
+          type: string
+          minLength: 1
+          maxLength: 120
+        grade:
+          type: string
+          maxLength: 40
+        is_active:
+          type: boolean
+    PatchedRequestPatchInRequest:
+      type: object
+      description: Only the fields that are sent are changed. `version` is the version
+        the caller last saw.
+      properties:
+        version:
+          type: integer
+          minimum: 1
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        starts_at_midday:
+          type: boolean
+        ends_at_midday:
+          type: boolean
+        start_time:
+          type: string
+          format: time
+          nullable: true
+        end_time:
+          type: string
+          format: time
+          nullable: true
+        exceptional_event:
+          type: integer
+          nullable: true
+        comment:
+          type: string
+          maxLength: 4000
+    PatchedRequestTypeInRequest:
+      type: object
+      properties:
+        code:
+          type: string
+          minLength: 1
+          maxLength: 40
+          pattern: ^[-a-zA-Z0-9_]+$
+        name_fr:
+          type: string
+          minLength: 1
+          maxLength: 120
+        name_en:
+          type: string
+          minLength: 1
+          maxLength: 120
+        description_fr:
+          type: string
+          maxLength: 240
+        description_en:
+          type: string
+          maxLength: 240
+        unit:
+          $ref: '#/components/schemas/RequestUnitEnum'
+        allows_half_day:
+          type: boolean
+        balance_effect:
+          $ref: '#/components/schemas/BalanceEffectEnum'
+        document_rule:
+          $ref: '#/components/schemas/DocumentRuleEnum'
+        document_deadline_hours:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          nullable: true
+        allows_past_dates:
+          type: boolean
+        notice_days:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        cap_quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,5}(?:\.\d{0,2})?$
+          nullable: true
+        cap_period:
+          $ref: '#/components/schemas/CapPeriodEnum'
+        reduces_meal_tickets:
+          type: boolean
+        calendar_label:
+          $ref: '#/components/schemas/CalendarLabelEnum'
+        is_sensitive:
+          type: boolean
+        uses_events:
+          type: boolean
+        is_active:
+          type: boolean
+        sort_order:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+    PersonBalanceOut:
+      type: object
+      properties:
+        name:
+          type: string
+        department:
+          type: string
+        balance:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,5}(?:\.\d{0,2})?$
+      required:
+      - balance
+      - department
+      - name
+    PositionInRequest:
+      type: object
+      properties:
+        code:
+          type: string
+          minLength: 1
+          maxLength: 20
+        title_fr:
+          type: string
+          minLength: 1
+          maxLength: 120
+        title_en:
+          type: string
+          minLength: 1
+          maxLength: 120
+        grade:
+          type: string
+          maxLength: 40
+      required:
+      - code
+      - title_en
+      - title_fr
+    PositionOut:
+      type: object
+      properties:
+        id:
+          type: integer
+        code:
+          type: string
+        title_fr:
+          type: string
+        title_en:
+          type: string
+        title:
+          type: string
+          readOnly: true
+        grade:
+          type: string
+        is_active:
+          type: boolean
+        employee_count:
+          type: integer
+      required:
+      - code
+      - employee_count
+      - grade
+      - id
+      - is_active
+      - title
+      - title_en
+      - title_fr
+    PositionRefOut:
+      type: object
+      properties:
+        id:
+          type: integer
+        code:
+          type: string
+        title:
+          type: string
+          readOnly: true
+      required:
+      - code
+      - id
+      - title
+    PresenceEnum:
+      enum:
+      - in
+      - absent
+      - remote
+      type: string
+      description: |-
+        * `in` - in
+        * `absent` - absent
+        * `remote` - remote
+    PreviewInRequest:
+      type: object
+      description: The fields a person fills in. `exceptional_event` is the id of
+        an exceptional event.
+      properties:
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        starts_at_midday:
+          type: boolean
+          default: false
+        ends_at_midday:
+          type: boolean
+          default: false
+        start_time:
+          type: string
+          format: time
+          nullable: true
+        end_time:
+          type: string
+          format: time
+          nullable: true
+        exceptional_event:
+          type: integer
+          nullable: true
+        type:
+          type: string
+          minLength: 1
+          pattern: ^[-a-zA-Z0-9_]+$
+        employee:
+          type: string
+          format: uuid
+          nullable: true
+        request:
+          type: string
+          format: uuid
+          nullable: true
+        override:
+          type: boolean
+          default: false
+      required:
+      - end_date
+      - start_date
+      - type
+    PreviewOut:
+      type: object
+      properties:
+        quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,7}(?:\.\d{0,2})?$
+        skipped_days:
+          type: array
+          items:
+            $ref: '#/components/schemas/SkippedDayOut'
+        chain:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChainRowOut'
+        balance:
+          allOf:
+          - $ref: '#/components/schemas/BalancePreviewOut'
+          nullable: true
+        usage:
+          $ref: '#/components/schemas/UsageOut'
+        certificate_due_at:
+          type: string
+          format: date-time
+          nullable: true
+        problems:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProblemOut'
+      required:
+      - balance
+      - certificate_due_at
+      - chain
+      - problems
+      - quantity
+      - skipped_days
+      - usage
+    ProblemOut:
+      type: object
+      properties:
+        field:
+          type: string
+          nullable: true
+        code:
+          type: string
+        detail:
+          type: string
+        params: {}
+      required:
+      - code
+      - detail
+      - field
+      - params
+    ProfileChangeDecisionInRequest:
+      type: object
+      properties:
+        accept:
+          type: boolean
+        comment:
+          type: string
+          maxLength: 500
+      required:
+      - accept
+    ProfileChangeFieldOut:
+      type: object
+      properties:
+        field:
+          type: string
+        old:
+          type: string
+          nullable: true
+        new:
+          type: string
+          nullable: true
+      required:
+      - field
+      - new
+      - old
+    ProfileChangeInRequest:
+      type: object
+      properties:
+        changes:
+          $ref: '#/components/schemas/ProposableFieldsInRequest'
+        note:
+          type: string
+          maxLength: 500
+      required:
+      - changes
+    ProfileChangeOut:
+      type: object
+      properties:
+        public_id:
+          type: string
+          format: uuid
+        employee:
+          $ref: '#/components/schemas/EmployeeRefOut'
+        changes:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProfileChangeFieldOut'
+          readOnly: true
+        note:
+          type: string
+        status:
+          type: string
+        decided_by:
+          type: string
+          nullable: true
+          readOnly: true
+        decided_at:
+          type: string
+          format: date-time
+          nullable: true
+        comment:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+      required:
+      - changes
+      - comment
+      - created_at
+      - decided_at
+      - decided_by
+      - employee
+      - note
+      - public_id
+      - status
+    ProposableFieldsInRequest:
+      type: object
+      properties:
+        first_name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        last_name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        date_of_birth:
+          type: string
+          format: date
+          nullable: true
+        gender:
+          oneOf:
+          - $ref: '#/components/schemas/GenderEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        personal_email:
+          type: string
+          format: email
+        phone:
+          type: string
+          maxLength: 40
+        address:
+          type: string
+          maxLength: 500
+        emergency_contact_name:
+          type: string
+          maxLength: 120
+        emergency_contact_phone:
+          type: string
+          maxLength: 40
+    ReasonInRequest:
+      type: object
+      properties:
+        reason:
+          type: string
+          default: ''
+          maxLength: 2000
+    ReassignInRequest:
+      type: object
+      properties:
+        new_approver:
+          type: string
+          format: uuid
+        reason:
+          type: string
+          default: ''
+          maxLength: 2000
+      required:
+      - new_approver
+    ReclassifyInRequest:
+      type: object
+      properties:
+        override_reason:
+          type: string
+          default: ''
+          maxLength: 2000
+    RecordOnBehalfInRequest:
+      type: object
+      properties:
+        decided_by:
+          type: string
+          format: uuid
+        decision:
+          $ref: '#/components/schemas/DecisionEnum'
+        decided_at:
+          type: string
+          format: date-time
+        channel:
+          $ref: '#/components/schemas/DecisionChannelEnum'
+        note:
+          type: string
+          default: ''
+          maxLength: 2000
+        version:
+          type: integer
+          minimum: 1
+        scan:
+          type: string
+          format: binary
+          nullable: true
+      required:
+      - channel
+      - decided_at
+      - decided_by
+      - decision
+      - version
+    ReportColumnKindEnum:
+      enum:
+      - text
+      - number
+      - date
+      - datetime
+      - period
+      type: string
+      description: |-
+        * `text` - text
+        * `number` - number
+        * `date` - date
+        * `datetime` - datetime
+        * `period` - period
+    ReportColumnOut:
+      type: object
+      properties:
+        key:
+          type: string
+        label:
+          type: string
+        kind:
+          $ref: '#/components/schemas/ReportColumnKindEnum'
+      required:
+      - key
+      - kind
+      - label
+    ReportFiltersOut:
+      type: object
+      properties:
+        scope:
+          $ref: '#/components/schemas/ReportScopeEnum'
+        departments:
+          type: array
+          items:
+            $ref: '#/components/schemas/DepartmentOptionOut'
+        employees:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmployeeOptionOut'
+        actors:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmployeeOptionOut'
+        types:
+          type: array
+          items:
+            $ref: '#/components/schemas/CodeOptionOut'
+        steps:
+          type: array
+          items:
+            $ref: '#/components/schemas/CodeOptionOut'
+      required:
+      - actors
+      - departments
+      - employees
+      - scope
+      - steps
+      - types
+    ReportOut:
+      type: object
+      properties:
+        columns:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportColumnOut'
+        rows:
+          type: array
+          items:
+            type: object
+            additionalProperties: {}
+        totals:
+          allOf:
+          - $ref: '#/components/schemas/ReportTotalsOut'
+          nullable: true
+        notes:
+          type: array
+          items:
+            type: string
+      required:
+      - columns
+      - notes
+      - rows
+      - totals
+    ReportScopeEnum:
+      enum:
+      - team
+      - all
+      type: string
+      description: |-
+        * `team` - team
+        * `all` - all
+    ReportTotalGroupEnum:
+      enum:
+      - overall
+      - by_employee
+      - by_type
+      type: string
+      description: |-
+        * `overall` - overall
+        * `by_employee` - by_employee
+        * `by_type` - by_type
+    ReportTotalLineOut:
+      type: object
+      properties:
+        group:
+          $ref: '#/components/schemas/ReportTotalGroupEnum'
+        label:
+          type: string
+        values:
+          type: object
+          additionalProperties: {}
+      required:
+      - group
+      - label
+      - values
+    ReportTotalsOut:
+      type: object
+      properties:
+        lines:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportTotalLineOut'
+      required:
+      - lines
+    RequestActionEnum:
+      enum:
+      - edit
+      - submit
+      - discard
+      - withdraw
+      - amend
+      - withdraw_amendment
+      - attach
+      - decide
+      - record_on_behalf
+      - reassign
+      - correct
+      - cancel
+      - reclassify
+      type: string
+      description: |-
+        * `edit` - edit
+        * `submit` - submit
+        * `discard` - discard
+        * `withdraw` - withdraw
+        * `amend` - amend
+        * `withdraw_amendment` - withdraw_amendment
+        * `attach` - attach
+        * `decide` - decide
+        * `record_on_behalf` - record_on_behalf
+        * `reassign` - reassign
+        * `correct` - correct
+        * `cancel` - cancel
+        * `reclassify` - reclassify
+    RequestAmendmentBrief:
+      type: object
+      properties:
+        public_id:
+          type: string
+          format: uuid
+        kind:
+          $ref: '#/components/schemas/AmendmentKindEnum'
+        status:
+          $ref: '#/components/schemas/AmendmentStatusEnum'
+        state_key:
+          $ref: '#/components/schemas/RequestStateKeyEnum'
+        waiting_on:
+          type: array
+          items:
+            type: string
+      required:
+      - kind
+      - public_id
+      - state_key
+      - status
+      - waiting_on
+    RequestAmendmentOut:
+      type: object
+      properties:
+        public_id:
+          type: string
+          format: uuid
+        kind:
+          $ref: '#/components/schemas/AmendmentKindEnum'
+        status:
+          $ref: '#/components/schemas/AmendmentStatusEnum'
+        reason:
+          type: string
+          nullable: true
+        new_start_date:
+          type: string
+          format: date
+          nullable: true
+        new_end_date:
+          type: string
+          format: date
+          nullable: true
+        new_quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,7}(?:\.\d{0,2})?$
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        decided_at:
+          type: string
+          format: date-time
+          nullable: true
+      required:
+      - created_at
+      - decided_at
+      - kind
+      - new_end_date
+      - new_quantity
+      - new_start_date
+      - public_id
+      - reason
+      - status
+    RequestAttachmentOut:
+      type: object
+      properties:
+        public_id:
+          type: string
+          format: uuid
+        kind:
+          type: string
+        name:
+          type: string
+        size:
+          type: integer
+        uploaded_by:
+          type: string
+        uploaded_at:
+          type: string
+          format: date-time
+      required:
+      - kind
+      - name
+      - public_id
+      - size
+      - uploaded_at
+      - uploaded_by
+    RequestCertificateOut:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/CertificateStatusEnum'
+        due_at:
+          type: string
+          format: date-time
+          nullable: true
+      required:
+      - due_at
+      - status
+    RequestDetailOut:
+      type: object
+      properties:
+        public_id:
+          type: string
+          format: uuid
+        version:
+          type: integer
+        employee:
+          $ref: '#/components/schemas/RequestEmployeeOut'
+        type:
+          $ref: '#/components/schemas/RequestTypeBrief'
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        starts_at_midday:
+          type: boolean
+        ends_at_midday:
+          type: boolean
+        start_time:
+          type: string
+          format: time
+          nullable: true
+        end_time:
+          type: string
+          format: time
+          nullable: true
+        quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,7}(?:\.\d{0,2})?$
+        event:
+          allOf:
+          - $ref: '#/components/schemas/RequestEventBrief'
+          nullable: true
+        comment:
+          type: string
+          nullable: true
+        comment_hidden:
+          type: boolean
+        status:
+          $ref: '#/components/schemas/RequestStatusEnum'
+        state:
+          $ref: '#/components/schemas/RequestStateOut'
+        certificate:
+          allOf:
+          - $ref: '#/components/schemas/RequestCertificateOut'
+          nullable: true
+        amendment:
+          allOf:
+          - $ref: '#/components/schemas/RequestAmendmentBrief'
+          nullable: true
+        has_override:
+          type: boolean
+        created_by_hr:
+          type: boolean
+        viewer:
+          $ref: '#/components/schemas/RequestViewerOut'
+        submitted_at:
+          type: string
+          format: date-time
+          nullable: true
+        decided_at:
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        steps:
+          type: array
+          items:
+            $ref: '#/components/schemas/RequestStepOut'
+        attachments:
+          type: array
+          items:
+            $ref: '#/components/schemas/RequestAttachmentOut'
+        amendments:
+          type: array
+          items:
+            $ref: '#/components/schemas/RequestAmendmentOut'
+        decision_context:
+          allOf:
+          - $ref: '#/components/schemas/DecisionContextOut'
+          nullable: true
+      required:
+      - amendment
+      - amendments
+      - attachments
+      - certificate
+      - comment
+      - comment_hidden
+      - created_at
+      - created_by_hr
+      - decided_at
+      - decision_context
+      - employee
+      - end_date
+      - end_time
+      - ends_at_midday
+      - event
+      - has_override
+      - public_id
+      - quantity
+      - start_date
+      - start_time
+      - starts_at_midday
+      - state
+      - status
+      - steps
+      - submitted_at
+      - type
+      - version
+      - viewer
+    RequestEmployeeOut:
+      type: object
+      properties:
+        public_id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        department:
+          type: string
+      required:
+      - department
+      - name
+      - public_id
+    RequestEventBrief:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+      required:
+      - id
+      - name
+    RequestInRequest:
+      type: object
+      description: The fields a person fills in. `exceptional_event` is the id of
+        an exceptional event.
+      properties:
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        starts_at_midday:
+          type: boolean
+          default: false
+        ends_at_midday:
+          type: boolean
+          default: false
+        start_time:
+          type: string
+          format: time
+          nullable: true
+        end_time:
+          type: string
+          format: time
+          nullable: true
+        exceptional_event:
+          type: integer
+          nullable: true
+        type:
+          type: string
+          minLength: 1
+          pattern: ^[-a-zA-Z0-9_]+$
+        employee:
+          type: string
+          format: uuid
+          nullable: true
+        comment:
+          type: string
+          default: ''
+          maxLength: 4000
+        override_reason:
+          type: string
+          default: ''
+          maxLength: 2000
+      required:
+      - end_date
+      - start_date
+      - type
+    RequestOut:
+      type: object
+      properties:
+        public_id:
+          type: string
+          format: uuid
+        version:
+          type: integer
+        employee:
+          $ref: '#/components/schemas/RequestEmployeeOut'
+        type:
+          $ref: '#/components/schemas/RequestTypeBrief'
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        starts_at_midday:
+          type: boolean
+        ends_at_midday:
+          type: boolean
+        start_time:
+          type: string
+          format: time
+          nullable: true
+        end_time:
+          type: string
+          format: time
+          nullable: true
+        quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,7}(?:\.\d{0,2})?$
+        event:
+          allOf:
+          - $ref: '#/components/schemas/RequestEventBrief'
+          nullable: true
+        comment:
+          type: string
+          nullable: true
+        comment_hidden:
+          type: boolean
+        status:
+          $ref: '#/components/schemas/RequestStatusEnum'
+        state:
+          $ref: '#/components/schemas/RequestStateOut'
+        certificate:
+          allOf:
+          - $ref: '#/components/schemas/RequestCertificateOut'
+          nullable: true
+        amendment:
+          allOf:
+          - $ref: '#/components/schemas/RequestAmendmentBrief'
+          nullable: true
+        has_override:
+          type: boolean
+        created_by_hr:
+          type: boolean
+        viewer:
+          $ref: '#/components/schemas/RequestViewerOut'
+        submitted_at:
+          type: string
+          format: date-time
+          nullable: true
+        decided_at:
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+      required:
+      - amendment
+      - certificate
+      - comment
+      - comment_hidden
+      - created_at
+      - created_by_hr
+      - decided_at
+      - employee
+      - end_date
+      - end_time
+      - ends_at_midday
+      - event
+      - has_override
+      - public_id
+      - quantity
+      - start_date
+      - start_time
+      - starts_at_midday
+      - state
+      - status
+      - submitted_at
+      - type
+      - version
+      - viewer
+    RequestStateKeyEnum:
+      enum:
+      - draft
+      - waiting_manager
+      - waiting_hr
+      - waiting_person
+      - returned
+      - approved
+      - rejected
+      - withdrawn
+      - cancelled
+      type: string
+      description: |-
+        * `draft` - draft
+        * `waiting_manager` - waiting_manager
+        * `waiting_hr` - waiting_hr
+        * `waiting_person` - waiting_person
+        * `returned` - returned
+        * `approved` - approved
+        * `rejected` - rejected
+        * `withdrawn` - withdrawn
+        * `cancelled` - cancelled
+    RequestStateOut:
+      type: object
+      properties:
+        key:
+          $ref: '#/components/schemas/RequestStateKeyEnum'
+        waiting_on:
+          type: array
+          items:
+            type: string
+        last_actor:
+          type: string
+          nullable: true
+        note:
+          type: string
+          nullable: true
+        since:
+          type: string
+          format: date-time
+          nullable: true
+      required:
+      - key
+      - last_actor
+      - note
+      - since
+      - waiting_on
+    RequestStatusEnum:
+      enum:
+      - draft
+      - pending
+      - returned
+      - approved
+      - rejected
+      - withdrawn
+      - cancelled
+      type: string
+      description: |-
+        * `draft` - Draft
+        * `pending` - Pending
+        * `returned` - Returned
+        * `approved` - Approved
+        * `rejected` - Rejected
+        * `withdrawn` - Withdrawn
+        * `cancelled` - Cancelled
+    RequestStepOut:
+      type: object
+      properties:
+        id:
+          type: integer
+        round:
+          type: integer
+        position:
+          type: integer
+        rule:
+          $ref: '#/components/schemas/ApproverRuleEnum'
+        mode:
+          $ref: '#/components/schemas/StepModeEnum'
+        status:
+          $ref: '#/components/schemas/StepStatusEnum'
+        approvers:
+          type: array
+          items:
+            type: string
+        decided_by:
+          type: string
+          nullable: true
+        decided_at:
+          type: string
+          format: date-time
+          nullable: true
+        recorded_by:
+          type: string
+          nullable: true
+        channel:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/DecisionChannelEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        comment:
+          type: string
+          nullable: true
+        amendment_public_id:
+          type: string
+          format: uuid
+          nullable: true
+      required:
+      - amendment_public_id
+      - approvers
+      - channel
+      - comment
+      - decided_at
+      - decided_by
+      - id
+      - mode
+      - position
+      - recorded_by
+      - round
+      - rule
+      - status
+    RequestTypeBrief:
+      type: object
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+        unit:
+          $ref: '#/components/schemas/RequestUnitEnum'
+        calendar_label:
+          $ref: '#/components/schemas/CalendarLabelEnum'
+      required:
+      - calendar_label
+      - code
+      - name
+      - unit
+    RequestTypeInRequest:
+      type: object
+      properties:
+        code:
+          type: string
+          minLength: 1
+          maxLength: 40
+          pattern: ^[-a-zA-Z0-9_]+$
+        name_fr:
+          type: string
+          minLength: 1
+          maxLength: 120
+        name_en:
+          type: string
+          minLength: 1
+          maxLength: 120
+        description_fr:
+          type: string
+          maxLength: 240
+        description_en:
+          type: string
+          maxLength: 240
+        unit:
+          $ref: '#/components/schemas/RequestUnitEnum'
+        allows_half_day:
+          type: boolean
+        balance_effect:
+          $ref: '#/components/schemas/BalanceEffectEnum'
+        document_rule:
+          $ref: '#/components/schemas/DocumentRuleEnum'
+        document_deadline_hours:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          nullable: true
+        allows_past_dates:
+          type: boolean
+        notice_days:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        cap_quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,5}(?:\.\d{0,2})?$
+          nullable: true
+        cap_period:
+          $ref: '#/components/schemas/CapPeriodEnum'
+        reduces_meal_tickets:
+          type: boolean
+        calendar_label:
+          $ref: '#/components/schemas/CalendarLabelEnum'
+        is_sensitive:
+          type: boolean
+        uses_events:
+          type: boolean
+        is_active:
+          type: boolean
+        sort_order:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+      required:
+      - code
+      - name_en
+      - name_fr
+      - unit
+    RequestTypeOut:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        code:
+          type: string
+          maxLength: 40
+          pattern: ^[-a-zA-Z0-9_]+$
+        name_fr:
+          type: string
+          maxLength: 120
+        name_en:
+          type: string
+          maxLength: 120
+        description_fr:
+          type: string
+          maxLength: 240
+        description_en:
+          type: string
+          maxLength: 240
+        unit:
+          $ref: '#/components/schemas/RequestUnitEnum'
+        allows_half_day:
+          type: boolean
+        balance_effect:
+          $ref: '#/components/schemas/BalanceEffectEnum'
+        document_rule:
+          $ref: '#/components/schemas/DocumentRuleEnum'
+        document_deadline_hours:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          nullable: true
+        allows_past_dates:
+          type: boolean
+        notice_days:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        cap_quantity:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,5}(?:\.\d{0,2})?$
+          nullable: true
+        cap_period:
+          $ref: '#/components/schemas/CapPeriodEnum'
+        reduces_meal_tickets:
+          type: boolean
+        calendar_label:
+          $ref: '#/components/schemas/CalendarLabelEnum'
+        is_sensitive:
+          type: boolean
+        uses_events:
+          type: boolean
+        is_active:
+          type: boolean
+        sort_order:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        name:
+          type: string
+          readOnly: true
+        description:
+          type: string
+          readOnly: true
+      required:
+      - code
+      - description
+      - id
+      - name
+      - name_en
+      - name_fr
+      - unit
+    RequestUnitEnum:
+      enum:
+      - day
+      - hour
+      type: string
+      description: |-
+        * `day` - Day
+        * `hour` - Hour
+    RequestViewerOut:
+      type: object
+      properties:
+        relation:
+          $ref: '#/components/schemas/ViewerRelationEnum'
+        actions:
+          type: array
+          items:
+            $ref: '#/components/schemas/RequestActionEnum'
+        step_id:
+          type: integer
+          nullable: true
+      required:
+      - actions
+      - relation
+      - step_id
+    RoleAssignmentOut:
+      type: object
+      properties:
+        role:
+          $ref: '#/components/schemas/AssignableRoleEnum'
+        assigned_by:
+          type: string
+          nullable: true
+          readOnly: true
+        assigned_at:
+          type: string
+          format: date-time
+      required:
+      - assigned_at
+      - assigned_by
+      - role
+    RoleInRequest:
+      type: object
+      properties:
+        role:
+          $ref: '#/components/schemas/AssignableRoleEnum'
+      required:
+      - role
+    SettingKindEnum:
+      enum:
+      - int
+      - decimal
+      - bool
+      - weekdays
+      - str_list
+      - int_or_null
+      - date_or_null
+      type: string
+      description: |-
+        * `int` - int
+        * `decimal` - decimal
+        * `bool` - bool
+        * `weekdays` - weekdays
+        * `str_list` - str_list
+        * `int_or_null` - int_or_null
+        * `date_or_null` - date_or_null
+    SettingOut:
+      type: object
+      description: One setting with its current value. Takes a `SettingRow`.
+      properties:
+        key:
+          type: string
+        kind:
+          $ref: '#/components/schemas/SettingKindEnum'
+        value:
+          nullable: true
+        default:
+          nullable: true
+        minimum:
+          nullable: true
+        maximum:
+          nullable: true
+        choices:
+          type: array
+          items:
+            type: string
+          nullable: true
+        updated_by:
+          type: string
+          nullable: true
+        updated_at:
+          type: string
+          format: date-time
+          nullable: true
+      required:
+      - choices
+      - default
+      - key
+      - kind
+      - maximum
+      - minimum
+      - updated_at
+      - updated_by
+      - value
+    SettingValueInRequest:
+      type: object
+      properties:
+        value:
+          nullable: true
+      required:
+      - value
+    SkipReasonEnum:
+      enum:
+      - weekend
+      - holiday
+      type: string
+      description: |-
+        * `weekend` - weekend
+        * `holiday` - holiday
+    SkippedDayOut:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        reason:
+          $ref: '#/components/schemas/SkipReasonEnum'
+      required:
+      - date
+      - reason
+    StatusOut:
+      type: object
+      properties:
+        health:
+          $ref: '#/components/schemas/HealthOut'
+        accounts:
+          $ref: '#/components/schemas/AccountsAttentionOut'
+        jobs:
+          type: array
+          items:
+            $ref: '#/components/schemas/JobOut'
+        backup:
+          allOf:
+          - $ref: '#/components/schemas/BackupOut'
+          nullable: true
+      required:
+      - accounts
+      - backup
+      - health
+      - jobs
+    StepModeEnum:
+      enum:
+      - approve
+      - notify
+      type: string
+      description: |-
+        * `approve` - Approve
+        * `notify` - Notify
+    StepStatusEnum:
+      enum:
+      - waiting
+      - pending
+      - approved
+      - rejected
+      - returned
+      - notified
+      - skipped
+      type: string
+      description: |-
+        * `waiting` - Waiting
+        * `pending` - Pending
+        * `approved` - Approved
+        * `rejected` - Rejected
+        * `returned` - Returned
+        * `notified` - Notified
+        * `skipped` - Skipped
+    TeamHomeOut:
+      type: object
+      properties:
+        who_is_out:
+          type: array
+          items:
+            $ref: '#/components/schemas/OutPersonOut'
+        delegation:
+          allOf:
+          - $ref: '#/components/schemas/DelegationLineOut'
+          nullable: true
+        people:
+          type: array
+          items:
+            $ref: '#/components/schemas/TeamPersonOut'
+      required:
+      - delegation
+      - people
+      - who_is_out
+    TeamPersonOut:
+      type: object
+      properties:
+        public_id:
+          type: string
+        today:
+          $ref: '#/components/schemas/PresenceEnum'
+        waiting:
+          type: boolean
+        balance:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,5}(?:\.\d{0,2})?$
+      required:
+      - balance
+      - public_id
+      - today
+      - waiting
+    TeammateAwayOut:
+      type: object
+      properties:
+        name:
+          type: string
+        label:
+          $ref: '#/components/schemas/CalendarLabelEnum'
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+      required:
+      - end_date
+      - label
+      - name
+      - start_date
+    TemporaryPasswordOut:
+      type: object
+      properties:
+        temporary_password:
+          type: string
+        expires_at:
+          type: string
+          format: date-time
+      required:
+      - expires_at
+      - temporary_password
+    UnreadCountOut:
+      type: object
+      properties:
+        count:
+          type: integer
+      required:
+      - count
+    UsageOut:
+      type: object
+      properties:
+        cap:
+          allOf:
+          - $ref: '#/components/schemas/CapUsageOut'
+          nullable: true
+        month_hours:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,7}(?:\.\d{0,2})?$
+          nullable: true
+        event_days_allowed:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,7}(?:\.\d{0,2})?$
+          nullable: true
+      required:
+      - cap
+      - event_days_allowed
+      - month_hours
+    VersionInRequest:
+      type: object
+      properties:
+        version:
+          type: integer
+          minimum: 1
+      required:
+      - version
+    ViewerRelationEnum:
+      enum:
+      - owner
+      - approver
+      - team
+      - hr
+      - overview
+      type: string
+      description: |-
+        * `owner` - owner
+        * `approver` - approver
+        * `team` - team
+        * `hr` - hr
+        * `overview` - overview
+    WaitingLineOut:
+      type: object
+      properties:
+        request_public_id:
+          type: string
+        employee_name:
+          type: string
+        type_name:
+          type: string
+        waiting_on:
+          type: array
+          items:
+            type: string
+        since:
+          type: string
+          format: date-time
+          nullable: true
+      required:
+      - employee_name
+      - request_public_id
+      - since
+      - type_name
+      - waiting_on
+    WorkspaceEnum:
+      enum:
+      - me
+      - team
+      - hr
+      - overview
+      - admin
+      type: string
+      description: |-
+        * `me` - me
+        * `team` - team
+        * `hr` - hr
+        * `overview` - overview
+        * `admin` - admin
+    WorkspaceSummaryOut:
+      type: object
+      properties:
+        me:
+          type: integer
+        team:
+          type: integer
+        hr:
+          type: integer
+        overview:
+          type: integer
+        admin:
+          type: integer
+      required:
+      - admin
+      - hr
+      - me
+      - overview
+      - team
+  securitySchemes:
+    sessionCookie:
+      type: apiKey
+      in: cookie
+      name: sessionid

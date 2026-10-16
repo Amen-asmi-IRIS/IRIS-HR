@@ -1,0 +1,129 @@
+{
+  "$description": "IRIS HR — Clean Light design tokens (W3C Design Tokens format). Source of truth for colours, type, spacing, radius and motion. Mirrors iris-hr-tokens.css.",
+  "color": {
+    "$type": "color",
+    "brand": {
+      "iris-blue": { "$value": "#0070B0", "$description": "Primary. 5.3:1 on white — safe for text and under white text." },
+      "iris-blue-hover": { "$value": "#005C91" },
+      "iris-blue-soft": { "$value": "#EAF5FB" },
+      "iris-blue-soft-border": { "$value": "#B9DFF2" },
+      "logo-cyan": { "$value": "#0AA2D0", "$description": "Logo and graphics only. 3:1 on white — never text, never under white text." },
+      "logo-navy": { "$value": "#1B3A7A" }
+    },
+    "light": {
+      "canvas": { "$value": "#F3F5F8", "$description": "Page background behind the app frame" },
+      "surface": { "$value": "#FFFFFF", "$description": "Sidebar, cards, panels, inputs" },
+      "subtle": { "$value": "#F7F8FA", "$description": "Table head, row hover, read-only fields" },
+      "muted-fill": { "$value": "#F0F2F5", "$description": "Active nav item, segmented control track" },
+      "border": { "$value": "#E4E7EC" },
+      "divider": { "$value": "#EEF0F3", "$description": "Between table rows" },
+      "input-border": { "$value": "#D0D5DD" },
+      "text": { "$value": "#101828" },
+      "text-secondary": { "$value": "#344054" },
+      "text-muted": { "$value": "#667085", "$description": "Lightest allowed text colour (4.97:1 on white)" },
+      "focus-ring": { "$value": "#B9DFF2" },
+      "scrim": { "$value": "rgba(16, 24, 40, 0.45)" },
+      "toast": { "$value": "#101828" }
+    },
+    "dark": {
+      "canvas": { "$value": "#0C111D" },
+      "surface": { "$value": "#161B26" },
+      "subtle": { "$value": "#1F242F" },
+      "muted-fill": { "$value": "#252B37" },
+      "border": { "$value": "#333741" },
+      "divider": { "$value": "#252B37" },
+      "input-border": { "$value": "#475467" },
+      "text": { "$value": "#F5F5F6" },
+      "text-secondary": { "$value": "#CECFD2" },
+      "text-muted": { "$value": "#94969C" },
+      "primary": { "$value": "#4FB3EA", "$description": "Dark-mode primary; use #0C111D text on it (8:1)" },
+      "focus-ring": { "$value": "#1F5F86" }
+    },
+    "status": {
+      "waiting":  { "text": { "$value": "#8A5300" }, "bg": { "$value": "#FFF6E5" }, "dot": { "$value": "#DC8A00" }, "border": { "$value": "#F5D8A8" } },
+      "approved": { "text": { "$value": "#1E7B45" }, "bg": { "$value": "#EAF7EF" }, "dot": { "$value": "#1E7B45" }, "border": { "$value": "#A6D9B8" } },
+      "refused":  { "text": { "$value": "#B42318" }, "bg": { "$value": "#FDECEC" }, "dot": { "$value": "#B42318" }, "border": { "$value": "#FDA29B" }, "input-border": { "$value": "#F04438" }, "ring": { "$value": "#FEE4E2" } },
+      "info":     { "text": { "$value": "#00639A" }, "bg": { "$value": "#EAF5FB" }, "dot": { "$value": "#0070B0" }, "border": { "$value": "#B9DFF2" } },
+      "neutral":  { "text": { "$value": "#344054" }, "bg": { "$value": "#F2F4F7" }, "dot": { "$value": "#667085" }, "border": { "$value": "#E4E7EC" } }
+    },
+    "request-type": {
+      "annual-leave":      { "text": { "$value": "#00639A" }, "bg": { "$value": "#EAF5FB" }, "border": { "$value": "#B9DFF2" } },
+      "sick-leave":        { "text": { "$value": "#5B3CC4" }, "bg": { "$value": "#F2EFFC" }, "border": { "$value": "#D9D0F7" } },
+      "exceptional-leave": { "text": { "$value": "#0E6E6A" }, "bg": { "$value": "#E7F6F5" }, "border": { "$value": "#BFE6E3" } },
+      "remote-work":       { "text": { "$value": "#344054" }, "bg": { "$value": "#F2F4F7" }, "border": { "$value": "#E4E7EC" } },
+      "hourly-permission": { "text": { "$value": "#344054" }, "bg": { "$value": "#FFFFFF" }, "border": { "$value": "#D0D5DD" } }
+    },
+    "environment": {
+      "test-strip": { "bg": { "$value": "#FFF6E5" }, "text": { "$value": "#8A5300" } }
+    }
+  },
+  "font": {
+    "family": {
+      "$type": "fontFamily",
+      "sans": { "$value": ["Plus Jakarta Sans", "Helvetica Neue", "Arial", "sans-serif"], "$description": "Google Fonts, weights 400/500/600/700. Self-host for the office-only server. Use tabular figures on tables and balances." }
+    },
+    "weight": {
+      "$type": "fontWeight",
+      "regular": { "$value": 400 }, "medium": { "$value": 500 }, "semibold": { "$value": 600 }, "bold": { "$value": 700 }
+    }
+  },
+  "typography": {
+    "$type": "typography",
+    "figure":     { "$value": { "fontFamily": "{font.family.sans}", "fontSize": "48px", "lineHeight": "48px", "fontWeight": 700, "letterSpacing": "-0.03em" }, "$description": "The one big number (balance). 40px on phone." },
+    "page-title": { "$value": { "fontFamily": "{font.family.sans}", "fontSize": "24px", "lineHeight": "32px", "fontWeight": 600, "letterSpacing": "-0.01em" } },
+    "dialog-title": { "$value": { "fontFamily": "{font.family.sans}", "fontSize": "18px", "lineHeight": "28px", "fontWeight": 600, "letterSpacing": "0" } },
+    "section":    { "$value": { "fontFamily": "{font.family.sans}", "fontSize": "16px", "lineHeight": "24px", "fontWeight": 600, "letterSpacing": "0" } },
+    "body":       { "$value": { "fontFamily": "{font.family.sans}", "fontSize": "14px", "lineHeight": "20px", "fontWeight": 400, "letterSpacing": "0" } },
+    "body-strong": { "$value": { "fontFamily": "{font.family.sans}", "fontSize": "14px", "lineHeight": "20px", "fontWeight": 600, "letterSpacing": "0" } },
+    "label":      { "$value": { "fontFamily": "{font.family.sans}", "fontSize": "14px", "lineHeight": "20px", "fontWeight": 500, "letterSpacing": "0" } },
+    "caption":    { "$value": { "fontFamily": "{font.family.sans}", "fontSize": "12px", "lineHeight": "18px", "fontWeight": 500, "letterSpacing": "0" }, "$description": "Table heads, hints, tags" }
+  },
+  "space": {
+    "$type": "dimension",
+    "1": { "$value": "4px" }, "2": { "$value": "8px" }, "3": { "$value": "12px" }, "4": { "$value": "16px" },
+    "5": { "$value": "20px" }, "6": { "$value": "24px" }, "8": { "$value": "32px" }, "10": { "$value": "40px" }, "12": { "$value": "48px" },
+    "card-padding-y": { "$value": "20px" }, "card-padding-x": { "$value": "24px" },
+    "page-gutter": { "$value": "clamp(16px, 3vw, 40px)" }
+  },
+  "size": {
+    "$type": "dimension",
+    "control": { "$value": "40px", "$description": "Buttons, inputs, nav items on desktop" },
+    "touch": { "$value": "44px", "$description": "Minimum hit target on phone" },
+    "row": { "$value": "60px", "$description": "Table row min height (64px with inline actions)" },
+    "table-head": { "$value": "40px" },
+    "sidebar": { "$value": "240px" },
+    "sheet": { "$value": "480px", "$description": "Right sheet for focused tasks; full width on phone" },
+    "app-max": { "$value": "1440px" },
+    "avatar-sm": { "$value": "32px" }, "avatar-md": { "$value": "40px" },
+    "phone-topbar": { "$value": "60px" }, "phone-tabbar": { "$value": "64px" }
+  },
+  "radius": {
+    "$type": "dimension",
+    "tag": { "$value": "6px" }, "control": { "$value": "8px" }, "switcher": { "$value": "10px" }, "card": { "$value": "12px" }, "pill": { "$value": "999px" }
+  },
+  "border": {
+    "$type": "dimension",
+    "width": { "$value": "1px" }
+  },
+  "shadow": {
+    "$type": "shadow",
+    "none": { "$value": { "color": "#00000000", "offsetX": "0px", "offsetY": "0px", "blur": "0px", "spread": "0px" }, "$description": "Default: surfaces use borders, not shadows" },
+    "popover": { "$value": { "color": "#10182814", "offsetX": "0px", "offsetY": "8px", "blur": "24px", "spread": "0px" }, "$description": "Menus and popovers only" },
+    "focus": { "$value": { "color": "#B9DFF2", "offsetX": "0px", "offsetY": "0px", "blur": "0px", "spread": "3px" } },
+    "focus-error": { "$value": { "color": "#FEE4E2", "offsetX": "0px", "offsetY": "0px", "blur": "0px", "spread": "3px" } }
+  },
+  "motion": {
+    "duration": {
+      "$type": "duration",
+      "fast": { "$value": "120ms", "$description": "Hover, press, focus" },
+      "base": { "$value": "200ms", "$description": "Popover, tab change, row removed from a queue" },
+      "sheet": { "$value": "240ms", "$description": "Sheet in/out" },
+      "toast": { "$value": "5000ms", "$description": "Toast with Undo stays 5 s" }
+    },
+    "easing": {
+      "$type": "cubicBezier",
+      "standard": { "$value": [0.2, 0, 0, 1] },
+      "exit": { "$value": [0.4, 0, 1, 1] }
+    }
+  }
+}

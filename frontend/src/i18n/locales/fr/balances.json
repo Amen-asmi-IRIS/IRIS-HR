@@ -1,0 +1,64 @@
+{
+  "title": "Solde",
+  "current": "Solde de congés annuels",
+  "pending": "En attente de décision",
+  "approvedUpcoming": "Approuvés à venir",
+  "nextCredit": "Prochain crédit mensuel",
+  "nextCreditValue": "{{amount}} le {{date}}",
+  "onDate": {
+    "title": "Solde à une date",
+    "label": "Date",
+    "posted": "Solde au {{date}} : {{balance}}",
+    "projected": "Solde prévu au {{date}} : {{balance}}",
+    "projectedHint": "Tient compte des crédits mensuels à venir, des congés approuvés et des demandes en attente de décision."
+  },
+  "ledger": {
+    "title": "Historique",
+    "date": "Date",
+    "what": "Écriture",
+    "amount": "Jours",
+    "after": "Solde après",
+    "why": "Demande ou motif",
+    "request": "Voir la demande",
+    "empty": "Aucune écriture pour l'instant.",
+    "emptyHint": "Le premier crédit mensuel ou le solde d'ouverture apparaîtra ici."
+  },
+  "kind": {
+    "opening": "Solde d'ouverture",
+    "credit": "Crédit mensuel",
+    "taken": "Congé pris",
+    "restored": "Jours restitués",
+    "adjustment": "Ajustement RH"
+  },
+  "adjust": {
+    "titleAdjustment": "Ajuster le solde : {{name}}",
+    "titleOpening": "Solde d'ouverture : {{name}}",
+    "current": "Solde actuel : {{balance}}",
+    "direction": "Action",
+    "add": "Ajouter des jours",
+    "remove": "Retirer des jours",
+    "amount": "Nombre de jours",
+    "openingAmount": "Solde d'ouverture (jours)",
+    "openingHint": "Indiquez le solde à la veille du début des crédits mensuels.",
+    "openingNoStartDate": "Le début des crédits mensuels n'est pas encore fixé : la date proposée est celle d'aujourd'hui.",
+    "date": "Date d'effet",
+    "reason": "Motif",
+    "reasonHint": "Le motif est conservé dans l'historique et visible par l'employé.",
+    "after": "Solde après : {{balance}}",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "done": "Solde mis à jour.",
+    "amountInvalid": "Saisissez un nombre de jours, par exemple 1,5.",
+    "amountPositive": "Saisissez un nombre supérieur à zéro.",
+    "dateRequired": "Choisissez la date d'effet.",
+    "reasonRequired": "Indiquez le motif. Il est conservé dans l'historique."
+  },
+  "block": {
+    "title": "Solde",
+    "adjust": "Ajuster",
+    "opening": "Saisir le solde d'ouverture"
+  },
+  "fact": {
+    "label": "Solde annuel"
+  }
+}

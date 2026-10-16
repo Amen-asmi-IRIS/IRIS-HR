@@ -1,0 +1,89 @@
+{
+  "appName": "IRIS HR",
+  "skipToContent": "Aller au contenu",
+  "saved": "Enregistré.",
+  "concurrent": "Quelqu'un d'autre a agi avant vous. La page affiche maintenant l'état actuel.",
+  "testEnvironment": "Environnement de test. Ceci n'est pas la production.",
+  "dateTime": "{{date}} à {{time}}",
+  "dateRange": "{{start}} – {{end}}",
+  "actions": {
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "close": "Fermer",
+    "back": "Retour",
+    "open": "Ouvrir",
+    "edit": "Modifier",
+    "add": "Ajouter",
+    "remove": "Retirer",
+    "search": "Rechercher",
+    "export": "Exporter vers Excel",
+    "send": "Envoyer",
+    "retry": "Réessayer",
+    "undo": "Annuler l'action",
+    "copy": "Copier",
+    "done": "Terminé"
+  },
+  "filters": {
+    "label": "Filtres",
+    "more": "Plus de filtres",
+    "fewer": "Moins de filtres",
+    "all": "Tous",
+    "from": "Du",
+    "to": "Au"
+  },
+  "list": {
+    "loading": "Chargement…",
+    "pagination": "Pages",
+    "page": "Page {{page}} sur {{pages}}",
+    "previous": "Page précédente",
+    "next": "Page suivante",
+    "sort": {
+      "label": "Trier par",
+      "usual": "Ordre habituel",
+      "ascending": "{{column}}, croissant",
+      "descending": "{{column}}, décroissant",
+      "hint": "Trier"
+    }
+  },
+  "state": {
+    "yes": "Oui",
+    "no": "Non",
+    "none": "Aucun",
+    "never": "Jamais"
+  },
+  "form": {
+    "required": "Ce champ est obligatoire.",
+    "optional": "facultatif",
+    "summaryTitle": "Action impossible :",
+    "fileRemove": "Retirer le fichier"
+  },
+  "units": {
+    "day": { "one": "jour", "other": "jours" },
+    "hour": { "one": "heure", "other": "heures" },
+    "kb": "Ko",
+    "mb": "Mo",
+    "gb": "Go"
+  },
+  "language": {
+    "label": "Langue",
+    "fr": "Français",
+    "en": "English"
+  },
+  "roles": {
+    "employee": "Employé",
+    "manager": "Responsable",
+    "hr": "RH",
+    "exec": "Direction générale",
+    "sysadmin": "Administrateur système"
+  },
+  "weekdays": {
+    "1": "Lundi",
+    "2": "Mardi",
+    "3": "Mercredi",
+    "4": "Jeudi",
+    "5": "Vendredi",
+    "6": "Samedi",
+    "7": "Dimanche"
+  }
+}

@@ -1,0 +1,720 @@
+{
+  "common": {
+    "hr": "les RH",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "open": "Ouvrir",
+    "edit": "Modifier",
+    "send": "Envoyer",
+    "newRequest": "Nouvelle demande",
+    "discard": "Supprimer le brouillon",
+    "withdraw": "Retirer la demande",
+    "yes": "Oui",
+    "no": "Non",
+    "all": "Tous",
+    "seeAll": "Tout voir",
+    "reason": "Motif",
+    "who": "Qui",
+    "department": "Département",
+    "type": "Type",
+    "dates": "Dates",
+    "quantity": "Durée",
+    "status": "Situation"
+  },
+  "status": {
+    "draft": "Pas encore envoyée",
+    "approved": "Approuvée",
+    "cancelled": "Annulée",
+    "rejected": "Refusée",
+    "waitingFor": "En attente de {{names}}",
+    "waitingNobody": "En attente d'une décision",
+    "waitingHr": "En attente des RH",
+    "approvedByWaitingHr": "Approuvée par {{actor}} ; en attente des RH",
+    "actor": {
+      "waiting": "En attente de votre décision",
+      "toValidate": "À valider"
+    },
+    "requester": {
+      "returned": "Renvoyée vers vous : {{note}}",
+      "returnedNoNote": "Renvoyée vers vous",
+      "rejected": "Refusée : {{note}}",
+      "withdrawn": "Retirée par vous"
+    },
+    "observer": {
+      "returned": "Renvoyée à {{requester}}",
+      "withdrawn": "Retirée par {{requester}}"
+    }
+  },
+  "certificate": {
+    "due": "Certificat à fournir avant le {{date}}",
+    "overdue": "Certificat en retard, attendu le {{date}}",
+    "missing": "Justificatif pas encore fourni"
+  },
+  "amendment": {
+    "requester": "Votre modification attend {{who}}",
+    "actor": "Modification à décider",
+    "observer": "Une modification attend {{who}}"
+  },
+  "when": {
+    "morning": "{{date}}, le matin",
+    "afternoon": "{{date}}, l'après-midi",
+    "rangeFromMidday": "{{range}}, à partir de midi le premier jour",
+    "rangeUntilMidday": "{{range}}, jusqu'à midi le dernier jour",
+    "rangeBoth": "{{range}}, de midi le premier jour à midi le dernier",
+    "hours": "{{date}}, de {{from}} à {{to}}"
+  },
+  "next": {
+    "draft": "Rien n'est réservé tant que la demande n'est pas envoyée.",
+    "returned": "Corrigez-la puis renvoyez-la : elle repartira de la première étape.",
+    "approved": "Vous pouvez encore changer les dates ou l'annuler tant qu'elle n'a pas commencé.",
+    "last": "C'est la dernière étape.",
+    "thenHr": "Ensuite, les RH la valident.",
+    "thenPerson": "Ensuite, {{names}} décide.",
+    "thenSomeone": "Ensuite, elle passe à l'étape suivante."
+  },
+  "choice": {
+    "title": "Quel type de demande ?",
+    "none": "Aucun type de demande n'est disponible pour le moment.",
+    "noneHint": "Les RH peuvent vous dire pourquoi."
+  },
+  "formErrors": {
+    "required": "Ce champ est nécessaire.",
+    "endBeforeStart": "La fin doit être le même jour que le début, ou après.",
+    "bothHalves": "Pour une seule journée, choisissez le matin ou l'après-midi, pas les deux.",
+    "times": "L'heure de fin doit être après l'heure de début.",
+    "eventRequired": "Choisissez l'événement concerné.",
+    "reasonRequired": "Indiquez le motif : il est obligatoire.",
+    "fileType": "Ce type de fichier n'est pas accepté. Utilisez un PDF, un JPG ou un PNG.",
+    "fileSize": "Ce fichier dépasse 10 Mo. Réduisez-le ou scannez-le en plus basse résolution.",
+    "fileEmpty": "Ce fichier est vide. Choisissez-en un autre."
+  },
+  "keeper": {
+    "restored": "Nous avons gardé ce que vous aviez saisi. Vérifiez-le avant d'envoyer.",
+    "startOver": "Repartir d'un formulaire vide"
+  },
+  "chain": {
+    "yourManager": "votre responsable, {{names}}",
+    "theManager": "son responsable, {{names}}",
+    "noManager": "aucun responsable (étape passée)",
+    "informed": "{{who}} (pour information)",
+    "then": ", puis ",
+    "nobody": "personne pour l'instant"
+  },
+  "form": {
+    "title": "{{type}}",
+    "start": "Début",
+    "end": "Fin",
+    "date": "Date",
+    "from": "De",
+    "to": "À",
+    "startsAtMidday": "Commencer à midi le premier jour",
+    "endsAtMidday": "Finir à midi le dernier jour",
+    "event": "Événement",
+    "eventPlaceholder": "Choisir un événement",
+    "comment": "Commentaire",
+    "commentSensitiveHint": "Vu uniquement par les RH.",
+    "certificate": "Certificat médical",
+    "proof": "Justificatif",
+    "fileLaterHint": "PDF, JPG ou PNG, 10 Mo au plus. Vous pouvez l'ajouter maintenant ou plus tard.",
+    "fileHint": "PDF, JPG ou PNG, 10 Mo au plus.",
+    "override": "Autoriser une exception",
+    "overrideHint": "Lève les contrôles de solde, de limite, de jours accordés et de dates passées.",
+    "overrideReason": "Motif de l'exception",
+    "overrideFixed": "L'exception se décide à la création de la demande : elle ne peut plus être changée ici.",
+    "followsSteps": "La demande suit ensuite ses étapes normales.",
+    "balanceHint": "Vous pouvez demander aux RH s'ils peuvent accorder une exception.",
+    "balanceHintHr": "Pour passer outre, activez « Autoriser une exception » et indiquez le motif.",
+    "sending": "Envoi en cours…",
+    "saveForLater": "Enregistrer pour plus tard",
+    "saveChanges": "Enregistrer les modifications",
+    "sendAgain": "Renvoyer",
+    "sent": "Demande envoyée.",
+    "saved": "Brouillon enregistré.",
+    "changed": "Modifications enregistrées.",
+    "computed": "Calculé pour vous",
+    "computedEmpty": "Indiquez les dates : le décompte apparaîtra ici.",
+    "daysCounted": "Jours ouvrés comptés",
+    "hoursCounted": "Heures comptées",
+    "notCounted": "Non comptés",
+    "skipped": {
+      "weekend": "{{date}} (week-end)",
+      "holiday": "{{date}} (jour férié)"
+    },
+    "balanceNow": "Solde aujourd'hui",
+    "balanceOnStart": "Solde au premier jour",
+    "balanceAfter": "Solde après cette demande",
+    "eventAllowed": "Jours accordés pour cet événement",
+    "monthHours": "Heures déjà prises ce mois-ci",
+    "cap": {
+      "week": "Déjà pris cette semaine",
+      "month": "Déjà pris ce mois-ci"
+    },
+    "capValue": "{{used}} sur {{limit}}",
+    "certificateDue": "Certificat à fournir avant le",
+    "whoDecides": "Qui décidera",
+    "sensitiveNote": "Votre commentaire et votre certificat ne sont vus que par les RH."
+  },
+  "edit": {
+    "title": "Modifier : {{type}}",
+    "returnedBy": "Renvoyée par {{who}} : {{note}}",
+    "returnedByNoNote": "Renvoyée par {{who}}.",
+    "someone": "un approbateur",
+    "typeGone": "Ce type de demande n'existe plus.",
+    "typeGoneHint": "La demande ne peut plus être modifiée ici. Les RH peuvent la corriger.",
+    "backToRequest": "Revenir à la demande"
+  },
+  "list": {
+    "mine": {
+      "title": "Mes demandes",
+      "empty": "Aucune demande ici.",
+      "emptyHint": "Changez les filtres, ou créez votre première demande avec « Nouvelle demande »."
+    }
+  },
+  "filters": {
+    "statusLabel": "Situation",
+    "typeLabel": "Type",
+    "yearLabel": "Année",
+    "employee": "Personne",
+    "period": "Période",
+    "department": "Département",
+    "onBehalf": "Saisies par les RH",
+    "hasOverride": "Avec une exception",
+    "status": {
+      "draft": "Pas encore envoyées",
+      "pending": "En attente",
+      "returned": "Renvoyées",
+      "approved": "Approuvées",
+      "rejected": "Refusées",
+      "withdrawn": "Retirées",
+      "cancelled": "Annulées"
+    }
+  },
+  "undo": {
+    "discard": "Brouillon supprimé.",
+    "withdraw": "Demande retirée.",
+    "tooLate": "Trop tard : la demande avait déjà été traitée. Voici son état actuel."
+  },
+  "view": {
+    "summary": "Résumé de la demande",
+    "steps": "Étapes",
+    "myCommentAndFiles": "Mon commentaire et mes fichiers",
+    "commentAndFiles": "Commentaire et fichiers",
+    "files": "Fichiers",
+    "comment": "Commentaire",
+    "noFiles": "Aucun fichier.",
+    "changes": "Modifications demandées",
+    "history": "Historique complet",
+    "historyEmpty": "Aucun événement.",
+    "system": "Système",
+    "event": "Événement : {{name}}",
+    "exception": "Demande saisie avec une exception accordée par les RH.",
+    "enteredByHr": "Demande saisie par les RH.",
+    "amendmentKind": {
+      "change": "Changement de dates",
+      "cancel": "Annulation"
+    },
+    "amendmentStatus": {
+      "pending": "en attente",
+      "approved": "approuvée",
+      "rejected": "refusée",
+      "withdrawn": "retirée"
+    },
+    "amendmentNew": "Nouvelles dates : {{range}} ({{quantity}})",
+    "amendmentReason": "Motif : {{reason}}"
+  },
+  "steps": {
+    "none": "Aucune étape pour l'instant.",
+    "forChange": "pour la modification",
+    "round": "Envoi n° {{round}}",
+    "who": {
+      "hr": "RH",
+      "manager": "Responsable : {{names}}",
+      "managerNone": "Responsable",
+      "nobody": "Personne désignée"
+    },
+    "status": {
+      "waiting": "Pas encore à cette étape",
+      "pending": "En attente de décision",
+      "approved": "Approuvée par {{name}} le {{date}}",
+      "rejected": "Refusée par {{name}} le {{date}}",
+      "returned": "Renvoyée par {{name}} le {{date}}",
+      "notified": "Pour information",
+      "skipped": "Étape passée : personne à consulter"
+    },
+    "recorded": "Décision saisie par {{recorder}}, {{channel}}.",
+    "channel": {
+      "in_app": "dans l'application",
+      "verbal": "donnée de vive voix",
+      "paper": "donnée sur papier"
+    },
+    "quoted": "« {{text}} »"
+  },
+  "files": {
+    "kind": {
+      "medical": "Certificat médical",
+      "proof": "Justificatif",
+      "scanned_form": "Formulaire signé"
+    },
+    "meta": "{{kind}}, ajouté par {{by}} le {{date}}"
+  },
+  "mine": {
+    "editAndResend": "Modifier et renvoyer",
+    "changeDates": "Changer les dates",
+    "cancelRequest": "Annuler la demande",
+    "addCertificate": "Ajouter le certificat",
+    "addProof": "Ajouter le justificatif",
+    "addFile": "Ajouter un fichier",
+    "withdrawChange": "Retirer la modification",
+    "changeWithdrawn": "Modification retirée.",
+    "balance": "Solde : {{now}} aujourd'hui, {{after}} après"
+  },
+  "addFile": {
+    "label": "Fichier",
+    "add": "Ajouter",
+    "done": "Fichier ajouté.",
+    "required": "Choisissez un fichier."
+  },
+  "change": {
+    "title": "Modifier une demande approuvée",
+    "current": "Demande actuelle : {{when}} ({{quantity}})",
+    "kindLegend": "Que voulez-vous faire ?",
+    "stays": "L'original reste valable tant que la modification n'est pas approuvée.",
+    "newCount": "Nouveau décompte",
+    "balanceEffect": "Effet sur votre solde",
+    "uses": "Utilise {{amount}} de plus.",
+    "gives": "Rend {{amount}}.",
+    "same": "Aucun changement.",
+    "cancelGives": "Une fois approuvée, l'annulation rend {{amount}} à votre solde.",
+    "reason": "Motif",
+    "unchanged": "Ce sont les dates actuelles de la demande. Changez-les, ou choisissez l'annulation.",
+    "sendChange": "Envoyer la modification",
+    "sendCancel": "Demander l'annulation",
+    "sentChange": "Modification envoyée.",
+    "sentCancel": "Annulation demandée."
+  },
+  "decision": {
+    "title": {
+      "approve": "Approuver la demande",
+      "reject": "Refuser la demande",
+      "return": "Renvoyer la demande"
+    },
+    "confirm": {
+      "approve": "Approuver",
+      "reject": "Refuser",
+      "return": "Renvoyer"
+    },
+    "comment": {
+      "approve": "Commentaire (facultatif)",
+      "reject": "Motif du refus",
+      "return": "Ce qu'il faut corriger"
+    },
+    "required": {
+      "reject": "Indiquez le motif du refus : il est obligatoire.",
+      "return": "Dites ce qu'il faut corriger : c'est obligatoire."
+    },
+    "consequence": {
+      "approve": "Votre accord est enregistré et la demande passe à l'étape suivante.",
+      "approveHr": "Votre validation est enregistrée. S'il ne reste aucune étape, la demande est approuvée et {{name}} en est informé.",
+      "reject": "La demande est refusée et {{name}} en est informé. Cette décision est définitive.",
+      "return": "La demande retourne à {{name}}, qui pourra la corriger et la renvoyer."
+    },
+    "done": {
+      "approve": "Demande de {{name}} approuvée.",
+      "reject": "Demande de {{name}} refusée.",
+      "return": "Demande renvoyée à {{name}}."
+    }
+  },
+  "toDecide": {
+    "pageTitle": "À décider",
+    "title": "À décider",
+    "empty": "Rien à décider.",
+    "decideOldest": "Décider la plus ancienne",
+    "since": "En attente depuis le {{date}}",
+    "via": "Pour le compte de {{name}}",
+    "itemLabel": "{{name}}, {{type}}"
+  },
+  "context": {
+    "title": "Pour décider",
+    "balanceAfter": "Solde après : {{after}}",
+    "balanceNowAfter": "Solde : {{now}} aujourd'hui, {{after}} après",
+    "cap": "Limite : {{used}} déjà pris sur {{limit}}",
+    "away": "Déjà absents ou en télétravail ces jours-là : {{people}}",
+    "nobodyAway": "Personne d'autre de l'équipe n'est absent ces jours-là.",
+    "person": {
+      "absent": "{{name}} (absent, {{when}})",
+      "remote": "{{name}} (télétravail, {{when}})"
+    }
+  },
+  "manager": {
+    "infoOnly": "Déclaration transmise pour information : vous n'avez aucune décision à prendre."
+  },
+  "teamList": {
+    "title": "Demandes de l'équipe",
+    "viewLabel": "Vue",
+    "viewTeam": "Toute l'équipe",
+    "viewDecided": "Déjà décidées par moi",
+    "empty": "Aucune demande de votre équipe ici.",
+    "emptyDecided": "Vous n'avez encore décidé aucune demande.",
+    "emptyHint": "Changez les filtres pour en voir d'autres."
+  },
+  "onBehalf": {
+    "title": "Saisir une décision donnée hors de l'application",
+    "who": "Qui a décidé",
+    "whoHint": "Cette étape attend : {{names}}",
+    "whoRequired": "Indiquez qui a pris la décision.",
+    "decision": "Décision",
+    "decisions": {
+      "approve": "Approuvée",
+      "reject": "Refusée",
+      "return": "Renvoyée pour correction"
+    },
+    "when": "Quand la décision a été donnée",
+    "whenRequired": "Indiquez quand la décision a été donnée.",
+    "channel": "Comment",
+    "channels": {
+      "verbal": "De vive voix",
+      "paper": "Sur papier"
+    },
+    "note": "Note",
+    "noteRequired": "La note est obligatoire : dites dans quelles circonstances la décision a été donnée.",
+    "scan": "Formulaire signé (scan)",
+    "submit": "Enregistrer la décision",
+    "done": "Décision enregistrée."
+  },
+  "reassign": {
+    "title": "Confier l'étape à quelqu'un d'autre",
+    "current": "Approbateur actuel : {{names}}",
+    "currentNone": "Personne ne peut décider cette étape pour l'instant.",
+    "new": "Nouvel approbateur",
+    "newRequired": "Choisissez la personne qui décidera.",
+    "submit": "Confier l'étape",
+    "done": "Étape confiée à quelqu'un d'autre."
+  },
+  "correct": {
+    "title": "Corriger ou annuler la demande",
+    "kindLegend": "Que voulez-vous faire ?",
+    "kindCorrect": "Corriger les dates",
+    "kindCancel": "Annuler la demande",
+    "told": "{{name}} et son responsable en seront informés.",
+    "cancelGives": "Les jours déjà déduits ({{amount}}) sont rendus au solde.",
+    "submitCorrect": "Corriger la demande",
+    "submitCancel": "Annuler la demande",
+    "doneCorrect": "Demande corrigée.",
+    "doneCancel": "Demande annulée."
+  },
+  "reclassify": {
+    "title": "Compter l'arrêt en congé annuel",
+    "days": "Jours concernés : {{when}} ({{quantity}})",
+    "consequence": "La demande devient un congé annuel, validé par les RH. Ces jours sont déduits du solde de {{name}}.",
+    "balanceNow": "Solde aujourd'hui",
+    "balanceAfter": "Solde après",
+    "short": "Le solde ne couvre pas ces jours. Pour continuer, indiquez pourquoi une exception est accordée.",
+    "reason": "Motif de l'exception",
+    "submit": "Compter en congé annuel",
+    "done": "Arrêt compté en congé annuel."
+  },
+  "document": {
+    "not_needed": "Aucun document requis",
+    "attached": "Document fourni",
+    "due": "À fournir avant le {{date}}",
+    "overdue": "En retard, attendu le {{date}}",
+    "missing": "Justificatif pas encore fourni"
+  },
+  "queues": {
+    "columns": {
+      "document": "Document",
+      "due": "À fournir avant le",
+      "overdue": "Retard",
+      "waitingOn": "En attente de",
+      "since": "Depuis le"
+    },
+    "documentOption": {
+      "attached": "Fourni",
+      "due": "À fournir",
+      "overdue": "En retard",
+      "missing": "Manquant",
+      "not_needed": "Non requis"
+    },
+    "onTime": "Dans les délais",
+    "nobody": "Personne ne peut décider",
+    "truncated": "Seules les {{n}} demandes les plus anciennes sont affichées.",
+    "emptyHint": "Changez les filtres pour en voir d'autres.",
+    "validate": {
+      "title": "À valider",
+      "empty": "Aucune demande n'attend la validation des RH.",
+      "documentFilter": "Document"
+    },
+    "certificates": {
+      "title": "Certificats",
+      "empty": "Aucun arrêt maladie n'attend son certificat.",
+      "attach": "Ajouter le certificat",
+      "attachTitle": "Ajouter le certificat de {{name}}",
+      "reclassify": "Compter en congé annuel"
+    },
+    "stuck": {
+      "title": "Bloquées chez un responsable",
+      "empty": "Aucune demande n'est bloquée chez un responsable.",
+      "record": "Saisir la décision",
+      "reassign": "Confier à quelqu'un d'autre",
+      "delegate": "Nommer un délégué"
+    }
+  },
+  "desk": {
+    "title": "Bureau RH",
+    "next": "Traiter le plus ancien",
+    "seeAll": "Tout voir : {{queue}}",
+    "validate": {
+      "title": "À valider",
+      "count": "En attente de validation : {{n}}",
+      "empty": "Aucune demande à valider."
+    },
+    "certificates": {
+      "title": "Certificats",
+      "count": "En retard : {{overdue}} · À fournir : {{due}}",
+      "empty": "Aucun certificat en attente."
+    },
+    "stuck": {
+      "title": "Bloquées chez un responsable",
+      "count": "Sans décision : {{n}}",
+      "empty": "Aucune demande bloquée.",
+      "item": "En attente de {{who}} depuis le {{date}}",
+      "itemNobody": "Personne ne peut décider, depuis le {{date}}"
+    },
+    "profile": {
+      "title": "Modifications de profil",
+      "count": "À traiter : {{n}}",
+      "empty": "Aucune modification de profil à traiter.",
+      "item": "Proposée le {{date}}"
+    }
+  },
+  "hrList": {
+    "title": "Demandes",
+    "new": "Nouvelle demande pour un employé",
+    "empty": "Aucune demande ici.",
+    "emptyHint": "Changez les filtres, ou saisissez une demande pour un employé."
+  },
+  "hrNew": {
+    "title": "Nouvelle demande pour un employé",
+    "employee": "Employé",
+    "employeeHint": "La demande sera faite en son nom.",
+    "titleFor": "Nouvelle demande pour {{name}}",
+    "formTitle": "{{type}} pour {{name}}"
+  },
+  "hrView": {
+    "document": "Document",
+    "otherActions": "Autres actions RH",
+    "attachTitle": "Ajouter un fichier pour {{name}}",
+    "actions": {
+      "record": "Saisir une décision donnée hors de l'application",
+      "reassign": "Confier l'étape à quelqu'un d'autre",
+      "delegate": "Nommer un délégué pour le responsable",
+      "correct": "Corriger ou annuler",
+      "reclassify": "Compter en congé annuel",
+      "attach": "Ajouter un fichier"
+    }
+  },
+  "settingsIndex": {
+    "types": {
+      "title": "Types de demande",
+      "description": "Ce que chaque type demande, compte et autorise."
+    },
+    "steps": {
+      "title": "Étapes d'un type",
+      "description": "Qui décide ou est informé, dans quel ordre et sous quels délais."
+    },
+    "events": {
+      "title": "Événements de congé exceptionnel",
+      "description": "Les événements familiaux et les jours qu'ils accordent."
+    },
+    "holidays": {
+      "title": "Jours fériés",
+      "description": "Les jours fériés de chaque année, jamais comptés dans une demande."
+    },
+    "parameters": {
+      "title": "Paramètres",
+      "description": "Semaine de travail, délai du certificat médical et autres réglages."
+    }
+  },
+  "settingsForm": {
+    "appliesLater": "Une modification s'applique aux demandes envoyées ensuite ; les demandes déjà envoyées ne changent pas.",
+    "active": "Actif",
+    "inactive": "Inactif",
+    "whole": "Saisissez un nombre entier, zéro ou plus.",
+    "positive": "Saisissez un nombre supérieur à zéro."
+  },
+  "settingsTypes": {
+    "title": "Types de demande",
+    "new": "Nouveau type",
+    "empty": "Aucun type de demande.",
+    "columns": {
+      "name": "Nom",
+      "unit": "Compté en",
+      "balance": "Solde annuel",
+      "document": "Document",
+      "limit": "Limite",
+      "state": "État"
+    },
+    "unit": {
+      "day": "Jours",
+      "hour": "Heures"
+    },
+    "documentRequired": "Requis",
+    "documentWithin": "Requis sous {{hours}} h",
+    "noLimit": "Aucune",
+    "limitPer": {
+      "week": "{{quantity}} par semaine",
+      "month": "{{quantity}} par mois"
+    },
+    "sheetNew": "Nouveau type de demande",
+    "sheetEdit": "Modifier : {{name}}",
+    "saved": "Type enregistré.",
+    "stepsLink": "Voir les étapes de ce type",
+    "fields": {
+      "code": "Code",
+      "codeHint": "Un mot court en minuscules, sans espace. Il ne pourra plus être changé.",
+      "name_fr": "Nom en français",
+      "name_en": "Nom en anglais",
+      "description_fr": "Description en français",
+      "description_en": "Description en anglais",
+      "descriptionHint": "Une ligne qui dit à quoi sert ce type, montrée au moment de choisir.",
+      "unit": "Compté en",
+      "unitHint": "Ne pourra plus être changé.",
+      "allows_half_day": "Demi-journées autorisées",
+      "deducts": "Déduit du solde de congé annuel",
+      "document_required": "Un document est requis",
+      "document_deadline_hours": "Délai pour le fournir (heures)",
+      "documentDeadlineHint": "Laissez vide pour appliquer le délai général des paramètres.",
+      "allows_past_dates": "Dates passées autorisées",
+      "notice_days": "Préavis (jours)",
+      "cap_period": "Limite",
+      "cap_quantity": "Quantité maximale par période",
+      "reduces_meal_tickets": "Réduit les tickets restaurant",
+      "calendar_label": "Sur le calendrier des collègues",
+      "is_sensitive": "Commentaire et fichiers réservés aux RH",
+      "uses_events": "Un événement doit être choisi",
+      "is_active": "Proposé aux employés",
+      "sort_order": "Ordre d'affichage"
+    },
+    "capPeriod": {
+      "none": "Aucune limite",
+      "week": "Par semaine",
+      "month": "Par mois"
+    },
+    "calendarLabel": {
+      "absent": "Absent",
+      "remote": "Télétravail",
+      "hidden": "Non affiché"
+    },
+    "unitFixed": "Compté en : {{unit}}"
+  },
+  "settingsSteps": {
+    "title": "Étapes d'un type",
+    "type": "Type de demande",
+    "step": "Étape {{n}}",
+    "who": "Qui agit",
+    "rule": {
+      "line_manager": "Le responsable",
+      "hr_role": "Les RH",
+      "named_person": "Une personne désignée"
+    },
+    "person": "Personne",
+    "personRequired": "Choisissez la personne.",
+    "role": "Rôle",
+    "mode": {
+      "approve": "Décide",
+      "notify": "Est seulement informé"
+    },
+    "reminder": "Rappel après (jours ouvrés)",
+    "flag": "Alerte aux RH après (jours ouvrés)",
+    "flagHint": "Laissez vide pour ne jamais alerter les RH.",
+    "delayInvalid": "Saisissez un nombre entier de jours, entre 1 et 60.",
+    "up": "Monter",
+    "down": "Descendre",
+    "remove": "Retirer",
+    "add": "Ajouter une étape",
+    "save": "Enregistrer les étapes",
+    "saved": "Étapes enregistrées.",
+    "needsDecider": "Au moins une étape doit décider.",
+    "none": "Ce type n'a aucune étape : les RH décident.",
+    "preview": "Aperçu pour un employé",
+    "previewHint": "L'aperçu montre les étapes enregistrées, pas vos modifications en cours.",
+    "readReminder": "Rappel après {{reminder}} jours ouvrés",
+    "readFlag": "alerte aux RH après {{flag}} jours ouvrés"
+  },
+  "settingsEvents": {
+    "title": "Événements de congé exceptionnel",
+    "new": "Nouvel événement",
+    "empty": "Aucun événement.",
+    "columns": {
+      "name": "Événement",
+      "days": "Jours accordés",
+      "proof": "Justificatif requis",
+      "state": "État"
+    },
+    "sheetNew": "Nouvel événement",
+    "sheetEdit": "Modifier : {{name}}",
+    "saved": "Événement enregistré.",
+    "fields": {
+      "name_fr": "Nom en français",
+      "name_en": "Nom en anglais",
+      "days_allowed": "Jours accordés",
+      "proof_required": "Un justificatif est requis",
+      "is_active": "Proposé aux employés"
+    }
+  },
+  "settingsHolidays": {
+    "title": "Jours fériés",
+    "year": "Année",
+    "new": "Nouveau jour férié",
+    "copy": "Copier les jours à date fixe vers {{year}}",
+    "copied": "Jours fériés copiés vers {{year}} : {{n}}.",
+    "empty": "Aucun jour férié pour {{year}}.",
+    "columns": {
+      "date": "Date",
+      "name": "Nom",
+      "recurs": "Récurrence"
+    },
+    "everyYear": "Chaque année, à la même date",
+    "thisYearOnly": "Cette année seulement",
+    "sheetNew": "Nouveau jour férié",
+    "sheetEdit": "Modifier : {{name}}",
+    "saved": "Jour férié enregistré.",
+    "fields": {
+      "date": "Date",
+      "name_fr": "Nom en français",
+      "name_en": "Nom en anglais",
+      "recurs_yearly": "Revient chaque année à la même date"
+    },
+    "impactNew": "Des demandes déjà approuvées couvrent ce jour. Leur décompte ne change pas :",
+    "impactOld": "Des demandes déjà approuvées couvrent l'ancienne date. Leur décompte ne change pas :",
+    "delete": "Supprimer",
+    "deleteTitle": "Supprimer ce jour férié ?",
+    "deleteConsequence": "Le {{date}} redevient un jour ouvré pour les demandes à venir.",
+    "deleteImpact": "Des demandes déjà approuvées couvrent ce jour et leur décompte ne change pas : {{people}}.",
+    "deleteConfirm": "Supprimer le jour férié",
+    "deleted": "Jour férié supprimé."
+  },
+  "overviewList": {
+    "title": "Demandes",
+    "empty": "Aucune demande ici.",
+    "emptyHint": "Changez les filtres pour en voir d'autres."
+  },
+  "overviewView": {
+    "decideElsewhere": "Cette demande attend votre décision. La vue d'ensemble est en lecture seule : la décision se prend ailleurs.",
+    "openToDecide": "Ouvrir pour décider"
+  },
+  "recordBlock": {
+    "title": "Demandes",
+    "new": "Nouvelle demande pour cet employé",
+    "empty": "Aucune demande."
+  },
+  "people": {
+    "waiting": "Demandes en attente",
+    "none": "Aucune",
+    "waitingFor": "Demandes en attente de {{name}} : {{n}}"
+  },
+  "delegationOffer": {
+    "text": "Pendant cette absence, les demandes de votre équipe peuvent être décidées par un délégué.",
+    "action": "Nommer un délégué pour ces dates"
+  }
+}

@@ -1,0 +1,720 @@
+{
+  "common": {
+    "hr": "HR",
+    "cancel": "Cancel",
+    "save": "Save",
+    "open": "Open",
+    "edit": "Edit",
+    "send": "Send",
+    "newRequest": "New request",
+    "discard": "Discard the draft",
+    "withdraw": "Withdraw the request",
+    "yes": "Yes",
+    "no": "No",
+    "all": "All",
+    "seeAll": "See all",
+    "reason": "Reason",
+    "who": "Who",
+    "department": "Department",
+    "type": "Type",
+    "dates": "Dates",
+    "quantity": "Length",
+    "status": "Status"
+  },
+  "status": {
+    "draft": "Not sent yet",
+    "approved": "Approved",
+    "cancelled": "Cancelled",
+    "rejected": "Refused",
+    "waitingFor": "Waiting for {{names}}",
+    "waitingNobody": "Waiting for a decision",
+    "waitingHr": "Waiting for HR",
+    "approvedByWaitingHr": "Approved by {{actor}}; waiting for HR",
+    "actor": {
+      "waiting": "Waiting for your decision",
+      "toValidate": "To validate"
+    },
+    "requester": {
+      "returned": "Sent back to you: {{note}}",
+      "returnedNoNote": "Sent back to you",
+      "rejected": "Refused: {{note}}",
+      "withdrawn": "Withdrawn by you"
+    },
+    "observer": {
+      "returned": "Sent back to {{requester}}",
+      "withdrawn": "Withdrawn by {{requester}}"
+    }
+  },
+  "certificate": {
+    "due": "Certificate due by {{date}}",
+    "overdue": "Certificate overdue, was due {{date}}",
+    "missing": "Proof not provided yet"
+  },
+  "amendment": {
+    "requester": "Your change is waiting for {{who}}",
+    "actor": "Change to decide",
+    "observer": "A change is waiting for {{who}}"
+  },
+  "when": {
+    "morning": "{{date}}, morning",
+    "afternoon": "{{date}}, afternoon",
+    "rangeFromMidday": "{{range}}, from midday on the first day",
+    "rangeUntilMidday": "{{range}}, until midday on the last day",
+    "rangeBoth": "{{range}}, from midday on the first day to midday on the last",
+    "hours": "{{date}}, {{from}} to {{to}}"
+  },
+  "next": {
+    "draft": "Nothing is reserved until you send it.",
+    "returned": "Correct it and send it again: it restarts at the first step.",
+    "approved": "You can still change the dates or cancel it until it starts.",
+    "last": "This is the last step.",
+    "thenHr": "Then HR validates it.",
+    "thenPerson": "Then {{names}} decides.",
+    "thenSomeone": "Then it goes to the next step."
+  },
+  "choice": {
+    "title": "What kind of request?",
+    "none": "No kind of request is available at the moment.",
+    "noneHint": "HR can tell you why."
+  },
+  "formErrors": {
+    "required": "This field is needed.",
+    "endBeforeStart": "The end must be the same day as the start, or later.",
+    "bothHalves": "For a single day, choose the morning or the afternoon, not both.",
+    "times": "The end time must be after the start time.",
+    "eventRequired": "Choose the event concerned.",
+    "reasonRequired": "Give the reason: it is mandatory.",
+    "fileType": "This kind of file is not accepted. Use a PDF, a JPG or a PNG.",
+    "fileSize": "This file is larger than 10 MB. Reduce it or scan it at a lower resolution.",
+    "fileEmpty": "This file is empty. Choose another one."
+  },
+  "keeper": {
+    "restored": "We kept what you had typed. Check it before sending.",
+    "startOver": "Start again from an empty form"
+  },
+  "chain": {
+    "yourManager": "your manager, {{names}}",
+    "theManager": "their manager, {{names}}",
+    "noManager": "no manager (step skipped)",
+    "informed": "{{who}} (for information)",
+    "then": ", then ",
+    "nobody": "nobody for now"
+  },
+  "form": {
+    "title": "{{type}}",
+    "start": "Start",
+    "end": "End",
+    "date": "Date",
+    "from": "From",
+    "to": "To",
+    "startsAtMidday": "Start at midday on the first day",
+    "endsAtMidday": "Finish at midday on the last day",
+    "event": "Event",
+    "eventPlaceholder": "Choose an event",
+    "comment": "Comment",
+    "commentSensitiveHint": "Seen by HR only.",
+    "certificate": "Medical certificate",
+    "proof": "Proof",
+    "fileLaterHint": "PDF, JPG or PNG, 10 MB at most. You can add it now or later.",
+    "fileHint": "PDF, JPG or PNG, 10 MB at most.",
+    "override": "Allow an exception",
+    "overrideHint": "Lifts the checks on balance, limit, days allowed and past dates.",
+    "overrideReason": "Reason for the exception",
+    "overrideFixed": "The exception is decided when the request is created: it can no longer be changed here.",
+    "followsSteps": "The request then follows its normal steps.",
+    "balanceHint": "You can ask HR whether an exception is possible.",
+    "balanceHintHr": "To go ahead anyway, turn on \"Allow an exception\" and give the reason.",
+    "sending": "Sending…",
+    "saveForLater": "Save for later",
+    "saveChanges": "Save the changes",
+    "sendAgain": "Send again",
+    "sent": "Request sent.",
+    "saved": "Draft saved.",
+    "changed": "Changes saved.",
+    "computed": "Worked out for you",
+    "computedEmpty": "Give the dates: the count will appear here.",
+    "daysCounted": "Working days counted",
+    "hoursCounted": "Hours counted",
+    "notCounted": "Not counted",
+    "skipped": {
+      "weekend": "{{date}} (weekend)",
+      "holiday": "{{date}} (public holiday)"
+    },
+    "balanceNow": "Balance today",
+    "balanceOnStart": "Balance on the first day",
+    "balanceAfter": "Balance after this request",
+    "eventAllowed": "Days allowed for this event",
+    "monthHours": "Hours already taken this month",
+    "cap": {
+      "week": "Already taken this week",
+      "month": "Already taken this month"
+    },
+    "capValue": "{{used}} of {{limit}}",
+    "certificateDue": "Certificate due by",
+    "whoDecides": "Who will decide",
+    "sensitiveNote": "Your comment and your certificate are seen by HR only."
+  },
+  "edit": {
+    "title": "Edit: {{type}}",
+    "returnedBy": "Sent back by {{who}}: {{note}}",
+    "returnedByNoNote": "Sent back by {{who}}.",
+    "someone": "an approver",
+    "typeGone": "This kind of request no longer exists.",
+    "typeGoneHint": "The request can no longer be edited here. HR can correct it.",
+    "backToRequest": "Back to the request"
+  },
+  "list": {
+    "mine": {
+      "title": "My requests",
+      "empty": "No request here.",
+      "emptyHint": "Change the filters, or create your first request with \"New request\"."
+    }
+  },
+  "filters": {
+    "statusLabel": "Status",
+    "typeLabel": "Type",
+    "yearLabel": "Year",
+    "employee": "Person",
+    "period": "Period",
+    "department": "Department",
+    "onBehalf": "Entered by HR",
+    "hasOverride": "With an exception",
+    "status": {
+      "draft": "Not sent yet",
+      "pending": "Waiting",
+      "returned": "Sent back",
+      "approved": "Approved",
+      "rejected": "Refused",
+      "withdrawn": "Withdrawn",
+      "cancelled": "Cancelled"
+    }
+  },
+  "undo": {
+    "discard": "Draft discarded.",
+    "withdraw": "Request withdrawn.",
+    "tooLate": "Too late: the request had already been dealt with. Here is where it stands now."
+  },
+  "view": {
+    "summary": "Summary of the request",
+    "steps": "Steps",
+    "myCommentAndFiles": "My comment and my files",
+    "commentAndFiles": "Comment and files",
+    "files": "Files",
+    "comment": "Comment",
+    "noFiles": "No file.",
+    "changes": "Changes asked for",
+    "history": "Full history",
+    "historyEmpty": "No event.",
+    "system": "System",
+    "event": "Event: {{name}}",
+    "exception": "Request entered with an exception granted by HR.",
+    "enteredByHr": "Request entered by HR.",
+    "amendmentKind": {
+      "change": "Change of dates",
+      "cancel": "Cancellation"
+    },
+    "amendmentStatus": {
+      "pending": "waiting",
+      "approved": "approved",
+      "rejected": "refused",
+      "withdrawn": "withdrawn"
+    },
+    "amendmentNew": "New dates: {{range}} ({{quantity}})",
+    "amendmentReason": "Reason: {{reason}}"
+  },
+  "steps": {
+    "none": "No step yet.",
+    "forChange": "for the change",
+    "round": "Sending no. {{round}}",
+    "who": {
+      "hr": "HR",
+      "manager": "Manager: {{names}}",
+      "managerNone": "Manager",
+      "nobody": "Named person"
+    },
+    "status": {
+      "waiting": "Not at this step yet",
+      "pending": "Waiting for a decision",
+      "approved": "Approved by {{name}} on {{date}}",
+      "rejected": "Refused by {{name}} on {{date}}",
+      "returned": "Sent back by {{name}} on {{date}}",
+      "notified": "For information",
+      "skipped": "Step skipped: nobody to ask"
+    },
+    "recorded": "Decision entered by {{recorder}}, {{channel}}.",
+    "channel": {
+      "in_app": "in the application",
+      "verbal": "given verbally",
+      "paper": "given on paper"
+    },
+    "quoted": "“{{text}}”"
+  },
+  "files": {
+    "kind": {
+      "medical": "Medical certificate",
+      "proof": "Proof",
+      "scanned_form": "Signed form"
+    },
+    "meta": "{{kind}}, added by {{by}} on {{date}}"
+  },
+  "mine": {
+    "editAndResend": "Edit and send again",
+    "changeDates": "Change the dates",
+    "cancelRequest": "Cancel the request",
+    "addCertificate": "Add the certificate",
+    "addProof": "Add the proof",
+    "addFile": "Add a file",
+    "withdrawChange": "Withdraw the change",
+    "changeWithdrawn": "Change withdrawn.",
+    "balance": "Balance: {{now}} today, {{after}} after"
+  },
+  "addFile": {
+    "label": "File",
+    "add": "Add",
+    "done": "File added.",
+    "required": "Choose a file."
+  },
+  "change": {
+    "title": "Change an approved request",
+    "current": "Current request: {{when}} ({{quantity}})",
+    "kindLegend": "What do you want to do?",
+    "stays": "The original stays valid until the change is approved.",
+    "newCount": "New count",
+    "balanceEffect": "Effect on your balance",
+    "uses": "Uses {{amount}} more.",
+    "gives": "Gives back {{amount}}.",
+    "same": "No change.",
+    "cancelGives": "Once approved, the cancellation gives {{amount}} back to your balance.",
+    "reason": "Reason",
+    "unchanged": "These are the request's current dates. Change them, or choose the cancellation.",
+    "sendChange": "Send the change",
+    "sendCancel": "Ask for the cancellation",
+    "sentChange": "Change sent.",
+    "sentCancel": "Cancellation requested."
+  },
+  "decision": {
+    "title": {
+      "approve": "Approve the request",
+      "reject": "Refuse the request",
+      "return": "Send the request back"
+    },
+    "confirm": {
+      "approve": "Approve",
+      "reject": "Refuse",
+      "return": "Send back"
+    },
+    "comment": {
+      "approve": "Comment (optional)",
+      "reject": "Reason for refusing",
+      "return": "What needs correcting"
+    },
+    "required": {
+      "reject": "Give the reason for refusing: it is mandatory.",
+      "return": "Say what needs correcting: it is mandatory."
+    },
+    "consequence": {
+      "approve": "Your approval is recorded and the request goes to the next step.",
+      "approveHr": "Your validation is recorded. If no step remains, the request is approved and {{name}} is told.",
+      "reject": "The request is refused and {{name}} is told. This decision is final.",
+      "return": "The request goes back to {{name}}, who can correct it and send it again."
+    },
+    "done": {
+      "approve": "Request of {{name}} approved.",
+      "reject": "Request of {{name}} refused.",
+      "return": "Request sent back to {{name}}."
+    }
+  },
+  "toDecide": {
+    "pageTitle": "To decide",
+    "title": "To decide",
+    "empty": "Nothing to decide.",
+    "decideOldest": "Decide the oldest",
+    "since": "Waiting since {{date}}",
+    "via": "On behalf of {{name}}",
+    "itemLabel": "{{name}}, {{type}}"
+  },
+  "context": {
+    "title": "To decide",
+    "balanceAfter": "Balance after: {{after}}",
+    "balanceNowAfter": "Balance: {{now}} today, {{after}} after",
+    "cap": "Limit: {{used}} already taken of {{limit}}",
+    "away": "Already absent or remote on those days: {{people}}",
+    "nobodyAway": "Nobody else on the team is away on those days.",
+    "person": {
+      "absent": "{{name}} (absent, {{when}})",
+      "remote": "{{name}} (remote, {{when}})"
+    }
+  },
+  "manager": {
+    "infoOnly": "Declaration passed on for information: you have no decision to make."
+  },
+  "teamList": {
+    "title": "Team requests",
+    "viewLabel": "View",
+    "viewTeam": "The whole team",
+    "viewDecided": "Already decided by me",
+    "empty": "No request from your team here.",
+    "emptyDecided": "You have not decided any request yet.",
+    "emptyHint": "Change the filters to see others."
+  },
+  "onBehalf": {
+    "title": "Record a decision given outside the application",
+    "who": "Who decided",
+    "whoHint": "This step is waiting for: {{names}}",
+    "whoRequired": "Say who took the decision.",
+    "decision": "Decision",
+    "decisions": {
+      "approve": "Approved",
+      "reject": "Refused",
+      "return": "Sent back for correction"
+    },
+    "when": "When the decision was given",
+    "whenRequired": "Say when the decision was given.",
+    "channel": "How",
+    "channels": {
+      "verbal": "Verbally",
+      "paper": "On paper"
+    },
+    "note": "Note",
+    "noteRequired": "The note is mandatory: say in what circumstances the decision was given.",
+    "scan": "Signed form (scan)",
+    "submit": "Record the decision",
+    "done": "Decision recorded."
+  },
+  "reassign": {
+    "title": "Give the step to someone else",
+    "current": "Current approver: {{names}}",
+    "currentNone": "Nobody can decide this step at the moment.",
+    "new": "New approver",
+    "newRequired": "Choose the person who will decide.",
+    "submit": "Give the step",
+    "done": "Step given to someone else."
+  },
+  "correct": {
+    "title": "Correct or cancel the request",
+    "kindLegend": "What do you want to do?",
+    "kindCorrect": "Correct the dates",
+    "kindCancel": "Cancel the request",
+    "told": "{{name}} and their manager will be told.",
+    "cancelGives": "The days already deducted ({{amount}}) go back to the balance.",
+    "submitCorrect": "Correct the request",
+    "submitCancel": "Cancel the request",
+    "doneCorrect": "Request corrected.",
+    "doneCancel": "Request cancelled."
+  },
+  "reclassify": {
+    "title": "Count the sick leave as annual leave",
+    "days": "Days concerned: {{when}} ({{quantity}})",
+    "consequence": "The request becomes annual leave, validated by HR. These days are deducted from the balance of {{name}}.",
+    "balanceNow": "Balance today",
+    "balanceAfter": "Balance after",
+    "short": "The balance does not cover these days. To go on, say why an exception is granted.",
+    "reason": "Reason for the exception",
+    "submit": "Count as annual leave",
+    "done": "Sick leave counted as annual leave."
+  },
+  "document": {
+    "not_needed": "No document needed",
+    "attached": "Document provided",
+    "due": "Due by {{date}}",
+    "overdue": "Overdue, was due {{date}}",
+    "missing": "Proof not provided yet"
+  },
+  "queues": {
+    "columns": {
+      "document": "Document",
+      "due": "Due by",
+      "overdue": "Overdue by",
+      "waitingOn": "Waiting for",
+      "since": "Since"
+    },
+    "documentOption": {
+      "attached": "Provided",
+      "due": "Due",
+      "overdue": "Overdue",
+      "missing": "Missing",
+      "not_needed": "Not needed"
+    },
+    "onTime": "On time",
+    "nobody": "Nobody can decide",
+    "truncated": "Only the {{n}} oldest requests are shown.",
+    "emptyHint": "Change the filters to see others.",
+    "validate": {
+      "title": "To validate",
+      "empty": "No request is waiting for HR's validation.",
+      "documentFilter": "Document"
+    },
+    "certificates": {
+      "title": "Certificates",
+      "empty": "No sick leave is waiting for its certificate.",
+      "attach": "Add the certificate",
+      "attachTitle": "Add the certificate of {{name}}",
+      "reclassify": "Count as annual leave"
+    },
+    "stuck": {
+      "title": "Stuck with a manager",
+      "empty": "No request is stuck with a manager.",
+      "record": "Record the decision",
+      "reassign": "Give to someone else",
+      "delegate": "Name a delegate"
+    }
+  },
+  "desk": {
+    "title": "HR desk",
+    "next": "Deal with the oldest",
+    "seeAll": "See all: {{queue}}",
+    "validate": {
+      "title": "To validate",
+      "count": "Waiting for validation: {{n}}",
+      "empty": "No request to validate."
+    },
+    "certificates": {
+      "title": "Certificates",
+      "count": "Overdue: {{overdue}} · Due: {{due}}",
+      "empty": "No certificate is awaited."
+    },
+    "stuck": {
+      "title": "Stuck with a manager",
+      "count": "Without a decision: {{n}}",
+      "empty": "No request is stuck.",
+      "item": "Waiting for {{who}} since {{date}}",
+      "itemNobody": "Nobody can decide, since {{date}}"
+    },
+    "profile": {
+      "title": "Profile changes",
+      "count": "To deal with: {{n}}",
+      "empty": "No profile change to deal with.",
+      "item": "Proposed on {{date}}"
+    }
+  },
+  "hrList": {
+    "title": "Requests",
+    "new": "New request for an employee",
+    "empty": "No request here.",
+    "emptyHint": "Change the filters, or enter a request for an employee."
+  },
+  "hrNew": {
+    "title": "New request for an employee",
+    "employee": "Employee",
+    "employeeHint": "The request will be made in their name.",
+    "titleFor": "New request for {{name}}",
+    "formTitle": "{{type}} for {{name}}"
+  },
+  "hrView": {
+    "document": "Document",
+    "otherActions": "Other HR actions",
+    "attachTitle": "Add a file for {{name}}",
+    "actions": {
+      "record": "Record a decision given outside the application",
+      "reassign": "Give the step to someone else",
+      "delegate": "Name a delegate for the manager",
+      "correct": "Correct or cancel",
+      "reclassify": "Count as annual leave",
+      "attach": "Add a file"
+    }
+  },
+  "settingsIndex": {
+    "types": {
+      "title": "Request types",
+      "description": "What each type asks for, counts and allows."
+    },
+    "steps": {
+      "title": "Steps of a type",
+      "description": "Who decides or is informed, in what order and within what delays."
+    },
+    "events": {
+      "title": "Exceptional-leave events",
+      "description": "Family events and the days they give."
+    },
+    "holidays": {
+      "title": "Public holidays",
+      "description": "The public holidays of each year, never counted in a request."
+    },
+    "parameters": {
+      "title": "Parameters",
+      "description": "Working week, medical certificate deadline and other settings."
+    }
+  },
+  "settingsForm": {
+    "appliesLater": "A change applies to requests sent afterwards; requests already sent do not change.",
+    "active": "Active",
+    "inactive": "Inactive",
+    "whole": "Enter a whole number, zero or more.",
+    "positive": "Enter a number greater than zero."
+  },
+  "settingsTypes": {
+    "title": "Request types",
+    "new": "New type",
+    "empty": "No request type.",
+    "columns": {
+      "name": "Name",
+      "unit": "Counted in",
+      "balance": "Annual balance",
+      "document": "Document",
+      "limit": "Limit",
+      "state": "State"
+    },
+    "unit": {
+      "day": "Days",
+      "hour": "Hours"
+    },
+    "documentRequired": "Required",
+    "documentWithin": "Required within {{hours}} h",
+    "noLimit": "None",
+    "limitPer": {
+      "week": "{{quantity}} a week",
+      "month": "{{quantity}} a month"
+    },
+    "sheetNew": "New request type",
+    "sheetEdit": "Edit: {{name}}",
+    "saved": "Type saved.",
+    "stepsLink": "See the steps of this type",
+    "fields": {
+      "code": "Code",
+      "codeHint": "A short word in lower case, without spaces. It cannot be changed later.",
+      "name_fr": "Name in French",
+      "name_en": "Name in English",
+      "description_fr": "Description in French",
+      "description_en": "Description in English",
+      "descriptionHint": "One line saying what this type is for, shown when choosing.",
+      "unit": "Counted in",
+      "unitHint": "Cannot be changed later.",
+      "allows_half_day": "Half-days allowed",
+      "deducts": "Deducted from the annual leave balance",
+      "document_required": "A document is required",
+      "document_deadline_hours": "Time allowed to provide it (hours)",
+      "documentDeadlineHint": "Leave empty to apply the general deadline of the parameters.",
+      "allows_past_dates": "Past dates allowed",
+      "notice_days": "Notice (days)",
+      "cap_period": "Limit",
+      "cap_quantity": "Largest quantity per period",
+      "reduces_meal_tickets": "Reduces meal tickets",
+      "calendar_label": "On colleagues' calendars",
+      "is_sensitive": "Comment and files restricted to HR",
+      "uses_events": "An event must be chosen",
+      "is_active": "Offered to employees",
+      "sort_order": "Display order"
+    },
+    "capPeriod": {
+      "none": "No limit",
+      "week": "Per week",
+      "month": "Per month"
+    },
+    "calendarLabel": {
+      "absent": "Absent",
+      "remote": "Remote",
+      "hidden": "Not shown"
+    },
+    "unitFixed": "Counted in: {{unit}}"
+  },
+  "settingsSteps": {
+    "title": "Steps of a type",
+    "type": "Request type",
+    "step": "Step {{n}}",
+    "who": "Who acts",
+    "rule": {
+      "line_manager": "The manager",
+      "hr_role": "HR",
+      "named_person": "A named person"
+    },
+    "person": "Person",
+    "personRequired": "Choose the person.",
+    "role": "Role",
+    "mode": {
+      "approve": "Decides",
+      "notify": "Is only informed"
+    },
+    "reminder": "Reminder after (working days)",
+    "flag": "Alert to HR after (working days)",
+    "flagHint": "Leave empty to never alert HR.",
+    "delayInvalid": "Enter a whole number of days, between 1 and 60.",
+    "up": "Move up",
+    "down": "Move down",
+    "remove": "Remove",
+    "add": "Add a step",
+    "save": "Save the steps",
+    "saved": "Steps saved.",
+    "needsDecider": "At least one step must decide.",
+    "none": "This type has no step: HR decides.",
+    "preview": "Preview for an employee",
+    "previewHint": "The preview shows the saved steps, not the changes you are making.",
+    "readReminder": "Reminder after {{reminder}} working days",
+    "readFlag": "alert to HR after {{flag}} working days"
+  },
+  "settingsEvents": {
+    "title": "Exceptional-leave events",
+    "new": "New event",
+    "empty": "No event.",
+    "columns": {
+      "name": "Event",
+      "days": "Days allowed",
+      "proof": "Proof required",
+      "state": "State"
+    },
+    "sheetNew": "New event",
+    "sheetEdit": "Edit: {{name}}",
+    "saved": "Event saved.",
+    "fields": {
+      "name_fr": "Name in French",
+      "name_en": "Name in English",
+      "days_allowed": "Days allowed",
+      "proof_required": "Proof is required",
+      "is_active": "Offered to employees"
+    }
+  },
+  "settingsHolidays": {
+    "title": "Public holidays",
+    "year": "Year",
+    "new": "New public holiday",
+    "copy": "Copy the fixed-date holidays to {{year}}",
+    "copied": "Public holidays copied to {{year}}: {{n}}.",
+    "empty": "No public holiday for {{year}}.",
+    "columns": {
+      "date": "Date",
+      "name": "Name",
+      "recurs": "Recurrence"
+    },
+    "everyYear": "Every year, on the same date",
+    "thisYearOnly": "This year only",
+    "sheetNew": "New public holiday",
+    "sheetEdit": "Edit: {{name}}",
+    "saved": "Public holiday saved.",
+    "fields": {
+      "date": "Date",
+      "name_fr": "Name in French",
+      "name_en": "Name in English",
+      "recurs_yearly": "Comes back every year on the same date"
+    },
+    "impactNew": "Requests already approved cover this day. Their count does not change:",
+    "impactOld": "Requests already approved cover the former date. Their count does not change:",
+    "delete": "Remove",
+    "deleteTitle": "Remove this public holiday?",
+    "deleteConsequence": "{{date}} becomes a working day again for requests to come.",
+    "deleteImpact": "Requests already approved cover this day and their count does not change: {{people}}.",
+    "deleteConfirm": "Remove the public holiday",
+    "deleted": "Public holiday removed."
+  },
+  "overviewList": {
+    "title": "Requests",
+    "empty": "No request here.",
+    "emptyHint": "Change the filters to see others."
+  },
+  "overviewView": {
+    "decideElsewhere": "This request is waiting for your decision. Overview is read-only: the decision is taken elsewhere.",
+    "openToDecide": "Open to decide"
+  },
+  "recordBlock": {
+    "title": "Requests",
+    "new": "New request for this employee",
+    "empty": "No request."
+  },
+  "people": {
+    "waiting": "Requests waiting",
+    "none": "None",
+    "waitingFor": "Requests waiting for {{name}}: {{n}}"
+  },
+  "delegationOffer": {
+    "text": "During this absence, a delegate can decide your team's requests.",
+    "action": "Name a delegate for these dates"
+  }
+}

@@ -1,0 +1,10 @@
+# Only the frontend sources and this folder are needed to build the proxy image.
+*
+!frontend
+!proxy
+frontend/node_modules
+frontend/dist
+frontend/playwright-report
+frontend/test-results
+proxy/tests
+proxy/certs

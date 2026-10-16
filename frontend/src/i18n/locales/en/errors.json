@@ -1,0 +1,21 @@
+{
+  "unexpected": "Something went wrong. Please try again.",
+  "network": "The application cannot be reached. Check your connection and try again.",
+  "unavailable": "The application is being updated. It will be back shortly.",
+  "tooLarge": "This file is too large to be sent.",
+  "notAvailable": {
+    "title": "Not available",
+    "body": "This page does not exist or is not available to you.",
+    "back": "Back to the home page"
+  },
+  "wentWrong": {
+    "title": "Something went wrong",
+    "body": "The page could not be shown. If it happens again, give this reference to the System Administrator.",
+    "reference": "Reference: {{id}}",
+    "back": "Back to the home page"
+  },
+  "beingUpdated": {
+    "title": "Being updated",
+    "body": "The application is being updated and will be back shortly. This page checks again by itself."
+  }
+}

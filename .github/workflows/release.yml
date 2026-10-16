@@ -1,0 +1,43 @@
+name: Release
+
+# On a version tag vX.Y.Z: the same checks, then the two images in GitHub's container registry (PRD 12.4).
+on:
+  push:
+    tags: ["v[0-9]+.[0-9]+.[0-9]+"]
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  checks:
+    uses: ./.github/workflows/ci.yml
+
+  publish:
+    name: Publish the backend and proxy images
+    needs: checks
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - name: Image names
+        id: names
+        # The registry wants lower case. The server's IMAGE_PREFIX is this value.
+        run: echo "prefix=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/iris-hr" >> "$GITHUB_OUTPUT"
+      - uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Backend image (the last stage of backend/Dockerfile, with Gunicorn)
+        uses: docker/build-push-action@v7
+        with:
+          context: backend
+          push: true
+          tags: ${{ steps.names.outputs.prefix }}-backend:${{ github.ref_name }}
+      - name: Proxy image (Caddy with the built application)
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: proxy/Dockerfile
+          push: true
+          tags: ${{ steps.names.outputs.prefix }}-proxy:${{ github.ref_name }}

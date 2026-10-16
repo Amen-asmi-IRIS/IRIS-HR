@@ -1,0 +1,60 @@
+{
+  "title": "Delegations",
+  "name": "Name a delegate",
+  "given": {
+    "title": "Delegations given",
+    "empty": {
+      "title": "You have not named a delegate",
+      "hint": "Name one before an absence, so that your team's requests do not wait."
+    }
+  },
+  "received": {
+    "title": "Delegations received",
+    "empty": "Nobody has delegated their decisions to you."
+  },
+  "columns": {
+    "delegate": "Delegate",
+    "manager": "Manager",
+    "from": "From",
+    "to": "To",
+    "state": "State",
+    "action": "Action"
+  },
+  "state": {
+    "upcoming": "Upcoming",
+    "active": "Active",
+    "ended": "Ended",
+    "cancelled": "Cancelled"
+  },
+  "end": {
+    "active": "End now",
+    "upcoming": "Cancel the delegation",
+    "title": {
+      "active": "End this delegation?",
+      "upcoming": "Cancel this delegation?"
+    },
+    "consequence": {
+      "active": "{{name}} will no longer decide in the manager's place or see their team, starting now.",
+      "upcoming": "The delegation to {{name}} will not take place."
+    },
+    "confirm": {
+      "active": "Yes, end it",
+      "upcoming": "Yes, cancel it"
+    },
+    "done": "Delegation ended.",
+    "failed": "The delegation could not be ended. Reload the page and try again."
+  },
+  "sheet": {
+    "title": "Name a delegate",
+    "titleFor": "Name a delegate for {{name}}",
+    "delegate": "Delegate",
+    "start": "First day",
+    "end": "Last day",
+    "consequence": "During this period the delegate sees the team and can decide requests in the manager's place. The manager keeps their rights.",
+    "submit": "Name the delegate",
+    "cancel": "Cancel",
+    "required": "This field is required.",
+    "endBeforeStart": "The last day cannot come before the first.",
+    "done": "Delegate named."
+  }
+}
