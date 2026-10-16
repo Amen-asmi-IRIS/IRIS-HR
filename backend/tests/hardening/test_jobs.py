@@ -17,7 +17,6 @@ from apps.core import backup
 from apps.core.jobs import RETRY, recorded
 from apps.core.models import JobStatus
 from apps.notifications.models import Notification
-from apps.organisation import services as organisation_services
 from apps.organisation.models import Employee
 from apps.requests.models import Request, RequestStep
 from apps.settings import services as settings_service
@@ -27,7 +26,6 @@ User = get_user_model()
 JOBS = [
     "core.heartbeat",
     "accounts.cleanup",
-    "organisation.delegation_transitions",
     "requests.reminders_and_flags",
     "requests.certificate_deadlines",
     "balances.month_end_credit",
@@ -88,14 +86,6 @@ def busy_world(world, frozen, tmp_path, files_root, monkeypatch):
         start=date(2026, 11, 2),
         end=date(2026, 11, 2),
     )
-    # A delegation that starts in a week.
-    organisation_services.create_delegation(
-        actor=world.manager_user,
-        manager=world.manager,
-        delegate=world.other_manager,
-        start_date=date(2026, 11, 9),
-        end_date=date(2026, 11, 13),
-    )
     # A temporary password that will have expired, and a session that already has.
     account_services.create_account(
         actor=world.sysadmin_user, email="temp.user@impactrisks.com", full_name="Temp User"
@@ -149,7 +139,7 @@ def test_each_job_did_its_work_on_the_first_run(busy_world, world):
     events = {event for _, event, _ in after["notifications"]} - {
         event for _, event, _ in before["notifications"]
     }
-    assert {"step.reminder", "step.flagged", "certificate.overdue", "delegation.started"} <= events
+    assert {"step.reminder", "step.flagged", "certificate.overdue"} <= events
     assert any(reminded and flagged for _, _, reminded, flagged in after["steps"])
     assert len(after["ledger"]) - len(before["ledger"]) == 7  # October credit for the seven employees
     assert after["sessions"] == before["sessions"] - 1

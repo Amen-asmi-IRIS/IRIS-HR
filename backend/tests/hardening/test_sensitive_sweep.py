@@ -159,7 +159,6 @@ NOTHING_OF_A_REQUEST = {
     "accounts:csrf",
     "core:health",
     "calendar:holiday-list",
-    "organisation:delegation-list",
     "organisation:department-list",
     "organisation:position-list",
     "organisation:profile-change-detail",  # a person's own profile fields, never a request

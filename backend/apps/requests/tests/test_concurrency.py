@@ -4,7 +4,6 @@ The other tests of this app act one after the other inside one transaction. Here
 locked: the second action waits for the first to commit, then finds the request moved on.
 """
 
-import datetime as dt
 import threading
 
 import pytest
@@ -12,9 +11,8 @@ from django.db import connection
 
 from apps.core.errors import Conflict, DomainError
 from apps.notifications.models import Notification
-from apps.organisation import services as organisation_services
 from apps.requests import services
-from apps.requests.tests.helpers import TODAY, decide, draft, fresh, pending_step, steps, submitted
+from apps.requests.tests.helpers import NOW, decide, draft, fresh, pending_step, steps, submitted
 
 pytestmark = pytest.mark.django_db(transaction=True)
 
@@ -45,22 +43,17 @@ def together(*actions) -> list[str]:
 
 
 def test_two_approvers_on_one_step_at_the_same_moment(world):
-    organisation_services.create_delegation(
-        actor=world.hr_user,
-        manager=world.manager,
-        delegate=world.other_manager,
-        start_date=TODAY,
-        end_date=TODAY + dt.timedelta(days=30),
-    )
     request = submitted(world)
     step = pending_step(request)
+    step.flagged_at = NOW  # HR was alerted: the manager and HR may both decide this step
+    step.save(update_fields=["flagged_at"])
 
     outcomes = together(
         lambda: services.decide_step(
             actor=world.manager_user, step=step, decision="approve", expected_version=request.version
         ),
         lambda: services.decide_step(
-            actor=world.other_manager_user,
+            actor=world.hr_user,
             step=step,
             decision="reject",
             comment="Période de clôture",
@@ -76,7 +69,7 @@ def test_two_approvers_on_one_step_at_the_same_moment(world):
     if outcomes[0] == "done":
         assert (saved.status, first.status, first.decided_by) == ("pending", "approved", world.manager)
     else:
-        assert (saved.status, first.status, first.decided_by) == ("rejected", "rejected", world.other_manager)
+        assert (saved.status, first.status, first.decided_by) == ("rejected", "rejected", world.hr)
 
 
 def test_the_last_approval_racing_a_withdrawal(world, port):

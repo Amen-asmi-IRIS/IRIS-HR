@@ -164,12 +164,8 @@ export function useArchiveEmployee(id: string) {
   return useMutation({
     mutationFn: (body: Departure) =>
       call(api.POST("/api/v1/employees/{public_id}/archive", { params: { path: { public_id: id } }, body })),
-    // A departure also ends delegations. On a refusal (someone else recorded it) the record is read again too.
-    onSettled: () =>
-      Promise.all([
-        queryClient.invalidateQueries({ queryKey: employeeKeys.all }),
-        queryClient.invalidateQueries({ queryKey: ["delegations"] }),
-      ]),
+    // On a refusal (someone else recorded it) the record is read again too.
+    onSettled: () => queryClient.invalidateQueries({ queryKey: employeeKeys.all }),
   });
 }
 

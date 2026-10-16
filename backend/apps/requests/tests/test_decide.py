@@ -1,4 +1,3 @@
-import datetime as dt
 from decimal import Decimal
 
 import pytest
@@ -7,12 +6,10 @@ from apps.accounts.tests.world import make_user
 from apps.audit.models import AuditEvent
 from apps.core.errors import Conflict, DomainError, NotAllowed, NotFound
 from apps.notifications.models import Notification
-from apps.organisation import services as organisation_services
 from apps.requests import selectors, services
 from apps.requests.tests.helpers import (
     MON,
     NOW,
-    TODAY,
     TUE,
     approved,
     days,
@@ -91,25 +88,18 @@ def test_sending_back_needs_a_comment(world):
 
 
 def test_second_decision_on_the_same_step_is_refused(world):
-    organisation_services.create_delegation(
-        actor=world.hr_user,
-        manager=world.manager,
-        delegate=world.other_manager,
-        start_date=TODAY,
-        end_date=TODAY + dt.timedelta(days=30),
-    )
     request = submitted(world)
     step = pending_step(request)
+    step.flagged_at = NOW  # HR was alerted: the manager and HR may both decide this step
+    step.save(update_fields=["flagged_at"])
     services.decide_step(actor=world.manager_user, step=step, decision="approve", expected_version=2)
     with pytest.raises(Conflict) as error:
         services.decide_step(
-            actor=world.other_manager_user, step=step, decision="reject", comment="Non", expected_version=2
+            actor=world.hr_user, step=step, decision="reject", comment="Non", expected_version=2
         )
     assert error.value.code == "request.already_processed"
     with pytest.raises(Conflict):
-        services.decide_step(
-            actor=world.other_manager_user, step=step, decision="approve", expected_version=3
-        )
+        services.decide_step(actor=world.hr_user, step=step, decision="approve", expected_version=3)
     assert steps(request)[0].decided_by == world.manager
     assert fresh(request).status == "pending"
 
@@ -197,19 +187,6 @@ def test_an_account_without_an_employee_record_cannot_decide(world):
     with pytest.raises(NotAllowed) as error:
         decide(request, external)
     assert error.value.code == "request.actor_without_record"
-
-
-def test_a_delegate_decides_for_the_manager(world):
-    organisation_services.create_delegation(
-        actor=world.hr_user,
-        manager=world.manager,
-        delegate=world.other_manager,
-        start_date=TODAY,
-        end_date=TODAY + dt.timedelta(days=30),
-    )
-    request = submitted(world)
-    decide(request, world.other_manager_user)
-    assert steps(request)[0].decided_by == world.other_manager
 
 
 def test_final_approval_checks_the_balance_again_and_changes_nothing_when_it_fails(world, port):

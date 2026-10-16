@@ -1,12 +1,8 @@
 from __future__ import annotations
 
-from datetime import date
-
-from django.utils import timezone
-
 from apps.accounts.roles import Role, has_role
 
-from .models import Delegation, Employee, EmployeeStatus
+from .models import Employee, EmployeeStatus
 
 
 def employee_of(user) -> Employee | None:
@@ -18,29 +14,16 @@ def employee_of(user) -> Employee | None:
         return None
 
 
-def acting_for(employee_id: int, *, on: date | None = None) -> set[int]:
-    """The managers this employee acts as on a day: themselves, plus whoever delegated to them.
-
-    Delegation is not passed on: only delegations given directly to this employee count.
-    """
-    on = on or timezone.localdate()
-    delegators = Delegation.objects.filter(Delegation.active_on(on), delegate_id=employee_id).values_list(
-        "manager_id", flat=True
-    )
-    return {employee_id, *delegators}
-
-
-def team_ids(user, *, on: date | None = None) -> set[int]:
+def team_ids(user) -> set[int]:
+    """The people who report to the user directly, archived ones left out."""
     employee = employee_of(user)
     if employee is None or employee.status == EmployeeStatus.ARCHIVED:
         return set()
-    ids = set(
-        Employee.objects.filter(manager_id__in=acting_for(employee.id, on=on))
+    return set(
+        Employee.objects.filter(manager_id=employee.id)
         .exclude(status=EmployeeStatus.ARCHIVED)
         .values_list("id", flat=True)
     )
-    ids.discard(employee.id)
-    return ids
 
 
 def department_peer_ids(user) -> set[int]:

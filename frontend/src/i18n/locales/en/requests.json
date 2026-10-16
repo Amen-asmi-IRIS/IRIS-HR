@@ -330,7 +330,6 @@
     "empty": "Nothing to decide.",
     "decideOldest": "Decide the oldest",
     "since": "Waiting since {{date}}",
-    "via": "On behalf of {{name}}",
     "itemLabel": "{{name}}, {{type}}"
   },
   "context": {
@@ -455,8 +454,7 @@
       "title": "Stuck with a manager",
       "empty": "No request is stuck with a manager.",
       "record": "Record the decision",
-      "reassign": "Give to someone else",
-      "delegate": "Name a delegate"
+      "reassign": "Give to someone else"
     }
   },
   "desk": {
@@ -507,7 +505,6 @@
     "actions": {
       "record": "Record a decision given outside the application",
       "reassign": "Give the step to someone else",
-      "delegate": "Name a delegate for the manager",
       "correct": "Correct or cancel",
       "reclassify": "Count as annual leave",
       "attach": "Add a file"
@@ -712,9 +709,5 @@
     "waiting": "Requests waiting",
     "none": "None",
     "waitingFor": "Requests waiting for {{name}}: {{n}}"
-  },
-  "delegationOffer": {
-    "text": "During this absence, a delegate can decide your team's requests.",
-    "action": "Name a delegate for these dates"
   }
 }

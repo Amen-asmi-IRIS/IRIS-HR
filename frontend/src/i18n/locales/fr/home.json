@@ -34,12 +34,6 @@
       "title": "Absents et télétravail",
       "empty": "Toute l'équipe est présente ces sept prochains jours.",
       "today": "aujourd'hui"
-    },
-    "delegation": {
-      "title": "Délégation",
-      "given": "{{person}} décide à votre place, {{dates}}.",
-      "received": "Vous décidez à la place de {{person}}, {{dates}}.",
-      "manage": "Gérer les délégations"
     }
   },
   "people": {

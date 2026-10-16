@@ -19,7 +19,6 @@
   },
   "blocks": {
     "documents": "Documents partagés par les RH",
-    "proposals": "Mes propositions passées",
     "signin": "Connexion précédente"
   },
   "signin": {
@@ -27,9 +26,7 @@
     "first": "C'est votre première connexion."
   },
   "proposals": {
-    "empty": "Aucune proposition passée.",
-    "sent": "Envoyée le {{date}}",
-    "comment": "Commentaire des RH : {{comment}}"
+    "sent": "Envoyée le {{date}}"
   },
   "outcome": {
     "pending": "En attente des RH",

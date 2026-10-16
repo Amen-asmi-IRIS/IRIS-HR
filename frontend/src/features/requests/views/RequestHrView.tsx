@@ -9,9 +9,7 @@ import { DecisionContextView } from "../decisions/DecisionContext";
 import { canSendBack, DecisionSheet, type DecisionTarget } from "../decisions/DecisionSheet";
 import { DocumentStatus } from "../DocumentStatus";
 import { useSingleFlight } from "../form/useSingleFlight";
-import { openStep } from "../hr/actions/ActionSheet";
 import { CorrectSheet } from "../hr/actions/CorrectSheet";
-import { ManagerDelegateSheet } from "../hr/actions/ManagerDelegateSheet";
 import { ReassignSheet } from "../hr/actions/ReassignSheet";
 import { ReclassifySheet } from "../hr/actions/ReclassifySheet";
 import { RecordOnBehalfSheet } from "../hr/actions/RecordOnBehalfSheet";
@@ -22,7 +20,7 @@ import type { Decision, RequestAction, RequestDetail, StepOut } from "../types";
 import { useUndoable } from "../undoable";
 import { FileList, stepOutcome, stepWho } from "./parts";
 
-type Task = "record" | "reassign" | "delegate" | "correct" | "reclassify" | "attach";
+type Task = "record" | "reassign" | "correct" | "reclassify" | "attach";
 
 const DECIDED: ReadonlySet<StepOut["status"]> = new Set(["approved", "rejected", "returned"]);
 
@@ -84,11 +82,7 @@ export default function RequestHrView({ request }: { request: RequestDetail }) {
 
   const others: { task: Task; label: string }[] = [];
   if (can("record_on_behalf") && stepId !== null) others.push({ task: "record", label: t("hrView.actions.record") });
-  if (can("reassign") && stepId !== null) {
-    others.push({ task: "reassign", label: t("hrView.actions.reassign") });
-    // A delegate is named for a manager; a named person's step is given to someone else instead.
-    if (openStep(request).key === "waiting_manager") others.push({ task: "delegate", label: t("hrView.actions.delegate") });
-  }
+  if (can("reassign") && stepId !== null) others.push({ task: "reassign", label: t("hrView.actions.reassign") });
   if (canCorrect) others.push({ task: "correct", label: t("hrView.actions.correct") });
   if (can("reclassify")) others.push({ task: "reclassify", label: t("hrView.actions.reclassify") });
   if (can("attach")) others.push({ task: "attach", label: t("hrView.actions.attach") });
@@ -181,10 +175,7 @@ export default function RequestHrView({ request }: { request: RequestDetail }) {
         <RecordOnBehalfSheet open={task === "record"} onOpenChange={close} request={request} stepId={stepId} />
       )}
       {stepId !== null && can("reassign") && (
-        <>
-          <ReassignSheet open={task === "reassign"} onOpenChange={close} request={request} stepId={stepId} />
-          <ManagerDelegateSheet open={task === "delegate"} onOpenChange={close} employeeId={request.employee.public_id} />
-        </>
+        <ReassignSheet open={task === "reassign"} onOpenChange={close} request={request} stepId={stepId} />
       )}
       {canCorrect && <CorrectSheet open={task === "correct"} onOpenChange={close} request={request} />}
       {can("reclassify") && <ReclassifySheet open={task === "reclassify"} onOpenChange={close} request={request} />}

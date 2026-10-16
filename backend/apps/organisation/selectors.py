@@ -1,18 +1,14 @@
 from __future__ import annotations
 
-from datetime import date
-
 from django.core.exceptions import ValidationError
 from django.db.models import Count, Q, QuerySet, Value
 from django.db.models.functions import Concat
-from django.utils import timezone
 
 from apps.accounts.roles import Role, has_role
 from apps.core.errors import NotAllowed, NotFound
 
 from . import reach
 from .models import (
-    Delegation,
     Department,
     Employee,
     EmployeeDocument,
@@ -164,82 +160,8 @@ def _usable_account(employee: Employee | None):
 
 
 def manager_user(employee: Employee):
-    """The active account of the employee's manager, or None when nobody can act for that manager."""
+    """The active account of the employee's manager, or None when that manager cannot act."""
     return _usable_account(employee.manager)
-
-
-# --- Delegations ---------------------------------------------------------------------------
-
-
-def active_delegations(
-    *, manager: Employee | None = None, delegate: Employee | None = None, on: date | None = None
-) -> QuerySet[Delegation]:
-    on = on or timezone.localdate()
-    queryset = Delegation.objects.filter(Delegation.active_on(on)).select_related(
-        "manager__user", "delegate__user"
-    )
-    if manager is not None:
-        queryset = queryset.filter(manager=manager)
-    if delegate is not None:
-        queryset = queryset.filter(delegate=delegate)
-    return queryset
-
-
-def acting_users_for_manager(
-    manager: Employee, *, on: date | None = None, excluding_employee_id: int | None = None
-) -> list:
-    """The accounts that can act on a manager's steps: the manager first, then the delegates of the day."""
-    people = [manager, *(delegation.delegate for delegation in active_delegations(manager=manager, on=on))]
-    users = []
-    for person in people:
-        if person.id == excluding_employee_id:
-            continue
-        user = _usable_account(person)
-        if user is not None and user not in users:
-            users.append(user)
-    return users
-
-
-def delegation_state(delegation: Delegation, *, today: date | None = None) -> str:
-    today = today or timezone.localdate()
-    if delegation.ended_at is not None:
-        ended_on = timezone.localdate(delegation.ended_at)
-        return "cancelled" if ended_on < delegation.start_date else "ended"
-    if today < delegation.start_date:
-        return "upcoming"
-    if today > delegation.end_date:
-        return "ended"
-    return "active"
-
-
-def delegations_for(user, *, scope: str = "mine", manager_public_id=None) -> QuerySet[Delegation]:
-    """`mine`: given or received by the user. `all`: every delegation, for HR."""
-    queryset = Delegation.objects.select_related("manager", "delegate")
-    if scope == "all":
-        if not has_role(user, Role.HR):
-            raise NotAllowed()
-    else:
-        own = reach.employee_of(user)
-        if own is None:
-            return queryset.none()
-        queryset = queryset.filter(Q(manager=own) | Q(delegate=own))
-    if manager_public_id:
-        queryset = queryset.filter(manager__public_id=manager_public_id)
-    return queryset.order_by("-start_date", "-id")
-
-
-def get_delegation_for(user, public_id) -> Delegation:
-    """A delegation the user may end: one they gave, or any for HR."""
-    try:
-        delegation = Delegation.objects.select_related("manager", "delegate").get(public_id=public_id)
-    except (Delegation.DoesNotExist, ValidationError, ValueError):
-        raise NotFound() from None
-    if has_role(user, Role.HR):
-        return delegation
-    own = reach.employee_of(user)
-    if own is None or own.id != delegation.manager_id:
-        raise NotFound()
-    return delegation
 
 
 # --- Documents -----------------------------------------------------------------------------

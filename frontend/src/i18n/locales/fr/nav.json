@@ -18,7 +18,6 @@
     "people": "Personnes",
     "requests": "Demandes",
     "calendar": "Calendrier",
-    "delegations": "Délégations",
     "reports": "Rapports"
   },
   "hr": {
@@ -44,9 +43,6 @@
     "securityLog": "Journal de sécurité"
   },
   "short": {
-    "team": {
-      "delegations": "Intérims"
-    },
     "hr": {
       "settings": "Réglages"
     },

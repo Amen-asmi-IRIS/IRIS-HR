@@ -3,7 +3,6 @@ from django.utils import translation
 
 from apps.notifications.models import Notification
 from apps.organisation import services as organisation_services
-from apps.organisation.tests.world import make_delegation
 from apps.requests import selectors, services
 from apps.requests.services import StepSpec
 from apps.requests.tests.helpers import (
@@ -115,8 +114,6 @@ def test_a_step_given_to_a_person_who_leaves_is_flagged_too(world):
 
 
 def test_a_departure_flags_nothing_that_somebody_can_still_decide(world):
-    covered = submitted(world, data=days(MON))  # the manager stays: only their delegate leaves
-    make_delegation(world, manager=world.manager, delegate=world.other_manager, start=TODAY)
     with_hr = submitted(world, employee=world.outsider, data=days(TUE))
     decide(with_hr, world.other_manager_user)  # now waits for HR, not for the leaver
     decided = submitted(world, employee=world.outsider, data=days(WED))
@@ -124,7 +121,6 @@ def test_a_departure_flags_nothing_that_somebody_can_still_decide(world):
 
     leave(world, world.other_manager)
 
-    assert pending_step(covered).flagged_at is None
     assert pending_step(with_hr).flagged_at is None
     assert flagged_to_hr(world) == 0
 

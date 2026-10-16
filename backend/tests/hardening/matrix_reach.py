@@ -111,22 +111,6 @@ def profile_change(w):
     )
 
 
-def delegation(w):
-    """An upcoming delegation from `manager` to `other_manager`, starting in 30 days."""
-    today = timezone.localdate()
-    return _memo(
-        w,
-        "delegation",
-        lambda: organisation_services.create_delegation(
-            actor=w.manager_user,
-            manager=w.manager,
-            delegate=w.other_manager,
-            start_date=today + timedelta(days=30),
-            end_date=today + timedelta(days=37),
-        ),
-    )
-
-
 def document(w, *, shared: bool):
     key = f"document_{shared}"
     return _memo(
@@ -275,14 +259,6 @@ CASES = [
         only(P.HR, P.EXEC, hide=[*_others(P.HR, P.EXEC), P.SYSADMIN]),
         kwargs=lambda w: {"public_id": document(w, shared=False).attachment.public_id},
         label="reach: unshared employee document",
-    ),
-    # A delegation can be ended by its manager and by HR, not by the delegate.
-    Case(
-        "organisation:delegation-end",
-        "POST",
-        only(P.MANAGER, P.HR, hide=[P.OTHER_MANAGER, P.EXEC]),
-        kwargs=lambda w: {"public_id": delegation(w).public_id},
-        label="reach: end delegation",
     ),
     # A notification belongs to one account.
     Case(

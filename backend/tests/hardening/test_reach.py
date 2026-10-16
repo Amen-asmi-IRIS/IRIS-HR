@@ -1,15 +1,13 @@
-"""Reach rules beyond single calls: writes, limited fields, department, delegation over time."""
+"""Reach rules beyond single calls: writes, limited fields, department."""
 
 from __future__ import annotations
 
-from datetime import UTC, date, datetime
+from datetime import date
 
 import pytest
-import time_machine
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 
-from apps.organisation import services as organisation_services
 from tests.hardening import matrix_reach as objects
 from tests.hardening.helpers import approve_fully, decide, make_request
 from tests.matrix import P
@@ -158,54 +156,3 @@ def test_department_calendar_shows_peers_without_the_type(world, client_for, fro
     assert client_for(world.owner_user).get(url, {**params, "scope": "team"}).status_code == 403
     assert client_for(world.owner_user).get(url, {**params, "scope": "company"}).status_code == 403
     assert client_for(world.manager_user).get(url, {**params, "scope": "company"}).status_code == 403
-
-
-@pytest.mark.django_db
-def test_delegated_reach_exists_only_during_the_delegation(world, client_for):
-    """`manager` delegates to `other_manager` from Monday 9 to Friday 13 November 2026."""
-    with time_machine.travel(datetime(2026, 11, 2, 8, 0, tzinfo=UTC), tick=False) as clock:
-        request = make_request(
-            world,
-            user=world.owner_user,
-            employee=world.owner,
-            request_type=world.remote,
-            start=date(2026, 11, 16),
-            end=date(2026, 11, 16),
-        )
-        organisation_services.create_delegation(
-            actor=world.manager_user,
-            manager=world.manager,
-            delegate=world.other_manager,
-            start_date=date(2026, 11, 9),
-            end_date=date(2026, 11, 13),
-        )
-
-        detail = reverse("requests:request-detail", kwargs={"public_id": request.public_id})
-        record = reverse("organisation:employee-detail", kwargs={"public_id": world.owner.public_id})
-        balance = reverse("balances:figures", kwargs={"employee_public_id": world.owner.public_id})
-        queue = reverse("requests:approval-list")
-
-        def as_delegate():
-            return client_for(_fresh(world.other_manager_user))
-
-        # Before the delegation starts.
-        assert as_delegate().get(detail).status_code == 404
-        assert as_delegate().get(record).status_code == 404
-        assert as_delegate().get(balance).status_code == 404
-
-        # During the delegation: the delegate sees what the manager sees and can act.
-        clock.move_to(datetime(2026, 11, 10, 8, 0, tzinfo=UTC))
-        assert as_delegate().get(detail).status_code == 200
-        assert as_delegate().get(record).status_code == 200
-        assert as_delegate().get(balance).status_code == 200
-        items = as_delegate().get(queue, {"queue": "mine"}).json()["results"]
-        assert [item["request"]["public_id"] for item in items] == [str(request.public_id)]
-        assert items[0]["via_delegation_from"]
-        # The manager keeps the same rights during the delegation (REQ-11).
-        assert client_for(_fresh(world.manager_user)).get(detail).status_code == 200
-
-        # After it ends.
-        clock.move_to(datetime(2026, 11, 14, 8, 0, tzinfo=UTC))
-        assert as_delegate().get(detail).status_code == 404
-        assert as_delegate().get(record).status_code == 404
-        assert as_delegate().get(queue, {"queue": "mine"}).json()["count"] == 0

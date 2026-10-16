@@ -17,7 +17,7 @@ function team(people: { public_id: string; today: "in" | "absent" | "remote"; ba
   let reads = 0;
   server.use(http.get("/api/v1/home/team", () => {
     reads += 1;
-    return HttpResponse.json({ who_is_out: [], delegation: null, people: people.map((person) => ({ waiting: false, ...person })) });
+    return HttpResponse.json({ who_is_out: [], people: people.map((person) => ({ waiting: false, ...person })) });
   }));
   return () => reads;
 }

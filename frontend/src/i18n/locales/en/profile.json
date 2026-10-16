@@ -19,7 +19,6 @@
   },
   "blocks": {
     "documents": "Documents shared by HR",
-    "proposals": "My past proposals",
     "signin": "Previous sign-in"
   },
   "signin": {
@@ -27,9 +26,7 @@
     "first": "This is your first sign-in."
   },
   "proposals": {
-    "empty": "No past proposal.",
-    "sent": "Sent on {{date}}",
-    "comment": "HR comment: {{comment}}"
+    "sent": "Sent on {{date}}"
   },
   "outcome": {
     "pending": "Waiting for HR",

@@ -109,7 +109,6 @@ export interface ApprovalItem {
   step_id: number;
   request: RequestOut;
   waiting_since: string | null;
-  via_delegation_from: string | null;
   decision_context: DecisionContext;
 }
 

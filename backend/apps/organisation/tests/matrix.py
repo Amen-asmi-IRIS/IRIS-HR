@@ -1,4 +1,4 @@
-from apps.organisation.tests.world import make_delegation, make_document, make_profile_change
+from apps.organisation.tests.world import make_document, make_profile_change
 from tests.matrix import Case, P, only
 
 _MANAGERS = (P.MANAGER, P.OTHER_MANAGER)
@@ -41,16 +41,6 @@ CASES = [
         method="PATCH",
         expect=only(P.HR),
         kwargs=lambda w: {"public_id": w.owner.public_id},
-    ),
-    # Delegations
-    Case(route="organisation:delegation-list", method="GET", expect=only(*_MANAGERS, P.HR, P.EXEC)),
-    Case(route="organisation:delegation-list", method="POST", expect=only(*_MANAGERS, P.HR, P.EXEC)),
-    Case(
-        route="organisation:delegation-end",
-        method="POST",
-        label="a delegation the manager gave",
-        expect=only(P.MANAGER, P.HR, hide=(P.OTHER_MANAGER, P.EXEC)),
-        kwargs=lambda w: {"public_id": make_delegation(w).public_id},
     ),
     # Departures. The POST body is empty on purpose: HR gets a validation error, nobody is archived.
     Case(

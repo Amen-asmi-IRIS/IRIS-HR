@@ -1,5 +1,4 @@
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router";
 
 import { awayWithData } from "@/api/problem";
 import { Block } from "@/components";
@@ -49,10 +48,9 @@ function WhoIsOut({ people }: { people: OutPerson[] }) {
   );
 }
 
-/** /team : plan 03b's queue page, then who is out and the delegation of the day (UI 6.1). */
+/** /team : plan 03b's queue page, then who is out (UI 6.1). */
 export default function TeamHomePage() {
   const { t } = useTranslation("home");
-  const lang = useLang();
   const home = useTeamHome();
   // The queue above holds the decision sheet: a re-reading that fails while the application is away
   // must not take it away with what was typed in it (master 13.1).
@@ -60,7 +58,6 @@ export default function TeamHomePage() {
     throw home.error;
   }
   const data = home.data;
-  const delegation = data?.delegation ?? null;
 
   return (
     <div className="space-y-4">
@@ -72,23 +69,6 @@ export default function TeamHomePage() {
               ? <WhoIsOut people={data.who_is_out} />
               : <p className="text-body text-muted-foreground">{t("team.whoIsOut.empty")}</p>}
           </Block>
-          {delegation ? (
-            <Block
-              title={t("team.delegation.title")}
-              action={
-                <Link to="/team/delegations" className="inline-flex min-h-11 items-center text-body font-medium text-primary hover:underline md:min-h-0">
-                  {t("team.delegation.manage")}
-                </Link>
-              }
-            >
-              <p className="text-body text-foreground">
-                {t(`team.delegation.${delegation.direction}`, {
-                  person: delegation.person,
-                  dates: formatDateRange(delegation.start_date, delegation.end_date, lang),
-                })}
-              </p>
-            </Block>
-          ) : null}
         </div>
       ) : null}
     </div>

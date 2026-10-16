@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import date
 
 from django.utils import timezone
 
@@ -62,11 +61,11 @@ def _hr_resolution(requester) -> Resolution:
     return Resolution(rule=ApproverRule.HR_ROLE, users=executives, via_exec=True)
 
 
-def resolve_rule(*, rule: str, named_person, requester, on: date | None = None) -> Resolution:
+def resolve_rule(*, rule: str, named_person, requester) -> Resolution:
     """Apply an approver rule to a requester (PRD 6.9).
 
-    Line manager: the manager and their active delegates, never the requester. No manager at all:
-    the step is skipped. A manager who cannot act gives nobody (master D13), never a skip.
+    Line manager: the manager. No manager at all: the step is skipped. A manager who cannot act gives
+    nobody (master D13), never a skip; HR then gives the step to someone else (D54).
     Named person: that person; if it is the requester, the step becomes an HR step.
     HR role: every HR holder but the requester, else every executive but the requester, else nobody;
     only those with an employee record count, since nobody else can decide (master D47).
@@ -76,11 +75,8 @@ def resolve_rule(*, rule: str, named_person, requester, on: date | None = None) 
         # switched off, is still the manager: the step then waits and HR is told (master D13).
         if requester.manager_id is None:
             return Resolution(rule=ApproverRule.LINE_MANAGER, skip=True)
-        manager = requester.manager
-        users = organisation_selectors.acting_users_for_manager(
-            manager, on=on, excluding_employee_id=requester.pk
-        )
-        return Resolution(rule=ApproverRule.LINE_MANAGER, users=tuple(users))
+        user = organisation_selectors.manager_user(requester)
+        return Resolution(rule=ApproverRule.LINE_MANAGER, users=(user,) if user is not None else ())
     if rule == ApproverRule.NAMED_PERSON and named_person is not None and named_person.pk != requester.pk:
         user = account_of(named_person)
         return Resolution(rule=ApproverRule.NAMED_PERSON, users=(user,) if user is not None else ())

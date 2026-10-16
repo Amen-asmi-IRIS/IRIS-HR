@@ -328,14 +328,6 @@ NOTIFICATIONS = {
         "fr": "Un certificat médical est en retard",
     },
     "notification.certificate.overdue.body": _WHO_WHEN,
-    "notification.delegation.prompt.title": {
-        "en": "Name a delegate for your absence",
-        "fr": "Désignez un délégué pour votre absence",
-    },
-    "notification.delegation.prompt.body": {
-        "en": "You will be away from {start} to {end}. A delegate can decide your team's requests meanwhile.",
-        "fr": "Vous serez absent(e) du {start} au {end}. Un délégué peut décider des demandes de votre équipe pendant ce temps.",
-    },
     "notification.hr_step.unattended.title": {
         "en": "A request has nobody to validate it",
         "fr": "Une demande n'a personne pour la valider",

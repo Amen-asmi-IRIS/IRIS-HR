@@ -70,9 +70,6 @@ export function ToDecideBlock({ hideTitle = false }: ToDecideBlockProps) {
                           {t("toDecide.since", { date: formatDate(item.waiting_since, lang) })}
                         </p>
                       )}
-                      {item.via_delegation_from && (
-                        <p className="text-caption text-muted-foreground">{t("toDecide.via", { name: item.via_delegation_from })}</p>
-                      )}
                       <DecisionContextView context={item.decision_context} unit={request.type.unit} />
                       <div className="mt-4 flex flex-wrap gap-2">
                         <Button variant="secondary" onClick={() => ask(item, "approve")}>

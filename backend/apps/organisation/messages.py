@@ -47,26 +47,6 @@ MESSAGES = {
         "en": "This proposal has already been decided or withdrawn.",
         "fr": "Cette proposition a déjà été traitée ou retirée.",
     },
-    "organisation.delegation_overlap": {
-        "en": "Another delegation already covers part of these dates. End it or choose other dates.",
-        "fr": "Une autre délégation couvre déjà une partie de ces dates. Terminez-la ou choisissez d'autres dates.",
-    },
-    "organisation.delegation_self": {
-        "en": "Choose someone other than the manager as delegate.",
-        "fr": "Choisissez comme délégué une autre personne que le responsable.",
-    },
-    "organisation.delegation_dates": {
-        "en": "A delegation starts today or later and ends on or after its first day.",
-        "fr": "Une délégation commence aujourd'hui ou plus tard et se termine au plus tôt le jour de son début.",
-    },
-    "organisation.delegation_not_manager": {
-        "en": "Nobody reports to this person, so there is nothing to delegate.",
-        "fr": "Personne ne dépend de cette personne : il n'y a rien à déléguer.",
-    },
-    "organisation.delegation_delegate_inactive": {
-        "en": "This person is not active. Choose an active employee as delegate.",
-        "fr": "Cette personne n'est pas active. Choisissez un employé actif comme délégué.",
-    },
     "notification.profile_change.proposed.title": {
         "en": "Profile change to decide",
         "fr": "Modification de profil à traiter",
@@ -88,23 +68,15 @@ MESSAGES = {
         "fr": "Votre modification de profil a été refusée",
     },
     "notification.profile_change.rejected.body": {
-        "en": "HR refused the change you proposed. Open your profile to read their comment.",
-        "fr": "Les RH ont refusé votre proposition. Ouvrez votre profil pour lire leur commentaire.",
+        "en": "HR refused the change you proposed.",
+        "fr": "Les RH ont refusé votre proposition.",
     },
-    "notification.delegation.started.title": {
-        "en": "Delegation started",
-        "fr": "Délégation commencée",
+    "notification.profile_change.rejected_with_comment.title": {
+        "en": "Your profile change was refused",
+        "fr": "Votre modification de profil a été refusée",
     },
-    "notification.delegation.started.body": {
-        "en": "{delegate} now decides for {manager}, from {start} to {end}.",
-        "fr": "{delegate} décide désormais à la place de {manager}, du {start} au {end}.",
-    },
-    "notification.delegation.ended.title": {
-        "en": "Delegation ended",
-        "fr": "Délégation terminée",
-    },
-    "notification.delegation.ended.body": {
-        "en": "{delegate} no longer decides for {manager} (delegation from {start} to {end}).",
-        "fr": "{delegate} ne décide plus à la place de {manager} (délégation du {start} au {end}).",
+    "notification.profile_change.rejected_with_comment.body": {
+        "en": "HR refused the change you proposed. Their comment: {comment}",
+        "fr": "Les RH ont refusé votre proposition. Leur commentaire : {comment}",
     },
 }

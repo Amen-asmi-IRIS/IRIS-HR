@@ -117,11 +117,7 @@
   "team": {
     "reports": "Personnes rattachées",
     "noReports": "Personne ne lui est rattaché.",
-    "delegation": "Délégation",
-    "delegationLine": "{{name}}, du {{start}} au {{end}}",
-    "noDelegation": "Aucune délégation en cours ou à venir.",
-    "changeManager": "Changer de responsable",
-    "nameDelegate": "Nommer un délégué"
+    "changeManager": "Changer de responsable"
   },
   "documents": {
     "empty": "Aucun document.",
@@ -174,7 +170,6 @@
     "kept": "La fiche est conservée et reste consultable par les RH.",
     "reports": "Ces personnes lui sont rattachées et auront besoin d'un nouveau responsable :",
     "sections": {
-      "delegations": "Ces délégations seront terminées :",
       "open_requests": "Ces demandes resteront ouvertes :",
       "open_steps": "Ces décisions attendent cette personne :"
     },
@@ -244,7 +239,7 @@
     },
     "empty": {
       "title": "Personne ne vous est rattaché",
-      "hint": "Les personnes dont vous êtes responsable, ou qui vous sont confiées par délégation, apparaissent ici."
+      "hint": "Les personnes dont vous êtes responsable apparaissent ici."
     }
   },
   "accountFor": {

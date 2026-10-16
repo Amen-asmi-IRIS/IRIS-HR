@@ -117,11 +117,7 @@
   "team": {
     "reports": "Direct reports",
     "noReports": "Nobody reports to this person.",
-    "delegation": "Delegation",
-    "delegationLine": "{{name}}, from {{start}} to {{end}}",
-    "noDelegation": "No current or upcoming delegation.",
-    "changeManager": "Change manager",
-    "nameDelegate": "Name a delegate"
+    "changeManager": "Change manager"
   },
   "documents": {
     "empty": "No document.",
@@ -174,7 +170,6 @@
     "kept": "The record is kept and HR can still find it.",
     "reports": "These people report to this employee and will need a new manager:",
     "sections": {
-      "delegations": "These delegations will end:",
       "open_requests": "These requests stay open:",
       "open_steps": "These decisions are waiting for this person:"
     },
@@ -244,7 +239,7 @@
     },
     "empty": {
       "title": "Nobody reports to you",
-      "hint": "The people you manage, or who are entrusted to you by delegation, appear here."
+      "hint": "The people who report to you appear here."
     }
   },
   "accountFor": {

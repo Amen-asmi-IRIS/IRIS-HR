@@ -131,9 +131,14 @@ def decide_profile_change(*, actor, change: ProfileChange, accept: bool, comment
         action=f"profile_change.{outcome}", obj=change, actor=actor, object_label=full_name(employee)
     )
     if employee.user_id is not None and employee.user.is_active:
+        # A refusal carries HR's comment, when there is one: the employee reads it nowhere else.
+        event, params = f"profile_change.{outcome}", {}
+        if not accept and change.comment:
+            event, params = "profile_change.rejected_with_comment", {"comment": change.comment}
         notifications.notify(
             users=[employee.user],
-            event=f"profile_change.{outcome}",
+            event=event,
+            params=params,
             target_type="profile_change",
             target_public_id=str(change.public_id),
         )

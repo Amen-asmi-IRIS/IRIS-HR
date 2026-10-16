@@ -65,9 +65,6 @@ export type ArchivePreview = Ok<"/api/v1/employees/{public_id}/archive-preview",
 export type Departure = Body<"/api/v1/employees/{public_id}/archive", "post">;
 export type EmployeeHistoryPage = Ok<"/api/v1/employees/{public_id}/history", "get">;
 
-export type DelegationPage = Ok<"/api/v1/delegations", "get">;
-export type Delegation = Rows<DelegationPage>;
-export type NewDelegation = Body<"/api/v1/delegations", "post">;
 
 export type ProfileChangePage = Ok<"/api/v1/profile-changes", "get">;
 export type ProfileChange = Rows<ProfileChangePage>;

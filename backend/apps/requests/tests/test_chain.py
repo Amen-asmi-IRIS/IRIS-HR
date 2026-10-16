@@ -11,7 +11,7 @@ from apps.organisation import services as organisation_services
 from apps.requests import services
 from apps.requests.models import RequestStatus, RequestStep
 from apps.requests.services import StepSpec, chain, outcomes
-from apps.requests.tests.helpers import FRI, MON, NOW, TODAY, TUE, days, fresh, stored
+from apps.requests.tests.helpers import MON, NOW, TODAY, TUE, days, fresh, stored
 
 pytestmark = pytest.mark.django_db
 
@@ -193,27 +193,6 @@ def test_types_without_balance_effect_post_nothing(world, port):
     assert (port.checks, port.taken) == ([], [])
 
 
-def test_a_manager_whose_leave_is_approved_is_prompted_to_name_a_delegate(world):
-    request = started(world, employee=world.manager, created_by=world.manager_user, data=days(MON, FRI))
-    approve_all(request, world.ceo)
-    chain.advance(request=request, actor=world.hr_user)
-    prompt = Notification.objects.get(event_code="delegation.prompt")
-    assert (prompt.user, prompt.target_public_id) == (world.manager_user, str(request.public_id))
-    # The link opens the delegations page of plan 02 with the dates of the absence filled in.
-    assert (prompt.parameters["from"], prompt.parameters["to"]) == ("2026-11-02", "2026-11-06")
-    assert notification_services.render(prompt)["link"] == "/team/delegations?from=2026-11-02&to=2026-11-06"
-
-
-def test_no_delegation_prompt_without_a_team_or_for_remote_work(world):
-    own = started(world)
-    approve_all(own, world.manager)
-    chain.advance(request=own, actor=world.hr_user)
-    remote = started(world, employee=world.manager, created_by=world.manager_user, request_type=world.remote)
-    approve_all(remote, world.ceo)
-    chain.advance(request=remote, actor=world.hr_user)
-    assert not Notification.objects.filter(event_code="delegation.prompt").exists()
-
-
 def test_rejecting_closes_the_request_and_tells_the_requester(world):
     request = started(world)
     outcomes.reject(request=request, amendment=None, actor=world.manager_user)
@@ -250,7 +229,6 @@ ENGINE_EVENTS = {
     "sick.declared": "/requests/{target}",
     "certificate.due_soon": "/requests/{target}",
     "certificate.overdue": "/requests/{target}",
-    "delegation.prompt": "/team/delegations?from={from}&to={to}",
     "hr_step.unattended": "/admin",
 }
 

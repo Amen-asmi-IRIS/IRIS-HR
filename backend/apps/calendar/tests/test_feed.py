@@ -7,7 +7,6 @@ from apps.calendar import services as calendar_services
 from apps.calendar.feed import calendar_feed
 from apps.core.errors import DomainError, NotAllowed
 from apps.organisation import selectors as org_selectors
-from apps.organisation import services as org_services
 from apps.requests import services as request_services
 from tests.request_flows import NOW, approved, decide, send
 
@@ -296,28 +295,6 @@ def test_team_scope_filters_by_person_and_type(world):
 
     assert {entry.employee_public_id for entry in by_person.entries} == {str(world.peer.public_id)}
     assert {entry.type_code for entry in by_type.entries} == {"annual"}
-
-
-def test_team_scope_includes_the_team_of_a_manager_who_delegated_to_me(world):
-    approved(
-        world,
-        employee=world.outsider,
-        user=world.outsider_user,
-        request_type=world.annual,
-        start=date(2026, 11, 10),
-        end=date(2026, 11, 12),
-    )
-    org_services.create_delegation(
-        actor=world.hr_user,
-        manager=world.other_manager,
-        delegate=world.manager,
-        start_date=date(2026, 11, 2),
-        end_date=date(2026, 11, 20),
-    )
-
-    feed = calendar_feed(world.manager_user, **NOVEMBER, scope="team")
-
-    assert len(entries_of(feed, world.outsider)) == 1
 
 
 def test_team_scope_is_refused_to_someone_who_manages_nobody(world):

@@ -620,7 +620,6 @@ class ApprovalListView(APIView):
                 "step_id": step.pk,
                 "request": represent(found[step.request_id], viewer),
                 "waiting_since": step.activated_at,
-                "via_delegation_from": selectors.via_delegation_from(step, request.user),
                 "decision_context": represent_context(found[step.request_id], viewer),
             }
             for step in page

@@ -11,7 +11,7 @@ interface EmployeePickerProps {
   /** The `public_id` of the chosen employee, or null. */
   value: string | null;
   onChange: (publicId: string | null) => void;
-  /** People who must not be offered (the manager when choosing their delegate, the employee when choosing their manager). */
+  /** People who must not be offered (the employee when choosing their manager). */
   exclude?: string[];
   error?: string;
   hint?: string;

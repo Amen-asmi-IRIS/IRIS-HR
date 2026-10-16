@@ -33,7 +33,6 @@ describe("DepartureSheet", () => {
           has_account: true,
           reports: [{ label: "Amal Employee", link: "/hr/employees/emp-4" }],
           sections: [
-            { key: "delegations", items: [{ label: "Mounir Manager → Nadia Manager, 02/11/2026 – 06/11/2026", link: "" }] },
             { key: "open_requests", items: [{ label: "Congé annuel, 03/11/2026", link: "/requests/req-1" }] },
           ],
         }),
@@ -47,8 +46,6 @@ describe("DepartureSheet", () => {
     expect(screen.getByText(/Plus aucun crédit mensuel de congés/)).toBeInTheDocument();
     expect(screen.getByText(/auront besoin d'un nouveau responsable/)).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Amal Employee" })).toHaveAttribute("href", "/hr/employees/emp-4");
-    expect(screen.getByText("Ces délégations seront terminées :")).toBeInTheDocument();
-    expect(screen.getByText("Mounir Manager → Nadia Manager, 02/11/2026 – 06/11/2026")).toBeInTheDocument();
     expect(screen.getByText("Ces demandes resteront ouvertes :")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Congé annuel, 03/11/2026" })).toHaveAttribute("href", "/requests/req-1");
   });

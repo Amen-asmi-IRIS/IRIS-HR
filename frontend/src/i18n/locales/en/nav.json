@@ -18,7 +18,6 @@
     "people": "People",
     "requests": "Requests",
     "calendar": "Calendar",
-    "delegations": "Delegations",
     "reports": "Reports"
   },
   "hr": {
@@ -44,9 +43,6 @@
     "securityLog": "Security log"
   },
   "short": {
-    "team": {
-      "delegations": "Cover"
-    },
     "hr": {
       "settings": "Settings"
     },

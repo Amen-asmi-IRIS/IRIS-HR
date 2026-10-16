@@ -7,7 +7,7 @@ import { PEOPLE_COLUMNS } from "./peopleColumns";
 
 const PAGE_SIZE = 25;
 
-/** My team, People: the people the manager is responsible for, directly or through a delegation. */
+/** My team, People: the people who report to the manager. */
 export default function TeamPeoplePage() {
   const { t } = useTranslation("employees");
   const { page, setPage } = useListParams({});

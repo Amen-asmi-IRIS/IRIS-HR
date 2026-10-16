@@ -1,10 +1,7 @@
-import datetime as dt
-
 import pytest
 
 from apps.accounts import services as account_services
 from apps.core.errors import DomainError, NotAllowed
-from apps.organisation import services as organisation_services
 from apps.requests import selectors, services
 from apps.requests.services import StepSpec
 from apps.requests.tests.helpers import (
@@ -49,21 +46,6 @@ def test_a_step_leaves_the_queue_once_decided_and_enters_the_hr_queue(world):
     assert requests_in(world.manager_user, "mine") == []
     assert requests_in(world.hr_user, "hr") == [request.pk]
     assert requests_in(world.hr_user, "mine") == []  # HR steps are the HR desk's, not My team's
-
-
-def test_a_delegate_sees_the_steps_of_the_manager_they_cover(world):
-    organisation_services.create_delegation(
-        actor=world.hr_user,
-        manager=world.manager,
-        delegate=world.other_manager,
-        start_date=TODAY,
-        end_date=TODAY + dt.timedelta(days=14),
-    )
-    request = submitted(world)
-    assert request.pk in requests_in(world.other_manager_user, "mine")
-    step = pending_step(request)
-    assert selectors.via_delegation_from(step, world.other_manager_user) == "Mounir Manager"
-    assert selectors.via_delegation_from(step, world.manager_user) is None
 
 
 def test_nobody_finds_their_own_request_in_a_queue(world):

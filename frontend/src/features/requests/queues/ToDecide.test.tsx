@@ -33,7 +33,6 @@ const amal = makeApprovalItem({
 const youssef = makeApprovalItem({
   step_id: 12,
   waiting_since: "2026-10-26T08:00:00+01:00",
-  via_delegation_from: "Hatem Jlassi",
   request: {
     public_id: "req-9",
     version: 2,
@@ -97,15 +96,6 @@ describe("My team, To decide (UI 6.1)", () => {
     const youssefItem = within(screen.getByRole("article", { name: "Youssef Ayari, Télétravail" }));
     expect(youssefItem.getByText("Limite : 1 j déjà pris sur 2 j")).toBeInTheDocument();
     expect(youssefItem.queryByText(/Solde/)).not.toBeInTheDocument();
-  });
-
-  it("says from whom a request reaches me through a delegation", async () => {
-    serve();
-    open();
-    const youssefItem = within(await screen.findByRole("article", { name: "Youssef Ayari, Télétravail" }));
-    expect(youssefItem.getByText("Pour le compte de Hatem Jlassi")).toBeInTheDocument();
-    const amalItem = within(screen.getByRole("article", { name: "Amal Trabelsi, Congé annuel" }));
-    expect(amalItem.queryByText(/Pour le compte de/)).not.toBeInTheDocument();
   });
 
   it("offers the oldest request as the page's primary action", async () => {

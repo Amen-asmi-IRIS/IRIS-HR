@@ -9,7 +9,6 @@ from apps.requests.representation import represent, viewer_for
 
 NEEDS_YOU_KINDS = ["returned", "certificate_due"]
 PRESENCE_STATES = ["in", "absent", "remote"]
-DELEGATION_DIRECTIONS = ["given", "received"]
 
 
 class HomeBalanceOut(serializers.Serializer):
@@ -65,13 +64,6 @@ class OutPersonOut(serializers.Serializer):
     waiting = serializers.BooleanField()
 
 
-class DelegationLineOut(serializers.Serializer):
-    direction = serializers.ChoiceField(choices=DELEGATION_DIRECTIONS)
-    person = serializers.CharField()
-    start_date = serializers.DateField()
-    end_date = serializers.DateField()
-
-
 class TeamPersonOut(serializers.Serializer):
     public_id = serializers.CharField()
     today = serializers.ChoiceField(choices=PRESENCE_STATES)
@@ -81,12 +73,10 @@ class TeamPersonOut(serializers.Serializer):
 
 class TeamHomeOut(serializers.Serializer):
     who_is_out = OutPersonOut(many=True)
-    delegation = DelegationLineOut(allow_null=True)
     people = TeamPersonOut(many=True)
 
 
 def team_home_payload(data) -> dict:
-    delegation = data.delegation
     return {
         "who_is_out": [
             {
@@ -102,14 +92,6 @@ def team_home_payload(data) -> dict:
             }
             for person in data.who_is_out
         ],
-        "delegation": None
-        if delegation is None
-        else {
-            "direction": delegation.direction,
-            "person": delegation.person,
-            "start_date": delegation.start_date,
-            "end_date": delegation.end_date,
-        },
         "people": [
             {
                 "public_id": person.employee_public_id,

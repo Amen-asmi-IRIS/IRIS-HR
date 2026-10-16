@@ -437,7 +437,6 @@ class ApprovalItemOut(serializers.Serializer):
     step_id = serializers.IntegerField()
     request = RequestOut()
     waiting_since = serializers.DateTimeField(allow_null=True)
-    via_delegation_from = serializers.CharField(allow_null=True)
     decision_context = DecisionContextOut()
 
 

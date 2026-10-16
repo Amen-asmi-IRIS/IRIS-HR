@@ -34,12 +34,6 @@
       "title": "Absent and remote",
       "empty": "The whole team is in for the next seven days.",
       "today": "today"
-    },
-    "delegation": {
-      "title": "Delegation",
-      "given": "{{person}} decides in your place, {{dates}}.",
-      "received": "You decide in place of {{person}}, {{dates}}.",
-      "manage": "Manage delegations"
     }
   },
   "people": {

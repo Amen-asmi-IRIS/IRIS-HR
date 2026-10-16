@@ -1,5 +1,3 @@
-import datetime as dt
-
 import pytest
 from django.urls import reverse
 from django.utils import translation
@@ -26,36 +24,10 @@ def ids(resolution) -> set[int]:
     return {user.pk for user in resolution.users}
 
 
-def delegate(world, manager, to):
-    return organisation_services.create_delegation(
-        actor=world.hr_user,
-        manager=manager,
-        delegate=to,
-        start_date=TODAY,
-        end_date=TODAY + dt.timedelta(days=7),
-    )
-
-
 def test_line_manager_rule_gives_the_manager(world):
     resolution = resolve("line_manager", world.owner)
     assert ids(resolution) == {world.manager_user.pk}
     assert (resolution.rule, resolution.skip) == ("line_manager", False)
-
-
-def test_line_manager_rule_includes_an_active_delegate(world):
-    delegate(world, world.manager, world.other_manager)
-    assert ids(resolve("line_manager", world.owner)) == {world.manager_user.pk, world.other_manager_user.pk}
-
-
-def test_delegate_who_is_the_requester_cannot_act(world):
-    delegate(world, world.manager, world.owner)
-    assert ids(resolve("line_manager", world.owner)) == {world.manager_user.pk}
-    request = stored(world, data=days(MON), status=RequestStatus.PENDING)
-    step = RequestStep.objects.create(
-        request=request, round=1, position=1, approver_rule="line_manager", mode="approve", status="pending"
-    )
-    assert services.is_eligible_approver(world.owner_user, step) is False
-    assert services.can_act_on(world.owner_user, step) is False
 
 
 def test_ceo_request_skips_the_manager_rule(world):

@@ -112,11 +112,6 @@
       "rejected": "Profile change refused",
       "withdrawn": "Profile change withdrawn"
     },
-    "delegation": {
-      "created": "Delegation created",
-      "ended": "Delegation ended",
-      "cancelled": "Delegation cancelled"
-    },
     "ledger": {
       "opening_posted": "Opening balance entered",
       "adjusted": "Balance adjusted",

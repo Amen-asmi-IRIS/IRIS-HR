@@ -1,8 +1,7 @@
-from datetime import date, timedelta
+from datetime import date
 
 import pytest
 from django.urls import reverse
-from django.utils import timezone
 
 from apps.accounts import services as accounts_services
 from apps.accounts.models import RoleAssignment
@@ -12,7 +11,7 @@ from apps.core.errors import Conflict, DomainError
 from apps.organisation import reach, selectors, services
 from apps.organisation.models import Employee, EmployeeStatus
 from apps.organisation.services import archive
-from apps.organisation.tests.world import make_delegation, make_employee
+from apps.organisation.tests.world import make_employee
 
 pytestmark = pytest.mark.django_db
 
@@ -26,7 +25,6 @@ def _leave(world, employee, reason="Resignation"):
 
 
 def test_the_preview_lists_what_the_departure_leaves_behind(world, monkeypatch):
-    make_delegation(world, manager=world.manager, delegate=world.other_manager)
     monkeypatch.setattr(
         archive,
         "_contributors",
@@ -44,20 +42,10 @@ def test_the_preview_lists_what_the_departure_leaves_behind(world, monkeypatch):
     assert preview.has_account is True
     assert [item.label for item in preview.reports] == ["Amal Employee", "Bilel Employee"]
     assert preview.reports[0].link == f"/hr/employees/{world.owner.public_id}"
-    assert [section.key for section in preview.sections] == ["delegations", "open_requests"]
-    assert preview.sections[0].items[0].label.startswith("Mounir Manager → Nadia Manager, ")
+    assert [section.key for section in preview.sections] == ["open_requests"]
 
 
 def test_archiving_a_manager(world):
-    today = timezone.localdate()
-    running = services.create_delegation(
-        actor=world.manager_user,
-        manager=world.manager,
-        delegate=world.other_manager,
-        start_date=today,
-        end_date=today + timedelta(days=4),
-    )
-
     employee = _leave(world, world.manager, reason=" Resignation ")
 
     assert (employee.status, employee.archived_at, employee.archive_reason) == (
@@ -67,9 +55,6 @@ def test_archiving_a_manager(world):
     )
     world.manager_user.refresh_from_db()
     assert world.manager_user.is_active is False
-    running.refresh_from_db()
-    assert running.ended_at is not None
-    assert reach.acting_for(world.other_manager.id) == {world.other_manager.id}
     # Nothing is deleted, and the reports keep pointing at the leaver until HR names a new manager.
     assert Employee.objects.filter(pk=world.manager.pk).exists()
     world.owner.refresh_from_db()
@@ -81,7 +66,6 @@ def test_archiving_a_manager(world):
         "archived_at": {"before": None, "after": "2026-11-30"},
         "archive_reason": {"before": "", "after": "Resignation"},
     }
-    assert AuditEvent.objects.filter(action="delegation.ended").count() == 1
 
 
 def test_archiving_twice_is_a_conflict(world):
@@ -95,30 +79,19 @@ def test_archiving_twice_is_a_conflict(world):
 
 
 def test_an_hr_holder_does_not_record_their_own_departure(world):
-    """Nobody switches off their own account. The refusal undoes the whole departure, delegations included."""
-    today = timezone.localdate()
-    given = services.create_delegation(
-        actor=world.hr_user,
-        manager=world.manager,
-        delegate=world.hr,
-        start_date=today,
-        end_date=today + timedelta(days=4),
-    )
-
+    """Nobody switches off their own account. The refusal undoes the whole departure."""
     with pytest.raises(DomainError) as error:
         _leave(world, world.hr)
 
     assert error.value.code == "accounts.cannot_change_self"
     world.hr.refresh_from_db()
     world.hr_user.refresh_from_db()
-    given.refresh_from_db()
     assert (world.hr.status, world.hr.archived_at, world.hr.archive_reason) == (
         EmployeeStatus.ACTIVE,
         None,
         "",
     )
     assert world.hr_user.is_active is True
-    assert given.ended_at is None
     assert not AuditEvent.objects.filter(action="employee.archived").exists()
 
 
@@ -181,25 +154,6 @@ def test_the_last_administrator_cannot_be_made_to_leave(world):
     world.sysadmin_user.refresh_from_db()
     assert administrator.status == EmployeeStatus.ACTIVE
     assert world.sysadmin_user.is_active is True
-
-
-def test_a_delegation_received_by_the_leaver_ends_too(world):
-    today = timezone.localdate()
-    received = services.create_delegation(
-        actor=world.manager_user,
-        manager=world.manager,
-        delegate=world.other_manager,
-        start_date=today,
-        end_date=today + timedelta(days=4),
-    )
-    upcoming = make_delegation(world, manager=world.other_manager, delegate=world.hr)
-
-    _leave(world, world.other_manager)
-
-    received.refresh_from_db()
-    upcoming.refresh_from_db()
-    assert received.ended_at is not None
-    assert selectors.delegation_state(upcoming) == "cancelled"
 
 
 def test_someone_without_an_account_can_leave_too(world):

@@ -8,7 +8,6 @@ from django.utils import translation
 from apps.accounts.services import display_name
 from apps.calendar.lang import active_lang
 from apps.core.errors import DomainError, NotAllowed, NotFound
-from apps.organisation import services as organisation_services
 from apps.organisation.selectors import department_name, full_name
 from apps.requests import selectors, services
 from apps.requests.representation import represent, represent_detail, viewer_for
@@ -372,35 +371,6 @@ def test_a_draft_is_seen_by_its_creator_only(world):
     assert selectors.can_see(world.manager_user, own) is False
     assert selectors.can_see(world.hr_user, entered_by_hr) is True
     assert selectors.can_see(world.owner_user, entered_by_hr) is False
-
-
-def test_a_delegate_reaches_the_team_only_while_the_delegation_runs(world, clock):
-    organisation_services.create_delegation(
-        actor=world.hr_user,
-        manager=world.manager,
-        delegate=world.other_manager,
-        start_date=TODAY,
-        end_date=TODAY + dt.timedelta(days=2),
-    )
-    request = submitted(world)
-    delegate = world.other_manager_user
-
-    def in_team_list() -> bool:
-        return selectors.requests_for(delegate, "team").filter(pk=request.pk).exists()
-
-    assert selectors.can_see(delegate, request) is True
-    assert in_team_list() is True
-    assert [step.request_id for step in selectors.queue(delegate, "mine")] == [request.pk]
-    assert services.can_act_on(delegate, pending_step(request)) is True
-
-    clock.shift(dt.timedelta(days=3))  # the delegation is over, and the delegate decided nothing
-
-    assert selectors.can_see(delegate, request) is False
-    with pytest.raises(NotFound):
-        selectors.get_request_for(delegate, str(request.public_id))
-    assert in_team_list() is False
-    assert list(selectors.queue(delegate, "mine")) == []
-    assert services.can_act_on(delegate, pending_step(request)) is False
 
 
 def test_a_named_approver_and_a_past_decider_keep_access(world):

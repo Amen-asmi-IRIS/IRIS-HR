@@ -191,7 +191,6 @@ export interface ApprovalOverrides {
   step_id?: number;
   request?: RequestOverrides;
   waiting_since?: string;
-  via_delegation_from?: string | null;
   decision_context?: ApprovalItem["decision_context"];
 }
 
@@ -204,7 +203,6 @@ export function makeApprovalItem(overrides: ApprovalOverrides = {}): ApprovalIte
       viewer: { relation: "approver", actions: ["decide"], step_id: overrides.step_id ?? 7, ...overrides.request?.viewer },
     }),
     waiting_since: overrides.waiting_since ?? "2026-10-28T09:12:00+01:00",
-    via_delegation_from: overrides.via_delegation_from ?? null,
     decision_context: overrides.decision_context ?? { balance: null, teammates_away: [], cap: null },
   };
 }

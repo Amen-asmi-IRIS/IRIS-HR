@@ -82,7 +82,6 @@
       "request": "Request",
       "employee": "Employee",
       "ledgerentry": "Balance line",
-      "delegation": "Delegation",
       "profilechange": "Profile change",
       "department": "Department",
       "position": "Position",

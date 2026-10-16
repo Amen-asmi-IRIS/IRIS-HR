@@ -91,40 +91,6 @@ class Employee(PublicIdModel, TimeStampedModel):
         return f"{self.employee_number} {self.first_name} {self.last_name}"
 
 
-class Delegation(PublicIdModel):
-    manager = models.ForeignKey(Employee, on_delete=models.PROTECT, related_name="delegations_given")
-    delegate = models.ForeignKey(Employee, on_delete=models.PROTECT, related_name="delegations_received")
-    start_date = models.DateField()
-    end_date = models.DateField()
-    created_by = models.ForeignKey(
-        settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.PROTECT, related_name="+"
-    )
-    created_at = models.DateTimeField(auto_now_add=True)
-    # Set when the delegation was ended early, or cancelled before it started.
-    ended_at = models.DateTimeField(null=True, blank=True)
-
-    class Meta:
-        ordering = ["-start_date", "-id"]
-        constraints = [
-            models.CheckConstraint(
-                condition=models.Q(end_date__gte=models.F("start_date")), name="delegation_dates_in_order"
-            ),
-            models.CheckConstraint(
-                condition=~models.Q(manager=models.F("delegate")), name="delegation_not_to_self"
-            ),
-        ]
-
-    def __str__(self) -> str:
-        return f"{self.manager_id} -> {self.delegate_id} ({self.start_date} to {self.end_date})"
-
-    @staticmethod
-    def active_on(day) -> models.Q:
-        """Delegations in force on a day. One ended early stops counting on the day it was ended."""
-        in_range = models.Q(start_date__lte=day, end_date__gte=day)
-        not_ended = models.Q(ended_at__isnull=True) | models.Q(ended_at__date__gt=day)
-        return in_range & not_ended
-
-
 class EmployeeDocument(models.Model):
     employee = models.ForeignKey(Employee, on_delete=models.PROTECT, related_name="documents")
     attachment = models.OneToOneField("files.Attachment", on_delete=models.PROTECT, related_name="+")

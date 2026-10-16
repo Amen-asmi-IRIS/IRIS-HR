@@ -3,7 +3,7 @@
 Three scopes:
 - department: the user's own requests in full; colleagues of the same department
   as "absent" or "remote" only, approved only, never an hourly permission.
-- team: the user's team (including teams delegated to them) with type and status.
+- team: the people who report to the user, with type and status.
 - company: everyone, with type and status, for HR and Executive Management.
 """
 

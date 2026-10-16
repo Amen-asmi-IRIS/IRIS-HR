@@ -330,7 +330,6 @@
     "empty": "Rien à décider.",
     "decideOldest": "Décider la plus ancienne",
     "since": "En attente depuis le {{date}}",
-    "via": "Pour le compte de {{name}}",
     "itemLabel": "{{name}}, {{type}}"
   },
   "context": {
@@ -455,8 +454,7 @@
       "title": "Bloquées chez un responsable",
       "empty": "Aucune demande n'est bloquée chez un responsable.",
       "record": "Saisir la décision",
-      "reassign": "Confier à quelqu'un d'autre",
-      "delegate": "Nommer un délégué"
+      "reassign": "Confier à quelqu'un d'autre"
     }
   },
   "desk": {
@@ -507,7 +505,6 @@
     "actions": {
       "record": "Saisir une décision donnée hors de l'application",
       "reassign": "Confier l'étape à quelqu'un d'autre",
-      "delegate": "Nommer un délégué pour le responsable",
       "correct": "Corriger ou annuler",
       "reclassify": "Compter en congé annuel",
       "attach": "Ajouter un fichier"
@@ -712,9 +709,5 @@
     "waiting": "Demandes en attente",
     "none": "Aucune",
     "waitingFor": "Demandes en attente de {{name}} : {{n}}"
-  },
-  "delegationOffer": {
-    "text": "Pendant cette absence, les demandes de votre équipe peuvent être décidées par un délégué.",
-    "action": "Nommer un délégué pour ces dates"
   }
 }

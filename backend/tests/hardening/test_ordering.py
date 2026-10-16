@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import UTC, date, datetime, timedelta
+from datetime import UTC, date, datetime
 from decimal import Decimal
 from io import BytesIO
 
@@ -24,7 +24,6 @@ LISTS = [
     ("audit:business", lambda w: {}, "hr_user", "action"),
     ("audit:security-export", lambda w: {}, "sysadmin_user", "at"),
     ("notifications:list", lambda w: {}, "owner_user", "created_at"),
-    ("organisation:delegation-list", lambda w: {}, "manager_user", "start_date"),
     ("organisation:profile-change-list", lambda w: {}, "hr_user", "-created_at"),
     ("organisation:employee-history", lambda w: {"public_id": w.owner.public_id}, "hr_user", "at"),
     ("requests:approval-list", lambda w: {}, "manager_user", "-waiting_since"),
@@ -146,22 +145,7 @@ def test_notifications_and_histories_can_be_read_oldest_first(world, client_for,
 
 
 @pytest.mark.django_db
-def test_delegations_and_profile_changes_sort_by_date(world, client_for, frozen):
-    for start in (date(2026, 12, 7), date(2026, 11, 16), date(2027, 1, 11)):
-        organisation_services.create_delegation(
-            actor=world.manager_user,
-            manager=world.manager,
-            delegate=world.other_manager,
-            start_date=start,
-            end_date=start + timedelta(days=4),
-        )
-    client = client_for(world.manager_user)
-    url = reverse("organisation:delegation-list")
-    ascending = [row["start_date"] for row in _results(client.get(url, {"ordering": "start_date"}))]
-    assert ascending == ["2026-11-16", "2026-12-07", "2027-01-11"]
-    descending = [row["start_date"] for row in _results(client.get(url, {"ordering": "-start_date"}))]
-    assert descending == list(reversed(ascending))
-
+def test_profile_changes_sort_by_date(world, client_for, frozen):
     for minutes, user in enumerate([world.owner_user, world.peer_user]):
         frozen.move_to(datetime(2026, 11, 2, 8, minutes, tzinfo=UTC))
         organisation_services.propose_profile_change(user=user, changes={"phone": f"+216 20 000 01{minutes}"})
@@ -232,7 +216,6 @@ def test_the_api_description_names_the_parameter():
         "/api/v1/audit/business",
         "/api/v1/audit/security",
         "/api/v1/notifications",
-        "/api/v1/delegations",
         "/api/v1/profile-changes",
         "/api/v1/approvals",
         "/api/v1/balances/{employee_public_id}/ledger",

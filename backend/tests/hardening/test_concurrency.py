@@ -10,6 +10,7 @@ import pytest
 from django.contrib.auth import get_user_model
 from django.db import connections
 from django.urls import reverse
+from django.utils import timezone
 from rest_framework.test import APIClient
 
 from apps.audit.models import AuditEvent
@@ -17,7 +18,6 @@ from apps.balances import services as balance_services
 from apps.balances.models import LedgerEntry
 from apps.core.errors import DomainError
 from apps.notifications.models import Notification
-from apps.organisation import services as organisation_services
 from apps.organisation.models import Employee
 from apps.requests import services as request_services
 from apps.requests.models import Decision, Request, RequestStatus, RequestStep, StepStatus
@@ -77,22 +77,17 @@ def _decide(user_id: int, step_id: int, version: int, decision: Decision, commen
 
 
 def test_two_approvers_on_one_step_cannot_both_succeed(world, frozen):
-    organisation_services.create_delegation(
-        actor=world.manager_user,
-        manager=world.manager,
-        delegate=world.other_manager,
-        start_date=date(2026, 11, 2),
-        end_date=date(2026, 11, 30),
-    )
     request = make_request(
         world, user=world.owner_user, employee=world.owner, request_type=world.remote, start=MON, end=MON
     )
     step = pending_step(request)
+    step.flagged_at = timezone.now()  # HR was alerted: the manager and HR may both decide this step
+    step.save(update_fields=["flagged_at"])
 
     won, lost = split(
         race(
             _decide(world.manager_user.id, step.id, request.version, Decision.APPROVE),
-            _decide(world.other_manager_user.id, step.id, request.version, Decision.APPROVE),
+            _decide(world.hr_user.id, step.id, request.version, Decision.APPROVE),
         )
     )
 
@@ -105,23 +100,18 @@ def test_two_approvers_on_one_step_cannot_both_succeed(world, frozen):
 
 
 def test_an_approval_and_a_refusal_at_once_leave_one_clear_outcome(world, frozen):
-    organisation_services.create_delegation(
-        actor=world.manager_user,
-        manager=world.manager,
-        delegate=world.other_manager,
-        start_date=date(2026, 11, 2),
-        end_date=date(2026, 11, 30),
-    )
     request = make_request(
         world, user=world.owner_user, employee=world.owner, request_type=world.remote, start=MON, end=MON
     )
     step = pending_step(request)
+    step.flagged_at = timezone.now()  # HR was alerted: the manager and HR may both decide this step
+    step.save(update_fields=["flagged_at"])
 
     won, lost = split(
         race(
             _decide(world.manager_user.id, step.id, request.version, Decision.APPROVE),
             _decide(
-                world.other_manager_user.id,
+                world.hr_user.id,
                 step.id,
                 request.version,
                 Decision.REJECT,
@@ -267,17 +257,12 @@ def test_a_final_approval_racing_a_withdrawal_ends_in_one_state(world, frozen):
 
 
 def test_the_api_answers_200_and_409_to_two_decisions(world, frozen):
-    organisation_services.create_delegation(
-        actor=world.manager_user,
-        manager=world.manager,
-        delegate=world.other_manager,
-        start_date=date(2026, 11, 2),
-        end_date=date(2026, 11, 30),
-    )
     request = make_request(
         world, user=world.owner_user, employee=world.owner, request_type=world.remote, start=MON, end=MON
     )
     step = pending_step(request)
+    step.flagged_at = timezone.now()  # HR was alerted: the manager and HR may both decide this step
+    step.save(update_fields=["flagged_at"])
     url = reverse("requests:step-decide", kwargs={"pk": step.id})
     body = {"decision": "approve", "comment": "", "version": request.version}
 
@@ -290,7 +275,7 @@ def test_the_api_answers_200_and_409_to_two_decisions(world, frozen):
 
         return run
 
-    outcomes = race(call(world.manager_user.id), call(world.other_manager_user.id))
+    outcomes = race(call(world.manager_user.id), call(world.hr_user.id))
     assert sorted(status for status, _ in outcomes) == [200, 409]
     loser = next(payload for status, payload in outcomes if status == 409)
     assert loser["code"] == "request.already_processed"

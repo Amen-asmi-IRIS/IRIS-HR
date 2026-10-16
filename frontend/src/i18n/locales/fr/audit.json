@@ -112,11 +112,6 @@
       "rejected": "Modification de profil refusée",
       "withdrawn": "Modification de profil retirée"
     },
-    "delegation": {
-      "created": "Délégation créée",
-      "ended": "Délégation terminée",
-      "cancelled": "Délégation annulée"
-    },
     "ledger": {
       "opening_posted": "Solde d'ouverture saisi",
       "adjusted": "Solde ajusté",

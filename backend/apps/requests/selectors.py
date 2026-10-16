@@ -425,19 +425,6 @@ def get_step(pk: int) -> RequestStep:
     return step
 
 
-def via_delegation_from(step, user) -> str | None:
-    """The manager a delegate is covering for on this step, or None when the user acts in their own name."""
-    if step.approver_rule != ApproverRule.LINE_MANAGER:
-        return None
-    employee = step.request.employee
-    me = reach.employee_of(user)
-    if employee.manager_id is None or me is None or employee.manager_id == me.pk:
-        return None
-    if employee.manager_id not in reach.acting_for(me.pk):
-        return None
-    return name_of(employee.manager)
-
-
 # ------------------------------------------------------------------ for balances, calendar and reports
 
 

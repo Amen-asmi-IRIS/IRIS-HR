@@ -49,10 +49,6 @@ ERROR_CODES = [
             "field_not_proposable",
             "change_already_open",
             "change_already_decided",
-            "delegation_overlap",
-            "delegation_self",
-            "delegation_dates",
-            "delegation_not_manager",
         )
     ],
     *[
@@ -99,8 +95,7 @@ EVENTS = [
     "profile_change.proposed",
     "profile_change.accepted",
     "profile_change.rejected",
-    "delegation.started",
-    "delegation.ended",
+    "profile_change.rejected_with_comment",
     "step.to_decide",
     "step.reminder",
     "step.flagged",
@@ -117,7 +112,6 @@ EVENTS = [
     "sick.declared",
     "certificate.due_soon",
     "certificate.overdue",
-    "delegation.prompt",
     "hr_step.unattended",
     "balance.adjusted",
 ]

@@ -40,7 +40,6 @@
       "names": {
         "core": { "heartbeat": "Signal de vie du service de tâches" },
         "accounts": { "cleanup": "Nettoyage des sessions et des mots de passe temporaires" },
-        "organisation": { "delegation_transitions": "Début et fin des délégations" },
         "requests": {
           "reminders_and_flags": "Rappels et alertes sur les étapes en attente",
           "certificate_deadlines": "Échéances des certificats"

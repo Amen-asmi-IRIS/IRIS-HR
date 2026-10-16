@@ -7,7 +7,6 @@ from apps.audit.models import AuditEvent
 from apps.core.errors import Conflict, DomainError, NotAllowed
 from apps.notifications.models import Notification
 from apps.organisation.selectors import full_name
-from apps.organisation.tests.world import make_delegation
 from apps.requests import services
 from apps.requests.models import RequestAttachment
 from apps.requests.tests.helpers import NOW, TODAY, days, decide, fresh, pdf, pending_step, steps, submitted
@@ -146,13 +145,6 @@ def test_the_one_who_decided_is_someone_the_step_is_for(world):
         assert (error.value.code, error.value.field) == ("request.decided_by_not_approver", "decided_by")
     assert pending_step(request).decided_by is None
     assert not AuditEvent.objects.filter(action="step.recorded_on_behalf").exists()
-
-
-def test_a_delegate_of_the_manager_can_be_the_one_who_decided(world):
-    make_delegation(world, manager=world.manager, delegate=world.other_manager, start=TODAY)
-    request = submitted(world)
-    record(world, request, decided_by=world.other_manager)
-    assert steps(request)[0].decided_by == world.other_manager
 
 
 def test_on_an_hr_step_the_one_who_decided_holds_the_hr_role(world):

@@ -60,7 +60,7 @@ describe("translations", () => {
     expect(nav["workspaces.overview"]).toBe("Overview");
     expect(nav["workspaces.admin"]).toBe("Administration");
     expect(Object.keys(nav).filter((key) => key.startsWith("me."))).toHaveLength(5);
-    expect(Object.keys(nav).filter((key) => key.startsWith("team."))).toHaveLength(6);
+    expect(Object.keys(nav).filter((key) => key.startsWith("team."))).toHaveLength(5);
     expect(Object.keys(nav).filter((key) => key.startsWith("hr."))).toHaveLength(6);
     expect(Object.keys(nav).filter((key) => key.startsWith("overview."))).toHaveLength(6);
     expect(Object.keys(nav).filter((key) => key.startsWith("admin."))).toHaveLength(4);

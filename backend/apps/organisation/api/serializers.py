@@ -264,56 +264,6 @@ class EmployeeIn(serializers.Serializer):
         return _EDITABLE_STATUS.run_validation(value)
 
 
-# --- Delegations ---------------------------------------------------------------------------
-
-
-class DelegationOut(serializers.Serializer):
-    public_id = serializers.UUIDField()
-    manager = EmployeeRefOut()
-    delegate = EmployeeRefOut()
-    start_date = serializers.DateField()
-    end_date = serializers.DateField()
-    state = serializers.SerializerMethodField()
-    direction = serializers.SerializerMethodField()
-    can_end = serializers.SerializerMethodField()
-    created_at = serializers.DateTimeField()
-
-    @extend_schema_field(serializers.CharField())
-    def get_state(self, obj) -> str:
-        return selectors.delegation_state(obj)
-
-    @extend_schema_field(serializers.CharField(allow_null=True))
-    def get_direction(self, obj):
-        own = reach.employee_of(self.context["request"].user)
-        if own is None:
-            return None
-        if obj.manager_id == own.id:
-            return "given"
-        if obj.delegate_id == own.id:
-            return "received"
-        return None
-
-    @extend_schema_field(serializers.BooleanField())
-    def get_can_end(self, obj) -> bool:
-        user = self.context["request"].user
-        if selectors.delegation_state(obj) not in ("upcoming", "active"):
-            return False
-        own = reach.employee_of(user)
-        return has_role(user, Role.HR) or (own is not None and own.id == obj.manager_id)
-
-
-class DelegationIn(serializers.Serializer):
-    manager = PublicIdRelatedField(queryset=Employee.objects.all(), required=False)
-    delegate = PublicIdRelatedField(queryset=Employee.objects.all())
-    start_date = serializers.DateField()
-    end_date = serializers.DateField()
-
-
-class DelegationListQuery(serializers.Serializer):
-    scope = serializers.ChoiceField(choices=["mine", "all"], required=False)
-    manager = serializers.UUIDField(required=False)
-
-
 # --- Departures ----------------------------------------------------------------------------
 
 

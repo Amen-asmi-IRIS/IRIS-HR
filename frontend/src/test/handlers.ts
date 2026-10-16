@@ -17,8 +17,8 @@ export const handlers = [
   http.get("/api/v1/requests", () => HttpResponse.json({ count: 0, next: null, previous: null, results: [] })),
   // The record of an employee shows their annual balance among the facts shown first (plan 04).
   http.get("/api/v1/balances/:employeeId", () => HttpResponse.json(makeBalance())),
-  // My team's home and its People list read who is out, the delegation and each person's day (plan 05): a quiet team.
-  http.get("/api/v1/home/team", () => HttpResponse.json({ who_is_out: [], delegation: null, people: [] })),
+  // My team's home and its People list read who is out and each person's day (plan 05): a quiet team.
+  http.get("/api/v1/home/team", () => HttpResponse.json({ who_is_out: [], people: [] })),
   // The workspace switcher shows how many things wait in each workspace (plan 05): nothing, by default.
   http.get("/api/v1/workspaces/summary", () => HttpResponse.json({ me: 0, team: 0, hr: 0, overview: 0, admin: 0 })),
 ];

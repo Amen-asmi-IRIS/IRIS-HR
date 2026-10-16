@@ -7,7 +7,6 @@ import time_machine
 from django.urls import reverse
 
 from apps.organisation import selectors as org_selectors
-from apps.organisation import services as org_services
 from tests.request_flows import NOW, approved, give_balance, send
 
 pytestmark = pytest.mark.django_db
@@ -87,7 +86,7 @@ def test_who_is_out_lists_the_team_today_and_over_the_next_seven_days(world, cli
 
     assert response.status_code == 200
     body = response.json()
-    assert set(body) == {"who_is_out", "delegation", "people"}
+    assert set(body) == {"who_is_out", "people"}
     assert names(body) == [org_selectors.full_name(world.peer), org_selectors.full_name(world.owner)]
     first, second = body["who_is_out"]
     assert set(first) == {
@@ -117,7 +116,6 @@ def test_who_is_out_lists_the_team_today_and_over_the_next_seven_days(world, cli
         "start_date": "2026-11-05",
         "starts_at_midday": True,
     }
-    assert body["delegation"] is None
 
 
 def test_people_carries_presence_today_and_balance_for_every_team_member(world, client_for):
@@ -213,78 +211,6 @@ def test_nobody_is_marked_away_on_a_day_off(world, client_for):
     assert presence(body, world.peer)["today"] == "in"
     assert names(body) == [org_selectors.full_name(world.peer)]  # still listed: away again on Monday
     assert body["who_is_out"][0]["today"] is False
-
-
-def test_delegate_sees_the_delegated_team(world, client_for):
-    approved(
-        world,
-        employee=world.outsider,
-        user=world.outsider_user,
-        request_type=world.annual,
-        start=date(2026, 11, 3),
-        end=date(2026, 11, 4),
-    )
-    org_services.create_delegation(
-        actor=world.hr_user,
-        manager=world.other_manager,
-        delegate=world.manager,
-        start_date=date(2026, 11, 2),
-        end_date=date(2026, 11, 20),
-    )
-
-    body = client_for(world.manager_user).get(URL).json()
-
-    assert names(body) == [org_selectors.full_name(world.outsider)]
-    assert str(world.outsider.public_id) in [person["public_id"] for person in body["people"]]
-    assert body["delegation"] == {
-        "direction": "received",
-        "person": org_selectors.full_name(world.other_manager),
-        "start_date": "2026-11-02",
-        "end_date": "2026-11-20",
-    }
-
-
-def test_a_delegation_given_is_reported_and_wins_over_one_received(world, client_for):
-    org_services.create_delegation(
-        actor=world.hr_user,
-        manager=world.other_manager,
-        delegate=world.manager,
-        start_date=date(2026, 11, 2),
-        end_date=date(2026, 11, 20),
-    )
-    org_services.create_delegation(
-        actor=world.hr_user,
-        manager=world.manager,
-        delegate=world.peer,
-        start_date=date(2026, 11, 2),
-        end_date=date(2026, 11, 6),
-    )
-
-    as_manager = client_for(world.manager_user).get(URL).json()
-    as_delegate = client_for(world.peer_user).get(URL)
-
-    assert as_manager["delegation"] == {
-        "direction": "given",
-        "person": org_selectors.full_name(world.peer),
-        "start_date": "2026-11-02",
-        "end_date": "2026-11-06",
-    }
-    assert as_delegate.status_code == 200  # an active delegate is a manager for the period
-    assert as_delegate.json()["delegation"]["direction"] == "received"
-    # The delegate answers for the owner, not for themselves.
-    assert [person["public_id"] for person in as_delegate.json()["people"]] == [str(world.owner.public_id)]
-
-
-def test_a_delegation_that_has_not_started_is_not_reported(world, client_for):
-    org_services.create_delegation(
-        actor=world.hr_user,
-        manager=world.manager,
-        delegate=world.peer,
-        start_date=date(2026, 11, 9),
-        end_date=date(2026, 11, 13),
-    )
-
-    assert client_for(world.manager_user).get(URL).json()["delegation"] is None
 
 
 def test_today_is_the_tunis_date(world, client_for):
@@ -415,7 +341,7 @@ def test_a_waiting_sick_leave_counts_nobody_on_a_day_off(world, client_for):
 def test_a_team_with_nobody_away(world, client_for):
     body = client_for(world.manager_user).get(URL).json()
 
-    assert body["who_is_out"] == [] and body["delegation"] is None
+    assert body["who_is_out"] == []
     assert [person["today"] for person in body["people"]] == ["in", "in"]
 
 

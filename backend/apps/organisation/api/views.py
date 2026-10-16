@@ -7,19 +7,13 @@ from rest_framework.views import APIView
 from apps.accounts.roles import Role, has_role
 from apps.audit import selectors as audit_selectors
 from apps.audit.api.serializers import AuditEventOut
-from apps.core.errors import DomainError, NotFound
+from apps.core.errors import NotFound
 from apps.core.ordering import apply_ordering, ordering_parameter
 from apps.core.pagination import PAGE_PARAMETERS, paginate, paginated
 
 from .. import reach, selectors, services
 from . import serializers as s
 
-DELEGATION_ORDERINGS = {
-    "-start_date": ("-start_date", "-id"),
-    "start_date": ("start_date", "id"),
-    "end_date": ("end_date", "id"),
-    "-end_date": ("-end_date", "-id"),
-}
 PROFILE_CHANGE_ORDERINGS = {"created_at": ("created_at", "id"), "-created_at": ("-created_at", "-id")}
 HISTORY_ORDERINGS = {"-at": ("-at", "-id"), "at": ("at", "id")}
 
@@ -162,59 +156,6 @@ class EmployeeDetailView(APIView):
         data.is_valid(raise_exception=True)
         employee = services.update_employee(actor=request.user, employee=employee, data=data.validated_data)
         return Response(s.EmployeeOut(selectors.get_employee(employee.public_id)).data)
-
-
-# --- Delegations ---------------------------------------------------------------------------
-
-
-class DelegationListView(APIView):
-    access = {"GET": {Role.MANAGER, Role.HR}, "POST": {Role.MANAGER, Role.HR}}
-    http_method_names = ["get", "post"]
-
-    @extend_schema(
-        operation_id="delegations_list",
-        parameters=[
-            s.DelegationListQuery,
-            ordering_parameter(DELEGATION_ORDERINGS, "-start_date"),
-            *PAGE_PARAMETERS,
-        ],
-        responses=paginated(s.DelegationOut),
-    )
-    def get(self, request):
-        query = s.DelegationListQuery(data=request.query_params)
-        query.is_valid(raise_exception=True)
-        queryset = selectors.delegations_for(
-            request.user,
-            scope=query.validated_data.get("scope", "mine"),
-            manager_public_id=query.validated_data.get("manager"),
-        )
-        queryset = apply_ordering(request, queryset, DELEGATION_ORDERINGS, "-start_date")
-        return paginate(request, self, queryset, s.DelegationOut)
-
-    @extend_schema(
-        operation_id="delegations_create", request=s.DelegationIn, responses={201: s.DelegationOut}
-    )
-    def post(self, request):
-        data = s.DelegationIn(data=request.data)
-        data.is_valid(raise_exception=True)
-        fields = dict(data.validated_data)
-        manager = fields.pop("manager", None) or reach.employee_of(request.user)
-        if manager is None:
-            raise DomainError("organisation.delegation_not_manager", field="manager")
-        delegation = services.create_delegation(actor=request.user, manager=manager, **fields)
-        body = s.DelegationOut(delegation, context={"request": request}).data
-        return Response(body, status=status.HTTP_201_CREATED)
-
-
-class DelegationEndView(APIView):
-    access = {"POST": {Role.MANAGER, Role.HR}}
-    http_method_names = ["post"]
-
-    @extend_schema(operation_id="delegations_end", request=None, responses=s.DelegationOut)
-    def post(self, request, public_id):
-        delegation = selectors.get_delegation_for(request.user, public_id)
-        delegation = services.end_delegation(actor=request.user, delegation=delegation)
-        return Response(s.DelegationOut(delegation, context={"request": request}).data)
 
 
 # --- Departures ----------------------------------------------------------------------------

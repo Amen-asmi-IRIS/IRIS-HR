@@ -77,7 +77,7 @@ def seed() -> None:
     _ask(owner, "permission", ahead(5), start_time=time(9, 0), end_time=time(10, 30), send=False)
     # Waiting for HR, without its certificate.
     _ask(peer, "sick", last_working_day, comment="Fièvre")
-    # A manager who will be away: the delegation prompt is waiting in their notifications.
+    # A manager who will be away.
     _approve(_ask(manager, "annual", ahead(15)))
     # Waiting for the other manager. This person has no leave balance in plan 04's demo data.
     _ask(outsider, "remote", ahead(4))

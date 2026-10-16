@@ -5,16 +5,13 @@ from dataclasses import dataclass, field
 from datetime import date
 
 from django.db import transaction
-from django.db.models import Q, QuerySet
-from django.utils import timezone
 
 from apps.accounts import services as accounts_services
 from apps.audit import services as audit
 from apps.core.errors import Conflict
 
-from ..models import Delegation, Employee, EmployeeStatus
+from ..models import Employee, EmployeeStatus
 from ..selectors import direct_reports, full_name
-from .delegations import close_delegation
 from .employees import employee_state
 
 
@@ -51,26 +48,9 @@ _departure_listeners: list[Callable[..., None]] = []
 def register_departure_listener(fn: Callable[..., None]) -> None:
     """Lets another app act once a departure is recorded: `fn(employee=..., actor=...)`, inside its transaction.
 
-    The leaver is already archived, with the account switched off and the delegations closed.
+    The leaver is already archived, with the account switched off.
     """
     _departure_listeners.append(fn)
-
-
-def _open_delegations(employee: Employee) -> QuerySet[Delegation]:
-    return Delegation.objects.filter(
-        Q(manager=employee) | Q(delegate=employee), ended_at__isnull=True, end_date__gte=timezone.localdate()
-    ).select_related("manager", "delegate")
-
-
-def _delegation_section(employee: Employee) -> ArchiveSection | None:
-    items = [
-        ArchiveItem(
-            label=f"{full_name(delegation.manager)} → {full_name(delegation.delegate)}, "
-            f"{delegation.start_date:%d/%m/%Y} – {delegation.end_date:%d/%m/%Y}"
-        )
-        for delegation in _open_delegations(employee)
-    ]
-    return ArchiveSection(key="delegations", items=items) if items else None
 
 
 def archive_preview(*, employee: Employee) -> ArchivePreview:
@@ -78,7 +58,7 @@ def archive_preview(*, employee: Employee) -> ArchivePreview:
         ArchiveItem(label=full_name(report), link=f"/hr/employees/{report.public_id}")
         for report in direct_reports(employee)
     ]
-    candidates = [_delegation_section(employee), *(contribute(employee) for contribute in _contributors)]
+    candidates = [contribute(employee) for contribute in _contributors]
     sections = [section for section in candidates if section is not None and section.items]
     has_account = employee.user_id is not None and employee.user.is_active
     return ArchivePreview(has_account=has_account, reports=reports, sections=sections)
@@ -105,9 +85,6 @@ def archive_employee(*, actor, employee: Employee, leaving_date: date, reason: s
         "archive_reason": employee.archive_reason,
     }
 
-    today = timezone.localdate()
-    for delegation in _open_delegations(employee):
-        close_delegation(actor=actor, delegation=delegation, today=today)
     if employee.user_id is not None and employee.user.is_active:
         accounts_services.disable_account(actor=actor, user=employee.user)
     for listen in _departure_listeners:

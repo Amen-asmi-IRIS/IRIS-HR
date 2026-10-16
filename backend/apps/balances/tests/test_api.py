@@ -8,7 +8,6 @@ from django.urls import reverse
 from apps.balances.models import LedgerEntry, LedgerKind
 from apps.balances.tests.world import at, give_credit, give_opening, make_entry
 from apps.organisation import selectors as organisation_selectors
-from apps.organisation.tests.world import make_delegation
 from tests.matrix import P
 
 pytestmark = pytest.mark.usefixtures("reservations")
@@ -123,21 +122,6 @@ def test_who_may_read_a_balance(cast, client_for, ledger_settings, persona, stat
 
     assert client.get(url("figures", cast.owner)).status_code == status
     assert client.get(url("ledger", cast.owner)).status_code == status
-
-
-@pytest.mark.parametrize(
-    ("day", "status"),
-    [((2026, 11, 6), 404), ((2026, 11, 9), 200), ((2026, 11, 13), 200), ((2026, 11, 14), 404)],
-)
-def test_a_delegate_reads_the_team_balance_only_while_the_delegation_runs(cast, client_for, day, status):
-    # The manager hands their team to the other manager from Monday 9 to Friday 13 November 2026.
-    make_delegation(cast, manager=cast.manager, delegate=cast.other_manager, start=date(2026, 11, 9), days=5)
-
-    with time_machine.travel(at(*day), tick=False):
-        client = client_for(cast.other_manager_user)
-
-        assert client.get(url("figures", cast.owner)).status_code == status
-        assert client.get(url("ledger", cast.owner)).status_code == status
 
 
 def test_an_anonymous_call_is_sent_to_sign_in(cast, anon_client):

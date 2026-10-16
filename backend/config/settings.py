@@ -148,7 +148,6 @@ SPECTACULAR_SETTINGS = {
         "CalendarEntryStatusEnum": "apps.calendar.api.feed_serializers.ENTRY_STATUSES",
         "NeedsYouKindEnum": "apps.reports.api.serializers.NEEDS_YOU_KINDS",
         "PresenceEnum": "apps.reports.api.serializers.PRESENCE_STATES",
-        "DelegationDirectionEnum": "apps.reports.api.serializers.DELEGATION_DIRECTIONS",
         "ReportColumnKindEnum": "apps.reports.api.report_serializers.COLUMN_KINDS",
         "ReportTotalGroupEnum": "apps.reports.api.report_serializers.TOTAL_GROUPS",
         "ReportScopeEnum": "apps.reports.api.report_serializers.SCOPES",

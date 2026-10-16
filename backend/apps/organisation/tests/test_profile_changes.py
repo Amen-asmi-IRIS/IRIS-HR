@@ -5,6 +5,7 @@ from django.urls import reverse
 
 from apps.audit.models import AuditEvent
 from apps.core.errors import Conflict, DomainError, NotAllowed
+from apps.notifications import services as notification_services
 from apps.notifications.models import Notification
 from apps.organisation import services
 from apps.organisation.models import ProfileChange
@@ -106,9 +107,30 @@ def test_refusal_changes_nothing_and_tells_the_employee(world):
     assert world.owner.phone == ""
     assert (decided.status, decided.comment) == ("rejected", "Justificatif manquant")
     assert not AuditEvent.objects.filter(action="employee.updated").exists()
-    assert (
-        Notification.objects.filter(event_code="profile_change.rejected", user=world.owner_user).count() == 1
+    # The employee reads HR's comment in the notification: no other page shows it to them (D55).
+    told = Notification.objects.get(user=world.owner_user)
+    assert (told.event_code, told.parameters) == (
+        "profile_change.rejected_with_comment",
+        {"comment": "Justificatif manquant"},
     )
+    assert notification_services.render(told, "fr") == {
+        "title": "Votre modification de profil a été refusée",
+        "body": "Les RH ont refusé votre proposition. Leur commentaire : Justificatif manquant",
+        "link": "/me/profile",
+    }
+    assert notification_services.render(told, "en")["body"] == (
+        "HR refused the change you proposed. Their comment: Justificatif manquant"
+    )
+
+
+def test_a_refusal_without_a_comment_says_only_that(world):
+    change = _propose(world)
+
+    services.decide_profile_change(actor=world.hr_user, change=change, accept=False, comment="  ")
+
+    told = Notification.objects.get(user=world.owner_user)
+    assert (told.event_code, told.parameters) == ("profile_change.rejected", {})
+    assert notification_services.render(told, "en")["body"] == "HR refused the change you proposed."
 
 
 def test_a_proposal_is_decided_once(world):

@@ -40,7 +40,6 @@
       "names": {
         "core": { "heartbeat": "Worker heartbeat" },
         "accounts": { "cleanup": "Clean-up of sessions and temporary passwords" },
-        "organisation": { "delegation_transitions": "Start and end of delegations" },
         "requests": {
           "reminders_and_flags": "Reminders and alerts on waiting steps",
           "certificate_deadlines": "Certificate deadlines"

@@ -5,7 +5,6 @@ import { backToList, FormSummary, toast } from "@/components";
 import { Button } from "@/components/ui/button";
 import { formatDays } from "@/lib/format";
 import { AddFileSheet } from "../AddFileSheet";
-import { DelegationOffer } from "../DelegationOffer";
 import { isConflict, useSubmitRequest, useWithdrawAmendment } from "../api";
 import { useSingleFlight } from "../form/useSingleFlight";
 import { useRequestsText } from "../platform";
@@ -147,7 +146,6 @@ export default function RequestMineView({ request }: { request: RequestDetail })
                 {t("mine.balance", { now: formatDays(balance.now, lang), after: formatDays(balance.after, lang) })}
               </p>
             )}
-            <DelegationOffer request={request} />
           </>
         }
         actions={request.viewer.actions.length > 0 ? actions : undefined}

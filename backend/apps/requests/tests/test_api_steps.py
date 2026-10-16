@@ -4,7 +4,6 @@ import pytest
 from django.urls import reverse
 
 from apps.accounts.services import display_name
-from apps.organisation import services as organisation_services
 from apps.organisation.selectors import full_name
 from apps.requests.models import RequestAttachment
 from apps.requests.tests.helpers import (
@@ -31,13 +30,6 @@ def step_url(name: str, step) -> str:
 
 
 def test_the_manager_queue_carries_what_is_needed_to_decide_from_the_list(world, client_for):
-    organisation_services.create_delegation(
-        actor=world.hr_user,
-        manager=world.manager,
-        delegate=world.other_manager,
-        start_date=TODAY,
-        end_date=TODAY + dt.timedelta(days=14),
-    )
     request = submitted(world, data=days(MON, TUE))
 
     response = client_for(world.manager_user).get(reverse(APPROVALS))
@@ -45,7 +37,7 @@ def test_the_manager_queue_carries_what_is_needed_to_decide_from_the_list(world,
     body = response.json()
     assert body["count"] == 1
     item = body["results"][0]
-    assert (item["step_id"], item["via_delegation_from"]) == (pending_step(request).pk, None)
+    assert item["step_id"] == pending_step(request).pk
     assert item["waiting_since"].startswith("2026-10-06T09:00:00")
     assert (item["request"]["public_id"], item["request"]["viewer"]["actions"]) == (
         str(request.public_id),
@@ -56,9 +48,6 @@ def test_the_manager_queue_carries_what_is_needed_to_decide_from_the_list(world,
         "teammates_away": [],
         "cap": None,
     }
-
-    covered = client_for(world.other_manager_user).get(reverse(APPROVALS)).json()["results"][0]
-    assert covered["via_delegation_from"] == full_name(world.manager)
 
 
 def test_the_hr_queues_through_the_api(world, client_for):

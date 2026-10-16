@@ -6,16 +6,13 @@ from django.utils import timezone
 
 from apps.audit import services as audit
 from apps.core.errors import DomainError
-from apps.organisation import selectors as organisation_selectors
 
 from ..models import (
     AmendmentKind,
     AmendmentStatus,
     BalanceEffect,
-    CalendarLabel,
     RequestStatus,
     StepStatus,
-    Unit,
 )
 from ..ports import balance_port
 from . import notices
@@ -33,21 +30,6 @@ def close_open_steps(request, amendment=None) -> None:
 
 def _status_change(before: str, after: str) -> dict:
     return {"status": {"before": before, "after": after}}
-
-
-def _prompt_delegation(request) -> None:
-    """REQ-12: a manager whose own absence is approved is invited to name a delegate for those dates."""
-    request_type = request.request_type
-    if request_type.unit != Unit.DAY or request_type.calendar_label != CalendarLabel.ABSENT:
-        return
-    if not organisation_selectors.direct_reports(request.employee).exists():
-        return
-    notices.tell_requester(
-        request,
-        "delegation.prompt",
-        dedupe_key=f"request:{request.pk}:delegation_prompt",
-        **{"from": request.start_date.isoformat(), "to": request.end_date.isoformat()},
-    )
 
 
 def approve_request(*, request, actor) -> None:
@@ -77,7 +59,6 @@ def approve_request(*, request, actor) -> None:
         actor=actor,
     )
     notices.tell_requester(request, "request.approved")
-    _prompt_delegation(request)
 
 
 def reject(*, request, amendment, actor) -> None:

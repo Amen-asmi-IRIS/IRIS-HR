@@ -76,9 +76,6 @@ EXPECTED: dict[tuple[str, str], frozenset[str]] = {
     ("organisation:profile-change-detail", "GET"): roles(E, H),
     ("organisation:profile-change-decide", "POST"): roles(H),
     ("organisation:profile-change-withdraw", "POST"): roles(E),
-    ("organisation:delegation-list", "GET"): roles(M, H),
-    ("organisation:delegation-list", "POST"): roles(M, H),
-    ("organisation:delegation-end", "POST"): roles(M, H),
     # 7.8 calendar
     ("calendar:holiday-list", "GET"): roles(E, H, X),
     ("calendar:holiday-list", "POST"): roles(H),

@@ -120,7 +120,6 @@ def test_every_choice_set_has_its_stable_name():
         "ContractTypeEnum",
         "DecisionChannelEnum",
         "DecisionEnum",
-        "DelegationDirectionEnum",
         "DocumentRuleEnum",
         "GenderEnum",
         "LanguageEnum",

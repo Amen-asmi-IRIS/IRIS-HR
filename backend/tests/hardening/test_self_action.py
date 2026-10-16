@@ -106,34 +106,6 @@ def test_a_managers_own_request_goes_to_their_manager(world, client_for, frozen)
 
 
 @pytest.mark.django_db
-def test_a_delegate_cannot_decide_their_own_request(world, client_for, frozen):
-    organisation_services.create_delegation(
-        actor=world.manager_user,
-        manager=world.manager,
-        delegate=world.owner,
-        start_date=date(2026, 11, 2),
-        end_date=date(2026, 11, 30),
-    )
-    owner = _fresh(world.owner_user)
-    mine = make_request(
-        world, user=owner, employee=world.owner, request_type=world.remote, start=MONDAY, end=MONDAY
-    )
-    theirs = make_request(
-        world, user=world.peer_user, employee=world.peer, request_type=world.remote, start=MONDAY, end=MONDAY
-    )
-
-    own_step, peer_step = pending_step(mine), pending_step(theirs)
-    assert request_services.resolve_approvers(own_step) == [world.manager_user]
-    assert set(request_services.resolve_approvers(peer_step)) == {world.manager_user, world.owner_user}
-
-    client = client_for(owner)
-    body = {"decision": "approve", "comment": "", "version": mine.version}
-    assert client.post(_decide_url(own_step), body, format="json").status_code == 404
-    queue = client.get(reverse("requests:approval-list"), {"queue": "mine"}).json()["results"]
-    assert [item["request"]["public_id"] for item in queue] == [str(theirs.public_id)]
-
-
-@pytest.mark.django_db
 def test_a_named_approver_who_is_the_requester_is_replaced_by_hr(world, client_for, frozen):
     steps_url = reverse("requests:type-steps", kwargs={"pk": world.remote.id})
     chain = {
@@ -328,7 +300,6 @@ def test_no_job_ever_approves_a_request(world, frozen):
         later = NOW + timedelta(days=days)
         request_services.send_reminders_and_flags(now=later)
         request_services.check_certificate_deadlines(now=later)
-        organisation_services.announce_delegation_transitions(today=later.date())
         balance_services.post_month_end_credits(today=later.date())
     for request in waiting:
         request.refresh_from_db()

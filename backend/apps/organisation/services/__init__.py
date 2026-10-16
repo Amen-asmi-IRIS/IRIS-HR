@@ -7,7 +7,6 @@ from .archive import (
     register_archive_contributor,
     register_departure_listener,
 )
-from .delegations import announce_delegation_transitions, create_delegation, end_delegation
 from .documents import add_document, set_document_visibility
 from .employees import create_employee, update_employee
 from .profile_changes import (
@@ -32,15 +31,12 @@ __all__ = [
     "ArchivePreview",
     "ArchiveSection",
     "add_document",
-    "announce_delegation_transitions",
     "archive_employee",
     "archive_preview",
-    "create_delegation",
     "create_department",
     "create_employee",
     "create_position",
     "decide_profile_change",
-    "end_delegation",
     "ensure_proposable",
     "propose_profile_change",
     "register_archive_contributor",

@@ -25,7 +25,7 @@ function person(overrides: Partial<OutPerson> = {}): OutPerson {
 }
 
 function show(data: Partial<TeamHome>) {
-  server.use(http.get("/api/v1/home/team", () => HttpResponse.json({ who_is_out: [], delegation: null, people: [], ...data })));
+  server.use(http.get("/api/v1/home/team", () => HttpResponse.json({ who_is_out: [], people: [], ...data })));
   return renderApp(<TeamHomePage />, { route: "/team", path: "/team", me: makeMe({ roles: ["employee", "manager"] }) });
 }
 
@@ -67,24 +67,12 @@ describe("TeamHomePage", () => {
     expect(approved).not.toHaveTextContent("en attente");
   });
 
-  it("shrinks an empty Who is out to one line and leaves the delegation block out", async () => {
+  it("shrinks an empty Who is out to one line", async () => {
     show({});
 
     const out = await screen.findByRole("region", { name: "Absents et télétravail" });
     expect(within(out).getByText("Toute l'équipe est présente ces sept prochains jours.")).toBeInTheDocument();
-    expect(screen.queryByRole("region", { name: "Délégation" })).not.toBeInTheDocument();
-  });
-
-  it.each([
-    ["given", "Karim Gharbi décide à votre place, 2 nov. 2026 – 6 nov. 2026."],
-    ["received", "Vous décidez à la place de Karim Gharbi, 2 nov. 2026 – 6 nov. 2026."],
-  ] as const)("states a delegation %s in one sentence", async (direction, sentence) => {
-    show({ delegation: { direction, person: "Karim Gharbi", start_date: "2026-11-02", end_date: "2026-11-06" } });
-
-    const delegation = await screen.findByRole("region", { name: "Délégation" });
-    expect(within(delegation).getByText(sentence)).toBeInTheDocument();
-    expect(within(delegation).getByRole("link", { name: "Gérer les délégations" })).toHaveAttribute("href", "/team/delegations");
-    expect(blockTitles()).toEqual(["Absents et télétravail", "Délégation"]);     // with the queue: three blocks, four at most
+    expect(blockTitles()).toEqual(["Absents et télétravail"]);
   });
 
   it("adds no button of its own: the page's one primary action is the queue page's", async () => {

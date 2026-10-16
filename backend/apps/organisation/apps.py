@@ -22,9 +22,8 @@ class OrganisationConfig(AppConfig):
         register_derived_role_provider(reach.derived_roles)
         set_employee_directory(OrganisationDirectory())
         files_services.register_access_rule("employee_document", may_download)
-        # The page is chosen for each reader when the event is announced (see services.delegations).
-        notifications.register_event("delegation.started", link="{page}")
-        notifications.register_event("delegation.ended", link="{page}")
         notifications.register_event("profile_change.proposed", link="/hr/profile-changes")
         notifications.register_event("profile_change.accepted", link="/me/profile")
         notifications.register_event("profile_change.rejected", link="/me/profile")
+        # A refusal with HR's comment carries that comment: the employee reads it nowhere else.
+        notifications.register_event("profile_change.rejected_with_comment", link="/me/profile")

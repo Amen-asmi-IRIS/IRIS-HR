@@ -8,7 +8,7 @@ import { RequestView } from "../RequestView";
 import type { Decision, RequestDetail } from "../types";
 
 /**
- * A request seen by the requester's manager, a delegate or a named approver (UI 6.2).
+ * A request seen by the requester's manager or a named approver (UI 6.2).
  * It decides when the API lists `decide`; otherwise it only informs.
  */
 export default function RequestManagerView({ request }: { request: RequestDetail }) {

@@ -7,7 +7,6 @@ from openpyxl import load_workbook
 
 from apps.audit.models import AuditEvent
 from apps.organisation import selectors as organisation_selectors
-from apps.organisation import services as organisation_services
 from apps.reports.tabular.render import XLSX_MEDIA_TYPE
 from apps.reports.tests import scenario
 
@@ -115,41 +114,6 @@ def test_a_manager_cannot_name_someone_outside_the_team(world, november, client_
 
     assert response.status_code == 404
     assert response.json()["code"] == "reports.employee_not_found"
-
-
-def test_a_delegate_reaches_the_delegated_team_while_the_delegation_runs(world, november, client_for):
-    organisation_services.create_delegation(
-        actor=world.hr_user,
-        manager=world.manager,
-        delegate=world.peer,
-        start_date=date(2026, 12, 1),
-        end_date=date(2026, 12, 4),
-    )
-    delegate = client_for(world.peer_user)
-
-    body = delegate.get(_report(), NOVEMBER).json()
-    options = delegate.get(reverse("reports:report-filters")).json()
-
-    # The delegate answers for the manager's team, without themselves, and never for everyone.
-    assert {row["employee"] for row in body["rows"]} == {organisation_selectors.full_name(world.owner)}
-    assert options["scope"] == "team"
-    assert [person["public_id"] for person in options["employees"]] == [str(world.owner.public_id)]
-    assert options["departments"] == [] and options["actors"] == []
-    assert delegate.get(_report(), {**NOVEMBER, "scope": "all"}).status_code == 403
-    assert delegate.get(reverse("reports:kpmg-export"), NOVEMBER).status_code == 403
-
-
-def test_a_delegation_that_has_not_started_gives_no_report(world, november, client_for):
-    organisation_services.create_delegation(
-        actor=world.hr_user,
-        manager=world.manager,
-        delegate=world.peer,
-        start_date=date(2026, 12, 7),
-        end_date=date(2026, 12, 11),
-    )
-
-    assert client_for(world.peer_user).get(_report(), NOVEMBER).status_code == 403
-    assert client_for(world.peer_user).get(reverse("reports:report-filters")).status_code == 403
 
 
 def test_an_employee_without_a_team_is_refused(world, november, client_for):

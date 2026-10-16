@@ -96,14 +96,6 @@ class OutPerson:
 
 
 @dataclass(frozen=True)
-class DelegationLine:
-    direction: str
-    person: str
-    start_date: date
-    end_date: date
-
-
-@dataclass(frozen=True)
 class TeamPerson:
     employee_public_id: str
     today: str
@@ -115,17 +107,15 @@ class TeamPerson:
 @dataclass(frozen=True)
 class TeamHome:
     who_is_out: list[OutPerson]
-    delegation: DelegationLine | None
     people: list[TeamPerson]
 
 
 def team_home(user, *, today: date | None = None) -> TeamHome:
     today = today or timezone.localdate()
-    me = reach.employee_of(user)
-    if me is None:
+    if reach.employee_of(user) is None:
         raise NotFound()
 
-    team_ids = reach.team_ids(user, on=today)
+    team_ids = reach.team_ids(user)
     team = {employee.id: employee for employee in org_selectors.employees_for(user).filter(id__in=team_ids)}
     spans = [
         span
@@ -183,33 +173,13 @@ def team_home(user, *, today: date | None = None) -> TeamHome:
                 balance=balances.get(employee.id, Decimal("0")),
             )
         )
-    return TeamHome(who_is_out=who_is_out, delegation=_delegation_line(me, today), people=people)
+    return TeamHome(who_is_out=who_is_out, people=people)
 
 
 def _presence(labels: set[str]) -> str:
     if "absent" in labels:
         return "absent"
     return "remote" if "remote" in labels else "in"
-
-
-def _delegation_line(me, today: date) -> DelegationLine | None:
-    given = org_selectors.active_delegations(manager=me, on=today).order_by("end_date").first()
-    if given is not None:
-        return DelegationLine(
-            direction="given",
-            person=org_selectors.full_name(given.delegate),
-            start_date=given.start_date,
-            end_date=given.end_date,
-        )
-    received = org_selectors.active_delegations(delegate=me, on=today).order_by("end_date").first()
-    if received is not None:
-        return DelegationLine(
-            direction="received",
-            person=org_selectors.full_name(received.manager),
-            start_date=received.start_date,
-            end_date=received.end_date,
-        )
-    return None
 
 
 OVERVIEW_LIMIT = 5

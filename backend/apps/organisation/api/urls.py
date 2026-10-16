@@ -50,6 +50,4 @@ urlpatterns = [
         views.ProfileChangeWithdrawView.as_view(),
         name="profile-change-withdraw",
     ),
-    path("delegations", views.DelegationListView.as_view(), name="delegation-list"),
-    path("delegations/<uuid:public_id>/end", views.DelegationEndView.as_view(), name="delegation-end"),
 ]

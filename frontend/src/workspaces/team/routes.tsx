@@ -1,7 +1,6 @@
 import { lazy } from "react";
 import type { RouteObject } from "react-router";
 
-const DelegationsPage = lazy(() => import("@/features/delegations/DelegationsPage"));
 const EmployeeRecordPage = lazy(() => import("@/features/employees/EmployeeRecordPage"));
 const TeamPeoplePage = lazy(() => import("@/features/employees/TeamPeoplePage"));
 const TeamRequestsPage = lazy(() => import("@/features/requests/team/TeamRequestsPage"));
@@ -12,7 +11,6 @@ const ReportPage = lazy(() => import("@/features/reports/ReportPage"));
 
 // Pages of My team, with paths relative to /team. A plan adds a page by appending an element.
 export const teamRoutes: RouteObject[] = [
-  { path: "delegations", element: <DelegationsPage /> },
   { path: "people/:id", element: <EmployeeRecordPage mode="team" /> },
   { path: "people", element: <TeamPeoplePage /> },
   { path: "requests", element: <TeamRequestsPage /> },
